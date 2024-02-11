@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+}
+body {
+  height: 100dvh;
+  background-color: #e3e1ff;
+}
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100dvh;
+}
+
+ul {
+  list-style-type: none;
+}
+button {
+  cursor: pointer;
+}
+label.label input[type="file"] {
+  position: absolute;
+  top: -1000px;
+}
+.label {
+  cursor: pointer;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  width: 100px;
+  height: 200px;
+  margin-top: 26px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(238, 216, 192, 1);
+  display: inline-block;
+  color: rgba(238, 216, 192, 1);
+}
+.loader {
+  width: 45px;
+  aspect-ratio: 0.75;
+  --c: no-repeat linear-gradient(theme(colors.stone.800) 0 0);
+  background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+  background-size: 20% 50%;
+  animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+  20% {
+    background-position: 0% 0%, 50% 50%, 100% 50%;
+  }
+  40% {
+    background-position: 0% 100%, 50% 0%, 100% 50%;
+  }
+  60% {
+    background-position: 0% 50%, 50% 100%, 100% 0%;
+  }
+  80% {
+    background-position: 0% 50%, 50% 50%, 100% 100%;
+  }
+}
