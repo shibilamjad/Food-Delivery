@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     orderHistary: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Menu",
+        ref: "Orders",
       },
     ],
     cart: [

@@ -10,7 +10,6 @@ export async function cartListApi() {
         accesstoken: userId,
       },
     });
-
     return res.data;
   } catch (error) {
     throw new Error(`Error fetching createUser: ${error.message}`);
@@ -30,13 +29,9 @@ export async function addCartApi(menuId) {
       },
     );
 
-    if (res.data.success) {
-      return res.data; // or any data you want to return on success
-    } else {
-      throw new Error(`Error: ${res.data.message}`);
-    }
+    return res.data; // or any data you want to return on success
   } catch (error) {
-    throw new Error(`Error fetching addWatchList: ${error.message}`);
+    throw new Error(`Error fetching addMenuList: ${error.message}`);
   }
 }
 export async function deleateCartApi(menuId) {
@@ -47,6 +42,24 @@ export async function deleateCartApi(menuId) {
 
       {
         data: { menuId },
+        headers: {
+          accesstoken: userId,
+        },
+      },
+    );
+
+    return res.data;
+  } catch (error) {
+    throw new Error(`Error deleting menu: ${error.message}`);
+  }
+}
+export async function clearCartApi(menuId) {
+  const userId = localStorage.getItem('token');
+  try {
+    const res = await axios.delete(
+      `${API_URL}/clearCart`,
+
+      {
         headers: {
           accesstoken: userId,
         },

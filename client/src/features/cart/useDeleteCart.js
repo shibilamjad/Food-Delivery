@@ -4,13 +4,13 @@ import { useMutation, useQueryClient } from 'react-query';
 
 export function useDeleteCart() {
   const queryClient = useQueryClient();
-  const { mutate: deleateCart } = useMutation({
+  const { mutate: deleteCart } = useMutation({
     mutationFn: deleateCartApi,
     onSuccess: (data) => {
       queryClient.invalidateQueries(['cart'], data.user);
-      toast.success('Successfully Menu deleted');
+      toast.success('Successfully Menu removed from CartList');
     },
-    onError: () => toast.error('Menu already deleted to WatchLater'),
+    onError: () => toast.error('Menu already removed to CartList'),
   });
-  return { deleateCart };
+  return { deleteCart };
 }

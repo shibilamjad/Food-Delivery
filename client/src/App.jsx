@@ -10,6 +10,7 @@ import { Cart } from './features/cart/Cart';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { SignIn } from './features/user/SignIn';
+import { OrderItem } from './features/order/OrderItem';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/menu" element={<Menu />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/order/new" element={<CreateOrder />} />
+            <Route path="/order" element={<OrderItem />} />
             <Route path="/order/:orderId" element={<Order />} />
             <Route path="/sign-up" element={<Register />} />
             <Route path="/sign-in" element={<SignIn />} />

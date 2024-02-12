@@ -8,12 +8,10 @@ export function useMovieUpdate() {
   const { mutate: updateMenu } = useMutation({
     mutationFn: (data) => updateMenuApi(data.menuId, data.updateMenu),
     onSuccess: (data) => {
-      console.log("Update Menu Success:", data);
       toast.success("Menu successfully updated");
       queryClient.invalidateQueries({ queryKey: ["menu"] });
     },
     onError: (error) => {
-      console.error("Error updating Movie:", error);
       toast.error(`Failed to update Movie: ${error.message}`);
     },
   });

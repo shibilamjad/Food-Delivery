@@ -151,14 +151,13 @@ const logout = async (req, res) => {
 const userCartList = async (req, res) => {
   const { userId } = req.body;
   try {
-    const user = await Users.findById(userId)
-    .populate({
+    const user = await Users.findById(userId).populate({
       path: "cart",
-      model: "Menu", // Assuming 'Menu' is the model name for items in the cart
-      select: "name unitPrice imageUrl ingredients isAvailable discount", // Select the fields you want to populate
+      model: "Menu",
+      select: "name unitPrice ingredients discount quantity",
     });
 
-    res.status(200).json(user.cart); // Assuming 'cart' is the array of items in the user's cart
+    res.status(200).json(user.cart);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -178,8 +177,8 @@ const addUserCart = async (req, res) => {
       });
     }
 
-    const isExistMovieId = user.cart.includes(menuId);
-    if (isExistMovieId) {
+    const isExistMenuId = user.cart.includes(menuId);
+    if (isExistMenuId) {
       return res.status(400).json({
         success: false,
         message: "Menu already selected",
@@ -208,7 +207,7 @@ const deleateCart = async (req, res) => {
   try {
     const { menuId, userId } = req.body;
 
-    // Find the user and update the watchLater array using $pull
+    // Find the user and update the menu array using $pull
     const user = await Users.findByIdAndUpdate(
       userId,
       { $pull: { cart: menuId } },
@@ -222,8 +221,30 @@ const deleateCart = async (req, res) => {
     }
 
     res.status(200).json({
-      message: `${movieId} removed from cart`,
+      message: `${menuId} removed from cart`,
     });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+// clear cart
+
+const clearCart = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const user = await Users.findByIdAndUpdate(
+      userId,
+      { cart: [] }, // Set cart array to empty
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    res.status(200).json({ message: "Cart cleared successfully" });
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -337,4 +358,5 @@ module.exports = {
   refreshToken,
   adminRegister,
   adminLogin,
+  clearCart,
 };

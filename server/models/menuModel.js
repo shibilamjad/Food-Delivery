@@ -27,24 +27,21 @@ const menuSchema = new mongoose.Schema(
       required: true,
     },
 
-    // quantity: {
-    //   type: Number,
-    //   default: 0,
-    //   validate: {
-    //     validator: function (v) {
-    //       return v <= 5;
-    //     },
-    //     message: (props) =>
-    //       `${props.value} exceeds the limit of 5 for quantity`,
-    //   },
-    // },
+    quantity: {
+      type: Number,
+      default: 1,
+      // validate: {
+      //   validator: function (v) {
+      //     return v <= ;
+      //   },
+      //   message: (props) =>
+      //     `${props.value} exceeds the limit of 5 for quantity`,
+      // },
+    },
     discount: {
       type: Number,
     },
-    // totalPrice: {
-    //   type: Number,
-    //   required: true,
-    // },
+
     isAvailable: {
       type: Boolean,
       required: true,

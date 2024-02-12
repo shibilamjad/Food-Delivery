@@ -4,6 +4,7 @@ const connectDb = require("./config/db");
 const app = express();
 const userRoute = require("./routes/user");
 const menuRoute = require("./routes/menu");
+const orderRoute = require("./routes/order");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 // routes
 app.use("/api/users", userRoute);
 app.use("/api/menu", menuRoute);
+app.use("/api/order", orderRoute);
 
 app.all("*", (req, res) => {
   res.status(404).json("This page does not exist");

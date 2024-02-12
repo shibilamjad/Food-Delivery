@@ -1,4 +1,13 @@
+import { useForm } from 'react-hook-form';
 import Button from '../../ui/Button';
+import styled from 'styled-components';
+import { device } from '../../ui/device';
+import { useCreateOrder } from './useCreateOrder';
+import { useOrder } from './useOrder';
+import { Loader } from '../../ui/Loader';
+import { useOrderStatus } from './useOrderStatus';
+import { useNavigate } from 'react-router-dom';
+import { orderStatusApi } from '../../services/apiOrder';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -7,41 +16,78 @@ const isValidPhone = (str) =>
   );
 
 export function CreateOrder() {
-  // if (!cart.length) return <EmptyCart />;
+  const navigate = useNavigate();
+  const { createOrder } = useCreateOrder();
+  // const { orderStatus, isLoading } = useOrderStatus();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  // async function onSubmit(data) {
+  //   try {
+  //     await createOrder(data);
+  //     const newOrder = await orderStatusApi(data._id);
+  //     navigate(`order/${newOrder._id}`);
+  //   } catch (error) {
+  //     // Handle errors
+  //     console.error(error.message);
+  //   }
+  // }
+  async function onSubmit(data) {
+    try {
+      await createOrder(data);
+      // console.log(newOrder);
+      // const orderID = newOrder._id; // Access the _id property of the newly created order
+      // const newOrderStatus = await orderStatusApi(orderID);
+      navigate('/');
+    } catch (error) {
+      // Handle errors
+      console.error(error.message);
+    }
+  }
+
+  function onError(errors) {
+    console.log(errors);
+  }
   return (
-    <div className="   h-screen px-4 py-6">
+    <div className="h-screen px-4 py-6">
       <h2 className=" mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
 
-      <form method="POST">
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
         <div className="mb-5 flex flex-col gap-2  sm:flex-row sm:items-center">
           <label className=" sm:basis-40">First Name</label>
           <div className="grow">
             <input
               className="input w-full "
               type="text"
-              name="customer"
-              required
-              // defaultValue={username}
+              id="userName"
+              {...register('userName', {
+                required: 'This field is required',
+              })}
             />
           </div>
         </div>
+        <P>{errors?.userName?.message}</P>
 
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className=" sm:basis-40">Phone number</label>
-          <div className="grow ">
-            <input className="input w-full " type="tel" name="phone" required />
-            {/* {formError?.phone && (
-              <p
-                className=" mt-2 rounded-md bg-red-100 p-2 text-xs
-               text-red-700 sm:basis-40"
-              >
-                {formError.phone}
-              </p>
-            )} */}
+          <label className="sm:basis-40">Phone number</label>
+          <div className="grow">
+            <input
+              className="input w-full"
+              type="tel"
+              name="mobile"
+              {...register('mobile', {
+                required: 'This field is required',
+                validate: (value) =>
+                  isValidPhone(value) || 'Invalid phone number',
+              })}
+            />
           </div>
         </div>
-
+        <P>{errors?.mobile?.message}</P>
         <div className="relative mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className=" sm:basis-40">Address</label>
           <div className=" grow ">
@@ -49,22 +95,14 @@ export function CreateOrder() {
               className="input w-full"
               type="text"
               name="address"
-              // disabled={isLoadingAddress}
-              // defaultValue={address}
-              required
+              {...register('address', {
+                required: 'This field is required',
+              })}
             />
-            {/* {addressStatus === 'error' && (
-              <p
-                className=" mt-2 rounded-md bg-red-100 p-2 text-xs
-               text-red-700 sm:basis-40"
-              >
-                {errorAddress}
-              </p>
-            )} */}
           </div>
-          <span className=" absolute right-0.5 top-[4.5px] z-50 md:right-[5px] md:top-[5px]">
+
+          <span className=" absolute right-0.5 top-[37px] z-50 sm:top-1 md:right-[5px] md:top-[3px]">
             <Button
-              // disabled={isLoadingAddress}
               type="small"
               onClick={(e) => {
                 e.preventDefault();
@@ -74,31 +112,29 @@ export function CreateOrder() {
             </Button>
           </span>
         </div>
-
-        <div className="  mb-6 flex items-center gap-4">
-          <input
-            className=" mx-1 h-4 w-4 accent-yellow-400 hover:ring-[0.1rem]
-             hover:ring-yellow-500 focus:ring-offset-2"
-            type="checkbox"
-            name="priority"
-            id="priority"
-            // value={withPriority}
-            // onChange={(e) => setWithPriority(e.target.checked)}
-          />
-          <label className=" text-stone-00 font-semibold" htmlFor="priority">
-            Want to yo give your order priority?
-          </label>
-        </div>
-
+        <P>{errors?.address?.message}</P>
         <div>
-          <input type="hidden" name="cart" />
+          {/* <input type="hidden" name="cart" /> */}
           <Button type="primery">Order now</Button>
         </div>
       </form>
     </div>
   );
 }
-
+const P = styled.p`
+  display: flex;
+  align-items: start;
+  margin-left: 170px;
+  /* margin-bottom: 20px; */
+  justify-content: start;
+  color: red;
+  @media ${device.tablet} {
+    margin-left: 0px;
+  }
+  @media ${device.mobileL} {
+    margin-left: 0px;
+  }
+`;
 // export async function action({ request }) {
 //   const formData = await request.formData();
 //   const data = Object.fromEntries(formData);

@@ -7,7 +7,7 @@ const {
   addUserCart,
   deleateCart,
   login,
-
+  clearCart,
   logout,
   refreshToken,
   adminRegister,
@@ -34,14 +34,17 @@ router.post("/adminLogin", adminLogin);
 // user logout
 router.post("/logout", logout);
 
-// fetch user watchList movies
+// fetch user cart
 router.get("/cart", checkAuth, userCartList);
 
-// user add watchleater movies (client)
+// user add cart  (client)
 router.put("/addCart", checkAuth, addUserCart);
 
-// user delete watchleater movies (client)
+// user delete cart  (client)
 router.delete("/deleteCart", checkAuth, deleateCart);
+
+// user clear  cart menu (client)
+router.delete("/clearCart", checkAuth, clearCart);
 
 // user refreshToken
 router.get("/refreshToken", refreshToken);

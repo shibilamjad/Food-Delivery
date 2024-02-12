@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import SearchOrder from '../features/order/SearchOrder';
-import UserName from './UserName';
 import CartOverview from '../features/cart/CartOverview';
 import styled from 'styled-components';
+import { OrderOverview } from '../features/order/orderOverview';
 
 function Header() {
   return (
@@ -24,8 +24,7 @@ function Header() {
       </div>
       <StyledNav>
         <CartOverview />
-        <CartOverview />
-        <CartOverview />
+        <OrderOverview />
       </StyledNav>
       {/* <UserName /> */}
     </header>

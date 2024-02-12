@@ -1,16 +1,23 @@
 import { Link } from 'react-router-dom';
-import LinkButton from '../../ui/LinkButton';
-import Button from '../../ui/Button';
-import CartItem from './CartItem';
+
 import { useCart } from './useCart';
 import { Loader } from '../../ui/Loader';
 import { EmptyCart } from './EmptyCart';
+import LinkButton from '../../ui/LinkButton';
+import Button from '../../ui/Button';
+import CartItem from './CartItem';
+import { useClearCarts } from './useClearCarts';
 
 export function Cart() {
   const { cart, isLoading } = useCart();
-  if (isLoading) return <Loader />;
+  const { clearCarts } = useClearCarts();
   console.log(cart);
-  if (!cart) return <EmptyCart />;
+  function handleClearCart() {
+    clearCarts();
+  }
+
+  if (isLoading) return <Loader />;
+  if (cart.length === 0) return <EmptyCart />;
   return (
     <div className="px-4 py-3">
       <LinkButton to="/menu">&larr; Back to menu</LinkButton>
@@ -22,9 +29,11 @@ export function Cart() {
       </ul>
       <div className="mt-6 space-x-4">
         <Button type="primery" to="/order/new">
-          Order pizzas
+          Order Now
         </Button>
-        <Button type="secondery">Clear cart</Button>
+        <Button type="secondery" onClick={handleClearCart}>
+          Clear cart
+        </Button>
       </div>
       {/* <EmptyCart /> */}
     </div>
