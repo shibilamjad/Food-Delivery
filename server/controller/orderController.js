@@ -22,9 +22,34 @@ const userOrderConfirm = async (req, res) => {
         model: "Menu",
         select: "name unitPrice ingredients discount quantity imageUrl",
       },
+      options: { sort: { createdAt: -1 } },
+      limit: 1,
     });
 
-    res.status(200).json(user.orderHistary);
+    if (!user || !user.orderHistary || user.orderHistary.length === 0) {
+      return res.status(404).json({
+        message: "orders not found",
+      });
+    }
+
+    return user.orderHistary[0];
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+const userOrderDetails = async (req, res) => {
+  const { orderId } = req.params;
+  try {
+    const order = await Order.findById(orderId)
+      .select("userName address mobile delivery createdAt ")
+      .populate("cart");
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json([order]);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -53,6 +78,7 @@ const userOrderList = async (req, res) => {
     });
   }
 };
+
 const createOrder = async (req, res) => {
   try {
     const { userId } = req.body;
@@ -89,14 +115,19 @@ const createOrder = async (req, res) => {
       cart: cartItems,
       orderItems: cartItems,
     });
+
     // Push the orderId into the orderHistory array
     user.orderHistary.push(order._id);
     // Clear the cart
-
     user.cart = [];
     await user.save();
 
-    return res.status(200).json(order);
+    // Return the orderId in the response
+    return res.status(200).json({
+      success: true,
+      message: "Order created successfully",
+      orderId: order._id,
+    });
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -104,4 +135,9 @@ const createOrder = async (req, res) => {
   }
 };
 
-module.exports = { userOrderList, createOrder, userOrderConfirm };
+module.exports = {
+  userOrderList,
+  createOrder,
+  userOrderConfirm,
+  userOrderDetails,
+};

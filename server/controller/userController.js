@@ -1,5 +1,6 @@
 const Users = require("../models/userModel");
 const Admin = require("../models/adminModel");
+const Menus = require("../models/menuModel");
 const {
   generatePasswordHash,
   checkePasswordHash,
@@ -154,7 +155,7 @@ const userCartList = async (req, res) => {
     const user = await Users.findById(userId).populate({
       path: "cart",
       model: "Menu",
-      select: "name unitPrice ingredients discount quantity",
+      select: "name unitPrice ingredients discount quantity totalPrice",
     });
 
     res.status(200).json(user.cart);
@@ -181,7 +182,7 @@ const addUserCart = async (req, res) => {
     if (isExistMenuId) {
       return res.status(400).json({
         success: false,
-        message: "Menu already selected",
+        message: "Menu already selected ",
       });
     }
 
@@ -198,6 +199,44 @@ const addUserCart = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       success: false,
+      message: error.message,
+    });
+  }
+};
+
+const cartQuantity = async (req, res) => {
+  const { menuItemId } = req.params;
+  const { action } = req.body;
+
+  try {
+    const menuItem = await Menus.findById(menuItemId);
+
+    if (!menuItem) {
+      return res.status(404).json({ message: "Menu item not found" });
+    }
+
+    if (action === "increment") {
+      menuItem.quantity += 1;
+    } else if (action === "decrement") {
+      if (menuItem.quantity > 0) {
+        menuItem.quantity -= 1;
+      } else {
+        return res
+          .status(400)
+          .json({ message: "Quantity cannot be less than 0" });
+      }
+    } else {
+      return res.status(400).json({ message: "Invalid action" });
+    }
+    menuItem.totalPrice =
+      menuItem.quantity * (menuItem.unitPrice - menuItem.discount);
+
+    await menuItem.save();
+    return res
+      .status(200)
+      .json({ message: "Quantity updated successfully", menuItem });
+  } catch (error) {
+    res.status(400).json({
       message: error.message,
     });
   }
@@ -359,4 +398,5 @@ module.exports = {
   adminRegister,
   adminLogin,
   clearCart,
+  cartQuantity,
 };

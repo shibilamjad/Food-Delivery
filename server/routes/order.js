@@ -6,9 +6,11 @@ const {
   userOrderList,
   createOrder,
   userOrderConfirm,
+  userOrderDetails,
 } = require("../controller/orderController");
 
-router.get("/:orderId", checkAuth, userOrderConfirm);
+router.get("/order-new:orderId", checkAuth, userOrderConfirm);
+router.get("/orderdetails/:orderId", userOrderDetails);
 router.get("/", checkAuth, userOrderList);
 router.post("/create", checkAuth, createOrder);
 

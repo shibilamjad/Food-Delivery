@@ -11,7 +11,6 @@ export function MenuItem({ items }) {
   const { addCart } = useAddCart();
   const { deleteCart } = useDeleteCart();
   const { cart, isLoading } = useCart();
-
   const handleCartAction = (menuId) => {
     try {
       const alreadySelected = cart.some((item) => item._id === menuId);

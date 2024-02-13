@@ -11,7 +11,7 @@ import { useClearCarts } from './useClearCarts';
 export function Cart() {
   const { cart, isLoading } = useCart();
   const { clearCarts } = useClearCarts();
-  console.log(cart);
+
   function handleClearCart() {
     clearCarts();
   }

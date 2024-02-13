@@ -2,12 +2,13 @@ import { useForm } from 'react-hook-form';
 import Button from '../../ui/Button';
 import styled from 'styled-components';
 import { device } from '../../ui/device';
-import { useCreateOrder } from './useCreateOrder';
 import { useOrder } from './useOrder';
+import { useCreateOrder } from './useCreateOrder';
 import { Loader } from '../../ui/Loader';
-import { useOrderStatus } from './useOrderStatus';
 import { useNavigate } from 'react-router-dom';
-import { orderStatusApi } from '../../services/apiOrder';
+import { useCart } from '../cart/useCart';
+import { EmptyCart } from '../cart/EmptyCart';
+import { useCreateOrderApi } from '../../services/apiOrder';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -16,42 +17,40 @@ const isValidPhone = (str) =>
   );
 
 export function CreateOrder() {
+  const createOrderMutation = useCreateOrderApi();
+
   const navigate = useNavigate();
   const { createOrder } = useCreateOrder();
-  // const { orderStatus, isLoading } = useOrderStatus();
-
+  const { order, refetch } = useOrder();
+  const { cart, isLoading } = useCart();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  // async function onSubmit(data) {
-  //   try {
-  //     await createOrder(data);
-  //     const newOrder = await orderStatusApi(data._id);
-  //     navigate(`order/${newOrder._id}`);
-  //   } catch (error) {
-  //     // Handle errors
-  //     console.error(error.message);
-  //   }
-  // }
-  async function onSubmit(data) {
+  const onSubmit = async (data) => {
     try {
-      await createOrder(data);
-      // console.log(newOrder);
-      // const orderID = newOrder._id; // Access the _id property of the newly created order
-      // const newOrderStatus = await orderStatusApi(orderID);
-      navigate('/');
+      const orderId = await createOrderMutation.mutateAsync(data);
+
+      if (orderId) {
+        await refetch();
+        navigate(`/status/${orderId}`);
+      } else {
+        throw new Error('OrderId is undefined');
+      }
     } catch (error) {
-      // Handle errors
       console.error(error.message);
     }
-  }
+  };
 
-  function onError(errors) {
+  const onError = (errors) => {
     console.log(errors);
-  }
+  };
+
+  if (isLoading) return <Loader />;
+  if (cart.length === 0) return <EmptyCart />;
+
   return (
     <div className="h-screen px-4 py-6">
       <h2 className=" mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
@@ -135,28 +134,3 @@ const P = styled.p`
     margin-left: 0px;
   }
 `;
-// export async function action({ request }) {
-//   const formData = await request.formData();
-//   const data = Object.fromEntries(formData);
-
-//   const order = {
-//     ...data,
-//     cart: JSON.parse(data.cart),
-//     priority: data.priority === 'on',
-//   };
-
-//   const errors = {};
-//   if (!isValidPhone(order.phone))
-//     errors.phone =
-//       'Please give us your correct phone number.We might need it ti contact you ';
-
-//   if (Object.keys(errors).length > 0) return errors;
-
-//   const newOrder = await createOrder(order);
-
-//   store.dispatch(clearCart());
-
-//   return redirect(`/order/${newOrder.id}`);
-// }
-
-// export default CreateOrder;

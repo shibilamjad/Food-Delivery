@@ -1,10 +1,10 @@
-import { useQuery } from 'react-query';
-import { orderStatusApi } from '../../services/apiOrder';
+// import { useQuery } from 'react-query';
+// import { orderStatusApi } from '../../services/apiOrder';
 
-export function useOrderStatus() {
-  const { data: orderStatus, isLoading } = useQuery({
-    queryKey: ['status'],
-    queryFn: orderStatusApi,
-  });
-  return { isLoading, orderStatus };
-}
+// export function useStatus(orderId) {
+//   const { data: status, isLoading } = useQuery({
+//     queryKey: ['order', orderId],
+//     queryFn: () => orderStatusApi(orderId),
+//   });
+//   return { isLoading, status };
+// }

@@ -38,6 +38,10 @@ const menuSchema = new mongoose.Schema(
       //     `${props.value} exceeds the limit of 5 for quantity`,
       // },
     },
+    totalPrice: {
+      type: Number,
+      trim: true,
+    },
     discount: {
       type: Number,
     },

@@ -8,56 +8,58 @@ import { Home } from './ui/Home';
 import { Error } from './ui/Error';
 import { Cart } from './features/cart/Cart';
 import { Toaster } from 'react-hot-toast';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query'; // Changed import here
 import { SignIn } from './features/user/SignIn';
 import { OrderItem } from './features/order/OrderItem';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 40 * 1000,
-    },
-  },
-});
+import { OrderStatusProvider } from './context/OrderStatusContext';
 
 function App() {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+      },
+    },
+  });
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route index element={<Navigate replace to="menu" />} />
-            <Route path="/menu" element={<Menu />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/order/new" element={<CreateOrder />} />
-            <Route path="/order" element={<OrderItem />} />
-            <Route path="/order/:orderId" element={<Order />} />
-            <Route path="/sign-up" element={<Register />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="*" element={<Error />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      <Toaster
-        position="top-center"
-        gutter={12}
-        containerStyle={{ margin: '8px' }}
-        toastOptions={{
-          success: {
-            duration: 3000,
-          },
-          error: {
-            duration: 3000,
-          },
-          style: {
-            fontSize: '16px',
-            maxWidth: '500px',
-            padding: '16px 24px',
-            backgroundColor: '#fff',
-            color: '#272727',
-          },
-        }}
-      />
+      <OrderStatusProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route index element={<Navigate replace to="menu" />} />
+              <Route path="/menu" element={<Menu />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/order/new" element={<CreateOrder />} />
+              <Route path="/order" element={<OrderItem />} />
+              <Route path="/status/:orderId" element={<Order />} />
+              <Route path="/sign-up" element={<Register />} />
+              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="*" element={<Error />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: '8px' }}
+          toastOptions={{
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 3000,
+            },
+            style: {
+              fontSize: '16px',
+              maxWidth: '500px',
+              padding: '16px 24px',
+              backgroundColor: '#fff',
+              color: '#272727',
+            },
+          }}
+        />
+      </OrderStatusProvider>
     </QueryClientProvider>
   );
 }

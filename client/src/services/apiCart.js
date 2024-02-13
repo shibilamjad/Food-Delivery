@@ -29,11 +29,23 @@ export async function addCartApi(menuId) {
       },
     );
 
-    return res.data; // or any data you want to return on success
+    return res.data;
   } catch (error) {
     throw new Error(`Error fetching addMenuList: ${error.message}`);
   }
 }
+export async function updateQuantity(menuItemId, action) {
+  try {
+    const response = await axios.put(`${API_URL}/${menuItemId}/quantity`, {
+      action: action,
+    });
+    return response.data.menuItem;
+  } catch (error) {
+    console.error('Error updating quantity:', error);
+    throw new Error('Error updating quantity');
+  }
+}
+
 export async function deleateCartApi(menuId) {
   const userId = localStorage.getItem('token');
   try {

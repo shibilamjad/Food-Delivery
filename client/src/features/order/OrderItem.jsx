@@ -1,14 +1,24 @@
+import { FcKindle } from 'react-icons/fc';
+
 import LinkButton from '../../ui/LinkButton';
 import { Loader } from '../../ui/Loader';
 import { EmptyOrder } from './EmptyOrder';
 import { useOrder } from './useOrder';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export function OrderItem() {
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
   const { isLoading, order } = useOrder();
+  const navigate = useNavigate();
+
+  function handleDetails(orderId) {
+    setSelectedOrderId(orderId);
+    navigate(`/status/${orderId}`);
+  }
 
   if (isLoading) return <Loader />;
   if (order.length === 0) return <EmptyOrder />;
-  console.log(order);
   return (
     <div className="px-3 py-3">
       <LinkButton to="/menu">&larr; Back to menu</LinkButton>
@@ -42,13 +52,23 @@ export function OrderItem() {
                       <span className=" px-3">Phone: {item.mobile}</span>
                     </p> */}
                     <p className="font-semibold text-green-700">
-                      Price: ₹{cart.unitPrice.toLocaleString('en-IN')}
+                      Price: ₹{cart.unitPrice}
                     </p>
                   </div>
                 </div>
               ))}
             <div className="flex items-center justify-end">
-              <p className=" rounded-sm bg-red-700 p-2 font-semibold text-yellow-50 ">
+              <button
+                onClick={() => handleDetails(item._id)}
+                className="text-black-50 mx-4 flex items-center rounded-sm bg-yellow-500 p-1 font-normal sm:p-2 sm:font-semibold"
+              >
+                <span className="h-30 w-30">
+                  <FcKindle />
+                </span>
+                Details
+              </button>
+
+              <p className=" rounded-sm bg-red-700 p-1 font-normal text-yellow-50 sm:p-2 sm:font-semibold ">
                 Status: {item.delivery}
               </p>
             </div>

@@ -12,6 +12,7 @@ const {
   refreshToken,
   adminRegister,
   adminLogin,
+  cartQuantity,
 } = require("../controller/userController");
 
 const { checkAuth } = require("../middleware/checkAuth ");
@@ -39,6 +40,9 @@ router.get("/cart", checkAuth, userCartList);
 
 // user add cart  (client)
 router.put("/addCart", checkAuth, addUserCart);
+
+// user addQuantity cart  (client)
+router.put("/:menuItemId/quantity", cartQuantity);
 
 // user delete cart  (client)
 router.delete("/deleteCart", checkAuth, deleateCart);

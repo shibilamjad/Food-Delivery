@@ -1,12 +1,15 @@
 import Button from '../../ui/Button';
+import { useUpdateQuantity } from './useCartUpdate';
 
-function UpdateCartQty() {
+function UpdateCartQty({ quantity, id, onUpdateQty }) {
   return (
     <div className=" flex items-center gap-1 md:gap-2 ">
-      {/* {!decItem ? (
+      {quantity >= 2 ? (
         <div className=" flex items-center gap-1  md:gap-2">
-          <Button type="round">-</Button>
-          <span>qty</span>
+          <Button onClick={() => onUpdateQty(id, 'decrement')} type="round">
+            -
+          </Button>
+          <span>{quantity}</span>
         </div>
       ) : (
         <div className=" flex items-center gap-1 md:gap-2 ">
@@ -14,11 +17,13 @@ function UpdateCartQty() {
           <Button disabled="disabled" type="disable">
             -
           </Button>
-          <span>{currentQty}</span>
+          <span>{quantity}</span>
         </div>
-      )} */}
+      )}
       <div className="flex items-center gap-1 sm:gap-2">
-        <Button type="round">+</Button>
+        <Button onClick={() => onUpdateQty(id, 'increment')} type="round">
+          +
+        </Button>
       </div>
     </div>
   );
