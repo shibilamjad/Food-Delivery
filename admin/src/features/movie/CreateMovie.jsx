@@ -177,17 +177,17 @@ const StyledRadio = styled.div`
   align-items: center;
   cursor: pointer;
   span {
-    color: #3730a3;
+    color: var(--color-indigo-500);
     margin-right: 6px;
   }
 `;
 const StyledForm = styled.div`
   padding: 2.4rem 4rem;
-  border: 1px solid #d1d5db;
-  background-color: #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-grey-200);
+  background-color: var(--color-grey-0);
+  box-shadow: var(--shadow-md);
   border-radius: 10px;
-  color: #3730a3;
+  color: var(--color-brand-200);
   @media ${device.tablet} {
     padding: 1.4rem 2.5rem;
   }
@@ -216,8 +216,7 @@ const StyledForm = styled.div`
 
 const Form = styled.form`
   padding: 2.4rem 4rem;
-  background-color: #fff;
-  border: 1px solid #f3f4f6;
+  background-color: var(--color-grey-0);
   border-radius: 7px;
   overflow: hidden;
   font-size: 1.4rem;

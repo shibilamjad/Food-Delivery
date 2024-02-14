@@ -99,6 +99,6 @@ const Main = styled.main`
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: #e3e1ff;
+  background-color: var(--color-grey-50);
   flex-grow: 1;
 `;

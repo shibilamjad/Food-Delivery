@@ -24,8 +24,8 @@ export function Header({ handleIsOpen, isOpen }) {
   );
 }
 const Headers = styled.header`
-  background-color: #3730a3;
-  color: #fff;
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-800);
   animation: ${({ isOpen }) => (isOpen ? slideIn : slideIn)} 0.5s ease-in-out;
 `;
 

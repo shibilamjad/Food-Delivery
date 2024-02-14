@@ -6,6 +6,7 @@ import {
   Routes,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import GlobalStyles from "./style/GlobelCol";
 
 import { Movies } from "./pages/Movies";
 import { Genre } from "./pages/Genre";
@@ -16,6 +17,7 @@ import { ProtectedRoutesHomePage } from "./features/ProtectedRoutes ";
 import ProtectedRouterAfterLogIn from "./features/ProtectedRouterAfterLogIn ";
 import { Menus } from "./pages/Menus";
 import { MenuUpdateProvider } from "./context/MenuUpdateContext";
+import { Order } from "./pages/Order";
 
 const queryCLient = new QueryClient({
   defaultOptions: {
@@ -27,6 +29,7 @@ const queryCLient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryCLient}>
+      <GlobalStyles />
       <MenuUpdateProvider>
         <BrowserRouter>
           <Routes>
@@ -41,6 +44,7 @@ function App() {
               <Route path="dashboard" element={<Menus />} />
               <Route path="menu" element={<Movies />} />
               <Route path="menu/:menuId" element={<Movies />} />
+              <Route path="order" element={<Order />} />
               <Route path="genre" element={<Genre />} />
             </Route>
             <Route

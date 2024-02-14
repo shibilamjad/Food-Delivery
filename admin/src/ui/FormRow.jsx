@@ -40,7 +40,7 @@ const StyledFormRow = styled.div`
     padding-bottom: 0;
   }
   &:not(:last-child) {
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--color-grey-200);
   }
   &:has(button) {
     display: flex;
@@ -55,7 +55,7 @@ const Label = styled.label`
 
 const Error = styled.span`
   font-size: 1.4rem;
-  color: #b91c1c;
+  color: var(--color-red-700);
   @media ${device.tablet} {
     font-size: 1rem;
   }

@@ -111,7 +111,7 @@ const NavItem = styled(NavLink)`
     display: flex;
     align-items: center;
     gap: 0.2rem;
-    color: #3730a3;
+    color: var(--color-grey-500);
     font-size: 1rem;
     font-weight: 500;
     padding: 0.6rem 1rem;
@@ -150,15 +150,15 @@ const NavItem = styled(NavLink)`
   &:active,
   &.active:link,
   &.active:visited {
-    color: #efefef;
-    background-color: #3730a3;
+    color: var(--color-grey-600);
+    background-color: var(--color-grey-50);
     border-radius: 10px;
   }
 
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    color: #3730a3;
+    color: var(--color-grey-300);
     transition: all 0.3s;
     @media ${device.laptopL} {
       width: 2.4rem;
@@ -194,7 +194,7 @@ const NavItem = styled(NavLink)`
   &:active svg,
   &.active:link svg,
   &.active:visited svg {
-    color: #efefef;
+    color: var(--color-indigo-100);
   }
 `;
 
@@ -202,7 +202,7 @@ const Btn = styled.button`
   display: flex;
   align-items: center;
   gap: 0.2rem;
-  color: #3730a3;
+  color: #09090a;
   font-size: 1rem;
   font-weight: 500;
   padding: 0.6rem 1rem;
@@ -210,7 +210,7 @@ const Btn = styled.button`
   span {
     display: flex;
     align-items: center;
-    color: #3730a3;
+    color: var(--color-grey-500);
     font-size: 1.2rem;
     font-weight: 500;
     gap: 0.2rem;
@@ -255,13 +255,13 @@ const Btn = styled.button`
   &:active,
   &.active:link,
   &.active:visited {
-    color: #efefef;
-    background-color: #3730a3;
+    color: var(--color-grey-50);
+    background-color: var(--color-grey-50);
     border-radius: 10px;
     span {
       display: flex;
       align-items: center;
-      color: #ffffff;
+      color: var(--color-grey-500);
       font-size: 1.2rem;
       font-weight: 500;
       gap: 0.2rem;
@@ -269,7 +269,7 @@ const Btn = styled.button`
       @media ${device.tablet} {
         display: flex;
         align-items: center;
-        color: #ffffff;
+        color: #535353;
         display: none;
         gap: 0.2rem;
         transition: all 0.3s;
@@ -280,7 +280,7 @@ const Btn = styled.button`
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    color: #3730a3;
+    color: var(--color-grey-300);
     transition: all 0.3s;
     @media ${device.laptopL} {
       width: 2.4rem;
@@ -308,6 +308,6 @@ const Btn = styled.button`
   &:active svg,
   &.active:link svg,
   &.active:visited svg {
-    color: #efefef;
+    color: var(--color-indigo-100);
   }
 `;

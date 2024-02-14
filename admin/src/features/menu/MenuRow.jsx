@@ -1,8 +1,9 @@
-import { HiOutlineEllipsisVertical, HiPencil, HiTrash } from "react-icons/hi2";
+import { HiPencil, HiTrash } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import { device } from "../../ui/device";
 import { useMenuUpdateContext } from "../../context/MenuUpdateContext";
-import { useNavigate } from "react-router-dom";
 import { useMenuDelete } from "./useMenuDelete";
 
 export function MenuRow({ menu }) {
@@ -70,6 +71,7 @@ const TableRow = styled.div`
   column-gap: 2.4rem;
   align-items: center;
   padding: 1.4rem 2.4rem;
+  box-shadow: var(--shadow-sm);
   position: relative;
   @media ${device.tablet} {
     font-size: 1rem;
@@ -90,7 +92,7 @@ const TableRow = styled.div`
     font-size: 0.6rem;
   }
   &:not(:last-child) {
-    border-bottom: 1px solid #e0e7ff;
+    border-bottom: 1px solid var(--color-grey-100);
   }
 `;
 
@@ -124,7 +126,7 @@ const Img = styled.img`
 
 const Menu = styled.div`
   font-weight: 600;
-  color: #4b5563;
+  color: var(--color-grey-500);
   height: auto;
   width: 200px;
   overflow-wrap: break-word;
@@ -142,7 +144,7 @@ const Menu = styled.div`
 const Price = styled.div`
   font-family: "Sono";
   font-weight: 600;
-  color: #4b5563;
+  color: var(--color-grey-500);
 `;
 const IsAvailable = styled.div`
   font-weight: 600;
@@ -152,7 +154,7 @@ const IsAvailable = styled.div`
 const Discount = styled.div`
   font-family: "Sono";
   font-weight: 500;
-  color: #15803d;
+  color: #08a843;
 `;
 
 const StyledButton = styled.button`
@@ -164,10 +166,10 @@ const StyledButton = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    background-color: #f3f4f6;
+    background-color: var(--color-grey-100);
   }
   &:active {
-    border: blue;
+    border: var(--color-grey-500);
   }
 `;
 
@@ -177,8 +179,11 @@ const StyledIcon = styled.div`
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    color: #6b7280;
+    color: var(--color-grey-300);
     transition: all 0.3s;
+    &:hover {
+      color: var(--color-brand-500);
+    }
     @media ${device.tablet} {
       width: 1.2rem;
       height: 1.2rem;

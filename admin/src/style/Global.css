@@ -9,7 +9,7 @@
 }
 body {
   height: 100dvh;
-  background-color: #e3e1ff;
+  background-color: var(--color-grey-50);
 }
 #root {
   display: flex;
