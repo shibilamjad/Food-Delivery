@@ -11,7 +11,6 @@ import { useClearCarts } from './useClearCarts';
 export function Cart() {
   const { cart, isLoading } = useCart();
   const { clearCarts } = useClearCarts();
-
   function handleClearCart() {
     clearCarts();
   }
@@ -24,7 +23,13 @@ export function Cart() {
       <h2 className="mt-7 text-xl font-semibold">Your cart, </h2>
       <ul className=" mt-3 divide-y divide-stone-200 border-b">
         {cart.map((item) => (
-          <CartItem item={item} key={item._id} />
+          <CartItem
+            id={item._id}
+            totalPrice={item.totalPrice}
+            quantity={item.quantity}
+            menuItem={item.menuItem}
+            key={item._id}
+          />
         ))}
       </ul>
       <div className="mt-6 space-x-4">

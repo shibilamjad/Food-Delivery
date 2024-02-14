@@ -31,10 +31,23 @@ const orderSchema = new mongoose.Schema(
       enum: statusOptions,
       default: "pending",
     },
+
     cart: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Menu",
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          auto: true,
+        },
+        menuItem: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Menu",
+        },
+        quantity: {
+          type: Number,
+        },
+        totalPrice: {
+          type: Number,
+        },
       },
     ],
   },

@@ -2,13 +2,10 @@ import { useForm } from 'react-hook-form';
 import Button from '../../ui/Button';
 import styled from 'styled-components';
 import { device } from '../../ui/device';
-import { useOrder } from './useOrder';
 import { useCreateOrder } from './useCreateOrder';
 import { Loader } from '../../ui/Loader';
-import { useNavigate } from 'react-router-dom';
 import { useCart } from '../cart/useCart';
 import { EmptyCart } from '../cart/EmptyCart';
-import { useCreateOrderApi } from '../../services/apiOrder';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -17,11 +14,7 @@ const isValidPhone = (str) =>
   );
 
 export function CreateOrder() {
-  const createOrderMutation = useCreateOrderApi();
-
-  const navigate = useNavigate();
   const { createOrder } = useCreateOrder();
-  const { order, refetch } = useOrder();
   const { cart, isLoading } = useCart();
   const {
     register,
@@ -31,14 +24,7 @@ export function CreateOrder() {
 
   const onSubmit = async (data) => {
     try {
-      const orderId = await createOrderMutation.mutateAsync(data);
-
-      if (orderId) {
-        await refetch();
-        navigate(`/status/${orderId}`);
-      } else {
-        throw new Error('OrderId is undefined');
-      }
+      await createOrder(data);
     } catch (error) {
       console.error(error.message);
     }

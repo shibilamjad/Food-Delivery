@@ -34,11 +34,22 @@ export async function addCartApi(menuId) {
     throw new Error(`Error fetching addMenuList: ${error.message}`);
   }
 }
+
 export async function updateQuantity(menuItemId, action) {
+  const userId = localStorage.getItem('token');
+
   try {
-    const response = await axios.put(`${API_URL}/${menuItemId}/quantity`, {
-      action: action,
-    });
+    const response = await axios.put(
+      `${API_URL}/${menuItemId}/quantity`,
+      {
+        action: action,
+      },
+      {
+        headers: {
+          accesstoken: userId,
+        },
+      },
+    );
     return response.data.menuItem;
   } catch (error) {
     console.error('Error updating quantity:', error);
@@ -46,14 +57,14 @@ export async function updateQuantity(menuItemId, action) {
   }
 }
 
-export async function deleateCartApi(menuId) {
+export async function deleateCartApi(cartItemId) {
   const userId = localStorage.getItem('token');
   try {
     const res = await axios.delete(
       `${API_URL}/deleteCart`,
 
       {
-        data: { menuId },
+        data: { cartItemId },
         headers: {
           accesstoken: userId,
         },

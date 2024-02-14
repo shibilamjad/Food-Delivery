@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import Button from '../../ui/Button';
 import { Loader } from '../../ui/Loader';
 import { formatCurrency } from '../../utils/helpers';
@@ -6,6 +7,7 @@ import { useCart } from '../cart/useCart';
 import { useDeleteCart } from '../cart/useDeleteCart';
 
 export function MenuItem({ items }) {
+  const navigate = useNavigate();
   const { _id, discount, name, imageUrl, ingredients, isAvailable, unitPrice } =
     items;
   const { addCart } = useAddCart();
@@ -13,9 +15,9 @@ export function MenuItem({ items }) {
   const { cart, isLoading } = useCart();
   const handleCartAction = (menuId) => {
     try {
-      const alreadySelected = cart.some((item) => item._id === menuId);
+      const alreadySelected = cart.some((item) => item.menuItem._id === menuId);
       if (alreadySelected) {
-        deleteCart(menuId);
+        navigate('/cart');
       } else {
         addCart(menuId);
       }
@@ -58,13 +60,25 @@ export function MenuItem({ items }) {
             </p>
           )}
           <div className="flex items-center gap-4">
-            {isAvailable && (
-              <Button type="small" onClick={() => handleCartAction(_id)}>
-                {cart.some((item) => item._id === _id)
-                  ? 'Remove'
-                  : 'Add to cart'}
-              </Button>
-            )}
+            {isAvailable ? (
+              cart.some((item) => item.menuItem._id === _id) ? (
+                <Button
+                  key={_id}
+                  type="third"
+                  onClick={() => handleCartAction(_id)}
+                >
+                  Go to Cart
+                </Button>
+              ) : (
+                <Button
+                  key={_id}
+                  type="small"
+                  onClick={() => handleCartAction(_id)}
+                >
+                  Add to cart
+                </Button>
+              )
+            ) : null}
           </div>
         </div>
       </div>

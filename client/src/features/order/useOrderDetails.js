@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { orderDetailsApi } from '../../services/apiOrder';
 
 export function useDetails(orderId) {

@@ -149,13 +149,20 @@ const logout = async (req, res) => {
     });
   }
 };
+
 const userCartList = async (req, res) => {
   const { userId } = req.body;
   try {
     const user = await Users.findById(userId).populate({
-      path: "cart",
+      path: "cart.menuItem",
       model: "Menu",
       select: "name unitPrice ingredients discount quantity totalPrice",
+    });
+    // Calculate totalPrice for each cart item
+    user.cart.forEach((cartItem) => {
+      cartItem.totalPrice =
+        (cartItem.menuItem.unitPrice - cartItem.menuItem.discount) *
+        cartItem.quantity;
     });
 
     res.status(200).json(user.cart);
@@ -170,6 +177,7 @@ const addUserCart = async (req, res) => {
   try {
     const { menuId, userId } = req.body;
 
+    // Check if the user exists
     const user = await Users.findById(userId);
     if (!user) {
       return res.status(404).json({
@@ -178,18 +186,21 @@ const addUserCart = async (req, res) => {
       });
     }
 
-    const isExistMenuId = user.cart.includes(menuId);
-    if (isExistMenuId) {
+    // Check if the menuId already exists in the user's cart
+    const existingCartItem = user.cart.find(
+      (item) => String(item.menuItem) === menuId
+    );
+    if (existingCartItem) {
       return res.status(400).json({
         success: false,
-        message: "Menu already selected ",
+        message: "Menu already selected",
       });
     }
 
-    const updatedUser = await Users.findByIdAndUpdate(
+    // Add menuId to the user's cart if it doesn't already exist
+    await Users.findOneAndUpdate(
       { _id: userId },
-      { $push: { cart: menuId } },
-      { new: true }
+      { $addToSet: { cart: { menuItem: menuId } } }
     );
 
     res.status(200).json({
@@ -206,50 +217,72 @@ const addUserCart = async (req, res) => {
 
 const cartQuantity = async (req, res) => {
   const { menuItemId } = req.params;
-  const { action } = req.body;
+  const { action, userId } = req.body;
 
   try {
-    const menuItem = await Menus.findById(menuItemId);
-
-    if (!menuItem) {
-      return res.status(404).json({ message: "Menu item not found" });
+    // Find the user
+    const user = await Users.findById(userId).populate({
+      path: "cart",
+      model: "Menu",
+      select: "quantity totalPrice unitPrice discount",
+    });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
+    // Find the cart item by its ID
+    const cartItem = user.cart.find((item) => String(item._id) === menuItemId);
+    if (!cartItem) {
+      return res.status(404).json({
+        success: false,
+        message: "Menu item not found in user's cart",
+      });
+    }
+
+    // Increment or decrement quantity based on the action
     if (action === "increment") {
-      menuItem.quantity += 1;
+      cartItem.quantity += 1;
     } else if (action === "decrement") {
-      if (menuItem.quantity > 0) {
-        menuItem.quantity -= 1;
+      if (cartItem.quantity > 0) {
+        cartItem.quantity -= 1;
       } else {
         return res
           .status(400)
-          .json({ message: "Quantity cannot be less than 0" });
+          .json({ success: false, message: "Quantity cannot be less than 0" });
       }
     } else {
-      return res.status(400).json({ message: "Invalid action" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid action" });
     }
-    menuItem.totalPrice =
-      menuItem.quantity * (menuItem.unitPrice - menuItem.discount);
 
-    await menuItem.save();
-    return res
-      .status(200)
-      .json({ message: "Quantity updated successfully", menuItem });
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
+    // Calculate and update total price
+    // cartItem.totalPrice =
+    //   cartItem.quantity * (cartItem.unitPrice - cartItem.discount);
+
+    // Save the updated user
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Quantity updated successfully",
+      cartItem,
     });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
 const deleateCart = async (req, res) => {
   try {
-    const { menuId, userId } = req.body;
+    const { cartItemId, userId } = req.body;
 
     // Find the user and update the menu array using $pull
     const user = await Users.findByIdAndUpdate(
       userId,
-      { $pull: { cart: menuId } },
+      { $pull: { cart: { _id: cartItemId } } },
       { new: true }
     );
 
@@ -260,7 +293,7 @@ const deleateCart = async (req, res) => {
     }
 
     res.status(200).json({
-      message: `${menuId} removed from cart`,
+      message: `${cartItemId} removed from cart`,
     });
   } catch (error) {
     res.status(400).json({

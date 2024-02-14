@@ -14,9 +14,9 @@ const userOrderConfirm = async (req, res) => {
       });
     }
     const user = await Users.findById(userId).populate({
-      path: "orderHistary",
+      path: "orderHistory",
       model: "Orders",
-      select: "userName mobile address delivery",
+      select: "userName mobile address delivery totalPrice",
       populate: {
         path: "cart",
         model: "Menu",
@@ -26,28 +26,44 @@ const userOrderConfirm = async (req, res) => {
       limit: 1,
     });
 
-    if (!user || !user.orderHistary || user.orderHistary.length === 0) {
+    if (!user || !user.orderHistory || user.orderHistory.length === 0) {
       return res.status(404).json({
         message: "orders not found",
       });
     }
 
-    return user.orderHistary[0];
+    return user.orderHistory[0];
   } catch (error) {
     res.status(400).json({
       message: error.message,
     });
   }
 };
+
 const userOrderDetails = async (req, res) => {
   const { orderId } = req.params;
   try {
     const order = await Order.findById(orderId)
-      .select("userName address mobile delivery createdAt ")
-      .populate("cart");
+      .select("userName address mobile delivery createdAt")
+      .populate({
+        path: "cart.menuItem",
+        model: "Menu",
+        select: "name unitPrice ingredients discount ",
+      })
+      .populate({
+        path: "cart.quantity",
+      });
+
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
+
+    // Calculate totalPrice for each cart item
+    order.cart.forEach((cartItem) => {
+      cartItem.totalPrice =
+        (cartItem.menuItem.unitPrice - cartItem.menuItem.discount) *
+        cartItem.quantity;
+    });
 
     res.status(200).json([order]);
   } catch (error) {
@@ -61,17 +77,27 @@ const userOrderList = async (req, res) => {
   const { userId } = req.body;
   try {
     const user = await Users.findById(userId).populate({
-      path: "orderHistary",
+      path: "orderHistory",
       model: "Orders",
-      select: "userName mobile address delivery",
+      select: "delivery ",
       populate: {
-        path: "cart",
+        path: "cart.menuItem",
         model: "Menu",
-        select: "name unitPrice ingredients discount quantity imageUrl",
+        select: "name unitPrice ingredients discount imageUrl",
       },
     });
 
-    res.status(200).json(user.orderHistary);
+    res.status(200).json(user.orderHistory);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+const orderBill = async (req, res) => {
+  try {
+    const { userId } = req.body;
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -106,18 +132,20 @@ const createOrder = async (req, res) => {
         message: "Cart is empty",
       });
     }
+    const totalPrice = user.totalPrice;
 
     // Create the order
     const order = await Order.create({
       userName,
       mobile,
       address,
+      totalPrice,
       cart: cartItems,
-      orderItems: cartItems,
+      // orderItems: cartItems,
     });
 
     // Push the orderId into the orderHistory array
-    user.orderHistary.push(order._id);
+    user.orderHistory.push(order._id);
     // Clear the cart
     user.cart = [];
     await user.save();

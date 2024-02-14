@@ -1,4 +1,5 @@
 import { Loader } from '../../ui/Loader';
+import { useCart } from '../cart/useCart';
 import { MenuItem } from './MenuItem';
 import { useMenu } from './useMenu';
 

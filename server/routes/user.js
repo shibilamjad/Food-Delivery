@@ -42,7 +42,7 @@ router.get("/cart", checkAuth, userCartList);
 router.put("/addCart", checkAuth, addUserCart);
 
 // user addQuantity cart  (client)
-router.put("/:menuItemId/quantity", cartQuantity);
+router.put("/:menuItemId/quantity", checkAuth, cartQuantity);
 
 // user delete cart  (client)
 router.delete("/deleteCart", checkAuth, deleateCart);

@@ -2,10 +2,8 @@ import DeleteItem from './DeleteItem';
 import UpdateCartQty from './UpdateCartQty';
 import { useUpdateQuantity } from './useCartUpdate';
 
-function CartItem({ item }) {
+function CartItem({ menuItem, quantity, id, totalPrice }) {
   const { updateCart } = useUpdateQuantity();
-  const { _id, name, totalPrice, unitPrice, quantity } = item;
-
   function handleUpdateQty(_id, action) {
     try {
       updateCart({ menuItemId: _id, action: action });
@@ -17,17 +15,17 @@ function CartItem({ item }) {
   return (
     <li className="py-3 sm:flex sm:items-center sm:justify-between">
       <p className="mb-1 sm:mb-0">
-        {quantity}&times; {name}
+        {quantity}&times; {menuItem.name}
       </p>
       <div className="flex items-center justify-between sm:gap-6">
         <p className=" text-sm font-bold">₹{totalPrice}</p>
         <div className="flex flex-wrap items-center gap-2 ">
           <UpdateCartQty
-            id={_id}
+            id={id}
             quantity={quantity}
             onUpdateQty={handleUpdateQty}
           />
-          <DeleteItem id={_id} />
+          <DeleteItem id={id} />
         </div>
       </div>
     </li>

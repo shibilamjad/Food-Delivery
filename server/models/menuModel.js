@@ -30,13 +30,6 @@ const menuSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       default: 1,
-      // validate: {
-      //   validator: function (v) {
-      //     return v <= ;
-      //   },
-      //   message: (props) =>
-      //     `${props.value} exceeds the limit of 5 for quantity`,
-      // },
     },
     totalPrice: {
       type: Number,
