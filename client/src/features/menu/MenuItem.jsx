@@ -31,7 +31,7 @@ export function MenuItem({ items }) {
       <img
         src={imageUrl}
         alt={name}
-        className={`h-24 w-24  sm:h-36 sm:w-36 ${
+        className={`h-24 w-24 object-cover  sm:h-36 sm:w-36 ${
           !isAvailable ? `opacity-70 grayscale` : ``
         } `}
       />

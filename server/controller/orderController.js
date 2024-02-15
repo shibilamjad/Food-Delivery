@@ -79,7 +79,7 @@ const userOrderList = async (req, res) => {
     const user = await Users.findById(userId).populate({
       path: "orderHistory",
       model: "Orders",
-      select: "delivery ",
+      select: "delivery createdAt ",
       populate: {
         path: "cart.menuItem",
         model: "Menu",
@@ -87,6 +87,10 @@ const userOrderList = async (req, res) => {
       },
     });
 
+    // Sort orderHistory array by createdAt field in descending order
+    user.orderHistory.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
     res.status(200).json(user.orderHistory);
   } catch (error) {
     res.status(400).json({
@@ -95,9 +99,41 @@ const userOrderList = async (req, res) => {
   }
 };
 
-const orderBill = async (req, res) => {
+const ordersAdmin = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const orderList = await Order.find()
+      .select("userName delivery createdAt cart")
+      .populate({
+        path: "cart.menuItem",
+        model: "Menu",
+        select: "name unitPrice",
+      });
+    res.status(200).json(orderList);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+const ordersDetailsAdmin = async (req, res) => {
+  const { orderId } = req.params;
+  try {
+    const orderList = await Order.findById(orderId)
+      .select("userName mobile delivery createdAt address cart")
+      .populate({
+        path: "cart.menuItem",
+        model: "Menu",
+        select: "name unitPrice ingredients discount imageUrl totalPrice",
+      });
+    // Calculate totalPrice for each cart item
+    orderList.cart.forEach((cartItem) => {
+      cartItem.totalPrice =
+        (cartItem.menuItem.unitPrice - cartItem.menuItem.discount) *
+        cartItem.quantity;
+    });
+
+    res.status(200).json(orderList);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -168,4 +204,6 @@ module.exports = {
   createOrder,
   userOrderConfirm,
   userOrderDetails,
+  ordersAdmin,
+  ordersDetailsAdmin,
 };

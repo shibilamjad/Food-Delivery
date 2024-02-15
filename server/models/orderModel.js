@@ -21,11 +21,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // totalPrice: {
-    //   type: Number,
-    //   trim: true,
-    //   required: true,
-    // },
+
     delivery: {
       type: String,
       enum: statusOptions,

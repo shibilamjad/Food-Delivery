@@ -8,8 +8,8 @@ export function Order() {
       <Row>
         <Heading as="h1">All Orders</Heading>
         {/* <BookingTable /> */}
+        <OrderTable />
       </Row>
-      <OrderTable />
     </>
   );
 }

@@ -1,23 +1,21 @@
-import { device } from "../../ui/device";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { Loader } from "../../ui/Loader";
-import { useGenre } from "../genre/useGenre";
-
-import { useMovieCreate } from "./useMovieCreate";
-import { useMovieUpdate } from "./useMovieUpdate";
 import { useNavigate } from "react-router-dom";
+
+import { useMenuUpdateContext } from "../../context/MenuUpdateContext";
+import { useMenuCreate } from "./useMenuCreate";
+import { useMenuUpdate } from "./useMenuUpdate";
+import { device } from "../../ui/device";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import Buttons from "../../ui/Buttons";
-import { useMenuUpdateContext } from "../../context/MenuUpdateContext";
 
-export function CreateMovie() {
+export function CreateMenu() {
   const navigate = useNavigate();
-  const { updateMenu } = useMovieUpdate();
-  const { createMenu } = useMovieCreate();
+  const { updateMenu } = useMenuUpdate();
+  const { createMenu } = useMenuCreate();
 
   const { isEditing, setIsEditing, selectedMenu, selectedMenuId } =
     useMenuUpdateContext();
@@ -26,9 +24,7 @@ export function CreateMovie() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
     reset,
-    watch,
     getValues,
   } = useForm();
 
@@ -56,11 +52,9 @@ export function CreateMovie() {
     console.log(errors);
   }
 
-  // if (isLoading) return <Loader />;
-
   return (
     <StyledForm>
-      <h1>{isEditing ? "Edit Movies" : "Create Menu"}</h1>
+      <h1>{isEditing ? "Edit Menu" : "Create Menu"}</h1>
       <Form onSubmit={handleSubmit(onSubmit, onError)}>
         <FormRow label="Item name" error={errors?.name?.message}>
           <Input

@@ -1,14 +1,8 @@
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Router,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import GlobalStyles from "./style/GlobelCol";
 
-import { Movies } from "./pages/Movies";
+import { Menu } from "./pages/Menu";
 import { Genre } from "./pages/Genre";
 import { Login } from "./pages/Login";
 import { AppLayout } from "./ui/AppLayout";
@@ -18,6 +12,7 @@ import ProtectedRouterAfterLogIn from "./features/ProtectedRouterAfterLogIn ";
 import { Menus } from "./pages/Menus";
 import { MenuUpdateProvider } from "./context/MenuUpdateContext";
 import { Order } from "./pages/Order";
+import { Orders } from "./pages/Orders";
 
 const queryCLient = new QueryClient({
   defaultOptions: {
@@ -42,8 +37,10 @@ function App() {
             >
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="dashboard" element={<Menus />} />
-              <Route path="menu" element={<Movies />} />
-              <Route path="menu/:menuId" element={<Movies />} />
+              <Route path="order" element={<Order />} />
+              <Route path="order/:orderId" element={<Orders />} />
+              <Route path="menu" element={<Menu />} />
+              <Route path="menu/:menuId" element={<Menu />} />
               <Route path="order" element={<Order />} />
               <Route path="genre" element={<Genre />} />
             </Route>

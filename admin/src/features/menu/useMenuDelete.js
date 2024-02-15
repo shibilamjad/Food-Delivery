@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteMenuApi } from "../../service/apiMovies";
+import { deleteMenuApi } from "../../service/apiMenu";
 import toast from "react-hot-toast";
 
 export function useMenuDelete() {

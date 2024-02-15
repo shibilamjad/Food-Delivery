@@ -16,7 +16,7 @@ export function AppLayout() {
         {isOpen ? (
           <StyledIsCloseApp isOpen={isOpen}>
             <Header isOpen={isOpen} handleIsOpen={handleIsOpen} />
-            {!isOpen && <SideBar />}
+            {!isOpen && <SideBar isOpen={isOpen} />}
             <Main>
               <Outlet />
             </Main>

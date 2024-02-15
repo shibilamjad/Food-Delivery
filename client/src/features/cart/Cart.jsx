@@ -40,7 +40,6 @@ export function Cart() {
           Clear cart
         </Button>
       </div>
-      {/* <EmptyCart /> */}
     </div>
   );
 }

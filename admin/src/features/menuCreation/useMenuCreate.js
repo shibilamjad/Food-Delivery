@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { uploadMenuApi } from "../../service/apiMovies";
+import { uploadMenuApi } from "../../service/apiMenu";
 
-export function useMovieCreate() {
+export function useMenuCreate() {
   const queryClient = useQueryClient();
   const { mutate: createMenu } = useMutation({
     mutationFn: uploadMenuApi,

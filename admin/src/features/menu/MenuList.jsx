@@ -1,16 +1,17 @@
 import styled from "styled-components";
-import { device } from "../../ui/device";
-import { useMovies } from "./useMovies";
+import { useNavigate } from "react-router-dom";
+import ReactStars from "react-rating-stars-component";
 import { HiPencil, HiTrash } from "react-icons/hi2";
+
+import { device } from "../../ui/device";
+import { useMenu } from "./useMenu";
 import { Loader } from "../../ui/Loader";
 import { useDeleteMovie } from "./useMovieDelete";
 import { Empty } from "../../ui/Empty";
-import ReactStars from "react-rating-stars-component";
 import { useMovieUpdateContext } from "../../context/MovieUpdateContext";
-import { useNavigate } from "react-router-dom";
 
-export function MovieList() {
-  const { movies, isLoading } = useMovies();
+export function MenuList() {
+  const { movies, isLoading } = useMenu();
   const { deleteMovie } = useDeleteMovie();
   const { setIsEditing, setSelectedMovie, setSelectedMovieId } =
     useMovieUpdateContext();

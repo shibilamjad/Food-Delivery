@@ -1,5 +1,4 @@
 import Button from '../../ui/Button';
-import { useUpdateQuantity } from './useCartUpdate';
 
 function UpdateCartQty({ quantity, id, onUpdateQty }) {
   return (

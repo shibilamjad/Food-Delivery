@@ -1,13 +1,12 @@
-import { useMovies } from "./useMovies";
+import { useMenu } from "./useMenu";
 import { MenuRow } from "./MenuRow";
 import { Loader } from "../../ui/Loader";
 import { Table, TableHeader } from "../../ui/Row";
 
 export function MenuTable() {
-  const { menu, isLoading } = useMovies();
+  const { menu, isLoading } = useMenu();
 
   if (isLoading) return <Loader />;
-  console.log(menu);
   return (
     <Table>
       <TableHeader>

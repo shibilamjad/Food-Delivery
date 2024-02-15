@@ -1,29 +1,29 @@
-import styled from "styled-components";
-import { Table, TableHeader } from "../../ui/Row";
+import { Table, TableHeaderOrder } from "../../ui/Row";
+import { useOrders } from "./useOrder";
+import { Loader } from "../../ui/Loader";
+import { OrderRow } from "./OrderRow";
 
 export function OrderTable() {
+  const { order, isLoading } = useOrders();
+  if (isLoading) return <Loader />;
+  console.log(order);
   return (
     <>
       <Table role="table">
-        <TableHeader role="row">
-          <div>Image</div>
-          <div>Name</div>
+        <TableHeaderOrder role="row">
+          <div></div>
+          <div>Item</div>
+          <div>User</div>
           <div>Qty</div>
           <div>Dates</div>
           <div>Status</div>
+          <div>More</div>
           <div></div>
-        </TableHeader>
+        </TableHeaderOrder>
+        {order.map((items) => (
+          <OrderRow order={items} carts={items.cart.menuItem} key={items._id} />
+        ))}
       </Table>
-
-      {/* {bookings.map((booking) => (
-        <BookingRow
-          booking={booking} // Use singular 'booking' instead of 'bookings'
-          key={booking.id}
-        />
-      ))} */}
-      {/* <Footer>
-        <Pagination count={count} />
-      </Footer> */}
     </>
   );
 }

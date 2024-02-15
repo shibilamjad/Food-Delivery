@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMovies } from "../../service/apiMovies";
+import { getMenu } from "../../service/apiMenu";
 
-export function useMovies() {
+export function useMenu() {
   const { data: menu, isLoading } = useQuery({
     queryKey: ["menu"],
-    queryFn: getMovies,
+    queryFn: getMenu,
   });
   return { menu, isLoading };
 }

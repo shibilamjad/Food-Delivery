@@ -3,7 +3,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3006/api/menu";
 
-export async function getMovies() {
+export async function getMenu() {
   try {
     const res = await axios(API_URL);
     const { data } = res;

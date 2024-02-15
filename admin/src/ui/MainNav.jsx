@@ -5,7 +5,13 @@ import { BsBoxArrowLeft } from "react-icons/bs";
 
 import { useLogout } from "../features/Authentication/useLogout";
 import { device } from "./device";
-import { FaFolderPlus, FaIdCard } from "react-icons/fa6";
+import {
+  FaBabyCarriage,
+  FaBowlRice,
+  FaFolderPlus,
+  FaIdCard,
+  FaRegSquarePlus,
+} from "react-icons/fa6";
 
 function MainNav() {
   const { logout } = useLogout();
@@ -22,12 +28,19 @@ function MainNav() {
       <NavList>
         <Logo>🍟usePopcorn</Logo>
         <HiddenText>🍟</HiddenText>
+        <NavItem to="/order">
+          <FaBabyCarriage />
+
+          <span>Order</span>
+        </NavItem>
         <NavItem to="/dashboard">
-          <HiHome />
+          <FaBowlRice />
+
           <span>Menu</span>
         </NavItem>
         <NavItem to="/menu">
-          <FaIdCard />
+          <FaRegSquarePlus />
+
           <span>Add Menu</span>
         </NavItem>
         <NavItem to="/genre">

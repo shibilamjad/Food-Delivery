@@ -1,7 +1,7 @@
-import { FaAlignJustify, FaXmark } from "react-icons/fa6";
+import { FaAlignJustify, FaBell, FaXmark } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-// import { SideBar } from "./SideBar";
+import { NotificationBar } from "./NotificationBar";
 
 export function Header({ handleIsOpen, isOpen }) {
   return (
@@ -16,8 +16,12 @@ export function Header({ handleIsOpen, isOpen }) {
             </div>
             <div>
               <h1>Dashboard</h1>
+              <NotificationBar />
             </div>
           </StledContent>
+          <Button>
+            <FaBell />
+          </Button>
         </StyledHeader>
       </Headers>
     </>
@@ -52,6 +56,10 @@ const slideOut = keyframes`
   100% {
     transform: translateX(-100%);
   }
+`;
+const Button = styled.button`
+  padding-right: 40px;
+  color: var(--color-grey-700);
 `;
 const StledContent = styled.div`
   display: flex;

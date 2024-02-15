@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import LinkButton from '../../ui/LinkButton';
 import { Loader } from '../../ui/Loader';
 import { OrderBill } from './OrdeBill';
@@ -5,9 +6,8 @@ import { OrderCart } from './OrderCart';
 import { useDetails } from './useOrderDetails';
 
 export function Order() {
-  const currentUrl = window.location.href;
-  const identifier = currentUrl.split('/').pop();
-  const { details, isLoading } = useDetails(identifier);
+  const { orderId } = useParams();
+  const { details, isLoading } = useDetails(orderId);
   console.log(details);
   if (isLoading) return <Loader />;
   const statusToTagName = {

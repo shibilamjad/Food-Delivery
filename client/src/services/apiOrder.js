@@ -46,22 +46,6 @@ export async function orderListApi() {
   }
 }
 
-// export async function orderStatusApi(orderId) {
-//   const userId = localStorage.getItem('token');
-
-//   try {
-//     const res = await axios.get(`${API_URL}/order-new/${orderId}`, {
-//       headers: {
-//         accesstoken: userId,
-//       },
-//     });
-//     console.log(res);
-//     const { data } = res;
-//     return data;
-//   } catch (error) {
-//     throw new Error(`Error fetching order status: ${error.message}`);
-//   }
-// }
 export async function orderDetailsApi(orderId) {
   try {
     const res = await axios.get(`${API_URL}/orderdetails/${orderId}`);
