@@ -258,35 +258,3 @@ const Footer = styled.footer`
   color: var(--color-grey-500);
   text-align: right;
 `;
-
-// calculate total price
-//   const calculateTotalPrice = (menuItem, quantity) => {
-//     return (menuItem.unitPrice - menuItem.discount) * quantity;
-//   };
-
-//   // calculate total price for each item
-//   details.cart.forEach((cartItem) => {
-//     cartItem.totalPrice = calculateTotalPrice(
-//       cartItem.menuItem,
-//       cartItem.quantity
-//     );
-//   });
-
-// Calculate total bill price
-//   const totalBillPrice = details.cart.reduce((total, cartItem) => {
-//     return total + cartItem.totalPrice;
-//   }, 0);
-
-// Prepare the bill object
-//   const bill = {
-//     cart: details.cart.map((cartItem) => ({
-//       itemName: cartItem.menuItem.name,
-//       quantity: cartItem.quantity,
-//       discount: cartItem.discount,
-//       unitPrice: cartItem.menuItem.unitPrice,
-//       totalPrice: cartItem.totalPrice,
-//     })),
-//     totalBillPrice: totalBillPrice,
-//   };
-
-//   console.log(bill);

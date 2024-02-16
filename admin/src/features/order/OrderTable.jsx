@@ -6,7 +6,6 @@ import { OrderRow } from "./OrderRow";
 export function OrderTable() {
   const { order, isLoading } = useOrders();
   if (isLoading) return <Loader />;
-  console.log(order);
   return (
     <>
       <Table role="table">

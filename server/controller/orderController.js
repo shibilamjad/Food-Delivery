@@ -140,6 +140,24 @@ const ordersDetailsAdmin = async (req, res) => {
     });
   }
 };
+const ordersNotification = async (req, res) => {
+  try {
+    const orderList = await Order.find()
+      .select("createdAt cart delivery")
+      .populate({
+        path: "cart.menuItem",
+        model: "Menu",
+        select: "name imageUrl",
+      })
+      .sort({ createdAt: -1 })
+      .limit(10);
+    res.status(200).json(orderList);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
 
 const createOrder = async (req, res) => {
   try {
@@ -206,4 +224,5 @@ module.exports = {
   userOrderDetails,
   ordersAdmin,
   ordersDetailsAdmin,
+  ordersNotification,
 };

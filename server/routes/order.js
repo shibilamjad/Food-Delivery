@@ -9,10 +9,12 @@ const {
   userOrderDetails,
   ordersAdmin,
   ordersDetailsAdmin,
+  ordersNotification,
 } = require("../controller/orderController");
 
 router.get("/lists", ordersAdmin);
 router.get("/details/:orderId", ordersDetailsAdmin);
+router.get("/notify", ordersNotification);
 router.get("/order-new:orderId", checkAuth, userOrderConfirm); // not
 router.get("/orderdetails/:orderId", userOrderDetails);
 router.get("/", checkAuth, userOrderList);
