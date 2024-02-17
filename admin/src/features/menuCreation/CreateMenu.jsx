@@ -15,7 +15,7 @@ import Buttons from "../../ui/Buttons";
 export function CreateMenu() {
   const navigate = useNavigate();
   const { updateMenu } = useMenuUpdate();
-  const { createMenu } = useMenuCreate();
+  const { createMenu, isCreate } = useMenuCreate();
 
   const { isEditing, setIsEditing, selectedMenu, selectedMenuId } =
     useMenuUpdateContext();
@@ -37,12 +37,13 @@ export function CreateMenu() {
           reset();
         },
       });
-      navigate("/dashboard");
+      navigate("/menuItem");
       setIsEditing(false);
     } else {
       await createMenu(data, {
         onSuccess: (data) => {
           reset();
+          navigate("/menuItem");
         },
       });
     }
@@ -154,10 +155,12 @@ export function CreateMenu() {
         </FormRow>
         <FormRow>
           {/* type is an HTML attribute! */}
-          <Buttons type="reset">Cancel</Buttons>
-          <Buttons>
+          <Buttons disabled={isCreate} type="reset">
+            Cancel
+          </Buttons>
+          <Buttons disabled={isCreate}>
             {/* {isEditSession ? "Edit cabin" : "Create new cabin"}</Button> */}
-            Create new cabin
+            Create Item
           </Buttons>
         </FormRow>
       </Form>{" "}

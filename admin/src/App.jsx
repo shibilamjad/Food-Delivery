@@ -13,6 +13,7 @@ import { Menus } from "./pages/Menus";
 import { MenuUpdateProvider } from "./context/MenuUpdateContext";
 import { Order } from "./pages/Order";
 import { Orders } from "./pages/Orders";
+import Dashboard from "./pages/Dashboard";
 
 const queryCLient = new QueryClient({
   defaultOptions: {
@@ -36,7 +37,8 @@ function App() {
               }
             >
               <Route index element={<Navigate replace to="dashboard" />} />
-              <Route path="dashboard" element={<Menus />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="menuItem" element={<Menus />} />
               <Route path="order" element={<Order />} />
               <Route path="order/:orderId" element={<Orders />} />
               <Route path="menu" element={<Menu />} />

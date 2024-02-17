@@ -1,6 +1,8 @@
 const upload = require("../middleware/multer");
 const cloudinaryImg = require("../config/cloudinery");
 const Menu = require("../models/menuModel");
+const Users = require("../models/userModel");
+const Orders = require("../models/orderModel");
 const util = require("util");
 
 const menu = async (req, res) => {
@@ -107,13 +109,27 @@ const deleteMenu = async (req, res) => {
 
     const deleteMenus = await Menu.findByIdAndDelete(_id);
 
-    if (deleteMenus) {
-      res.status(200).json(deleteMenus);
-    } else {
-      res.status(404).json({
-        message: "Movie not found",
+    if (!deleteMenus) {
+      return res.status(404).json({
+        message: "menu not found",
       });
     }
+    // Remove references
+    await Users.updateMany(
+      { $or: [{ "cart.menuItem": _id }, { orderHistory: _id }] },
+      { $pull: { cart: { menuItem: _id }, orderHistory: _id } }
+    ); // Also remove references from orderHistory array
+
+    await Users.updateMany(
+      { orderHistory: _id },
+      { $pull: { orderHistory: _id } }
+    ); // Remove references from orders
+    await Orders.updateMany(
+      { "cart.menuItem": _id },
+      { $pull: { cart: { menuItem: _id } } }
+    );
+
+    res.status(200).json(deleteMenus);
   } catch (error) {
     res.status(500).json({
       message: `Error deleting movie: ${error.message}`,

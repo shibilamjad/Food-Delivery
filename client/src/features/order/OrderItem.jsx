@@ -10,6 +10,7 @@ import { useState } from 'react';
 export function OrderItem() {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const { isLoading, order } = useOrder();
+  const orderItems = order && order.filter((items) => items.cart.length > 0);
   const navigate = useNavigate();
   function handleDetails(orderId) {
     setSelectedOrderId(orderId);
@@ -21,7 +22,7 @@ export function OrderItem() {
     <div className="px-3 py-3">
       <LinkButton to="/menu">&larr; Back to menu</LinkButton>
       <ul className="mx-auto max-w-4xl list-none divide-y divide-stone-200">
-        {order.map((item) => (
+        {orderItems.map((item) => (
           <li className="gap-2 px-6 py-4" key={item._id}>
             {item.cart &&
               item.cart.map((cart) => (

@@ -12,8 +12,6 @@ import { device } from "../../ui/device";
 
 export function OrderData({ details }) {
   const { userName, mobile, address, delivery, createdAt, cart } = details;
-  console.log(cart);
-
   const discount = details.cart.reduce(
     (totalDiscount, item) => totalDiscount + item.menuItem.discount,
     0

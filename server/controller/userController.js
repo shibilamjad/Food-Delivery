@@ -14,9 +14,7 @@ const { use } = require("../routes/user");
 
 const userList = async (req, res) => {
   try {
-    const usersList = await Users.find().select(
-      "userName email cart accessToken"
-    );
+    const usersList = await Users.find().select("createdAt ");
 
     res.status(200).json(usersList);
   } catch (error) {

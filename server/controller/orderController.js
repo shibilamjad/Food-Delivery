@@ -1,6 +1,5 @@
 const Users = require("../models/userModel");
 const Order = require("../models/orderModel");
-const { use } = require("../routes/order");
 
 const userOrderConfirm = async (req, res) => {
   const { orderId } = req.params;

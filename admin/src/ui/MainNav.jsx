@@ -26,14 +26,19 @@ function MainNav() {
   return (
     <Navigation>
       <NavList>
-        <Logo>🍟usePopcorn</Logo>
-        <HiddenText>🍟</HiddenText>
+        <Logo>🍔Go..To Order</Logo>
+        <HiddenText>🍔</HiddenText>
+        <NavItem to="/dashboard">
+          <HiHome />
+
+          <span>Home</span>
+        </NavItem>
         <NavItem to="/order">
           <FaBabyCarriage />
 
           <span>Order</span>
         </NavItem>
-        <NavItem to="/dashboard">
+        <NavItem to="/menuItem">
           <FaBowlRice />
 
           <span>Menu</span>
