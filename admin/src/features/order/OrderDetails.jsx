@@ -21,7 +21,7 @@ export function OrderDetails() {
     success: "green",
   };
   return (
-    <>
+    <StyledContainer>
       <Row type="vertical">
         <HeadingGroup>
           <Heading>
@@ -39,9 +39,14 @@ export function OrderDetails() {
       </Row>
 
       {/* <BookingDataBox booking={bookings} /> */}
-    </>
+    </StyledContainer>
   );
 }
+const StyledContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const HeadingGroup = styled.div`
   display: flex;
   flex-wrap: wrap;

@@ -1,22 +1,26 @@
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 
 import { useMenuUpdateContext } from "../../context/MenuUpdateContext";
 import { useMenuCreate } from "./useMenuCreate";
 import { useMenuUpdate } from "./useMenuUpdate";
-import { device } from "../../ui/device";
+import { Form, StyledForm } from "../../ui/FormContainer";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import Buttons from "../../ui/Buttons";
+import { Button } from "../../ui/Buttons";
+import { Loader } from "../../ui/Loader";
+import { useRestaurant } from "../Restaurant/useRestaurant";
+import { device } from "../../ui/device";
 
 export function CreateMenu() {
   const navigate = useNavigate();
   const { updateMenu } = useMenuUpdate();
   const { createMenu, isCreate } = useMenuCreate();
-
+  const { restaurants, isLoading } = useRestaurant();
   const { isEditing, setIsEditing, selectedMenu, selectedMenuId } =
     useMenuUpdateContext();
 
@@ -26,6 +30,8 @@ export function CreateMenu() {
     formState: { errors },
     reset,
     getValues,
+    setValue,
+    control,
   } = useForm();
 
   async function onSubmit(data) {
@@ -52,11 +58,37 @@ export function CreateMenu() {
   function onError(errors) {
     console.log(errors);
   }
-
+  if (isLoading) return <Loader />;
   return (
     <StyledForm>
       <h1>{isEditing ? "Edit Menu" : "Create Menu"}</h1>
       <Form onSubmit={handleSubmit(onSubmit, onError)}>
+        <FormRow label="Restaurant name" error={errors?.restaurant?.message}>
+          <StyledSelectContainer>
+            <Controller
+              name="restaurant"
+              control={control}
+              defaultValue=""
+              rules={{ required: "Please select a restaurant" }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  className="basic-single"
+                  classNamePrefix="select"
+                  placeholder="Select Restaurant"
+                  id="restaurant"
+                  defaultValue={isEditing ? selectedMenu.restaurant : ""}
+                  options={restaurants.map((item) => ({
+                    value: item._id,
+                    label: item.restaurant,
+                  }))}
+                  isClearable
+                  styles={customStyles}
+                />
+              )}
+            />
+          </StyledSelectContainer>
+        </FormRow>
         <FormRow label="Item name" error={errors?.name?.message}>
           <Input
             type="text"
@@ -155,21 +187,41 @@ export function CreateMenu() {
         </FormRow>
         <FormRow>
           {/* type is an HTML attribute! */}
-          <Buttons disabled={isCreate} type="reset">
+          <Button disabled={isCreate} type="reset">
             Cancel
-          </Buttons>
-          <Buttons disabled={isCreate}>
+          </Button>
+          <Button disabled={isCreate}>
             {/* {isEditSession ? "Edit cabin" : "Create new cabin"}</Button> */}
             Create Item
-          </Buttons>
+          </Button>
         </FormRow>
       </Form>{" "}
     </StyledForm>
   );
 }
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    backgroundColor: "var(--color-grey-0)",
+    border: " 1px solid var(--color-grey-200)",
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: "var(--color-brand-500)",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "var(--color-brand-200)",
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: "var(--color-brand-200)",
+  }),
+};
+
 const StyledRadio = styled.div`
   display: flex;
-  flex-wrap: wraps;
+  flex-wrap: wrap;
   gap: 10px;
   align-items: center;
   cursor: pointer;
@@ -178,61 +230,25 @@ const StyledRadio = styled.div`
     margin-right: 6px;
   }
 `;
-const StyledForm = styled.div`
-  padding: 2.4rem 4rem;
-  border: 1px solid var(--color-grey-200);
-  background-color: var(--color-grey-0);
-  box-shadow: var(--shadow-md);
-  border-radius: 10px;
-  color: var(--color-brand-200);
-  @media ${device.tablet} {
-    padding: 1.4rem 2.5rem;
-  }
-  @media ${device.mobileL} {
-    padding: 1rem 2rem;
-  }
-  h1 {
-    font-size: 40px;
-    font-weight: 600;
-    padding-left: 20px;
-    margin: 10px;
-    @media ${device.tablet} {
-      font-size: 30px;
-      font-weight: 600;
-      padding-left: 10px;
-      margin: 10px;
-    }
-    @media ${device.mobileL} {
-      font-size: 20px;
-      font-weight: 600;
-      padding-left: 1px;
-      margin: 10px;
-    }
-  }
-`;
 
-const Form = styled.form`
-  padding: 2.4rem 4rem;
-  background-color: var(--color-grey-0);
-  border-radius: 7px;
-  overflow: hidden;
-  font-size: 1.4rem;
-  width: 1000px;
-  @media ${device.laptopL} {
-    font-size: 1.2rem;
-    padding: 1rem 1rem;
-    width: 600px;
+const StyledSelectContainer = styled.div`
+  width: 300px;
+  color: red;
+  .basic-single {
+    color: red;
+    color: var(--color-brand-500);
   }
-  @media ${device.laptop} {
-    width: 400px;
-  }
+
   @media ${device.tablet} {
-    width: 300px;
+    width: 250px;
+    /* padding: 0.5rem 0.8rem; */
   }
   @media ${device.mobileL} {
-    width: 240px;
+    width: 150px;
+    /* padding: 0.4rem 0.8rem; */
   }
   @media ${device.mobileS} {
-    width: 200px;
+    width: 140px;
+    /* padding: 0.4rem 0.8rem; */
   }
 `;

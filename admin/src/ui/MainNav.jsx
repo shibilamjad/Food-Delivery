@@ -10,8 +10,10 @@ import {
   FaBowlRice,
   FaFolderPlus,
   FaIdCard,
+  FaKitchenSet,
   FaRegSquarePlus,
 } from "react-icons/fa6";
+import { BiRestaurant } from "react-icons/bi";
 
 function MainNav() {
   const { logout } = useLogout();
@@ -24,47 +26,46 @@ function MainNav() {
     }
   }
   return (
-    <Navigation>
-      <NavList>
-        <Logo>🍔Go..To Order</Logo>
-        <HiddenText>🍔</HiddenText>
-        <NavItem to="/dashboard">
-          <HiHome />
+    <NavList>
+      <Logo>🍔Go..To Order</Logo>
+      <HiddenText>🍔</HiddenText>
+      <NavItem to="/dashboard">
+        <HiHome />
 
-          <span>Home</span>
-        </NavItem>
-        <NavItem to="/order">
-          <FaBabyCarriage />
+        <span>Home</span>
+      </NavItem>
+      <NavItem to="/order">
+        <FaBabyCarriage />
 
-          <span>Order</span>
-        </NavItem>
-        <NavItem to="/menuItem">
-          <FaBowlRice />
+        <span>Order</span>
+      </NavItem>
+      <NavItem to="/menuItem">
+        <FaBowlRice />
 
-          <span>Menu</span>
-        </NavItem>
-        <NavItem to="/menu">
-          <FaRegSquarePlus />
+        <span>Menu</span>
+      </NavItem>
+      <NavItem to="/menu">
+        <FaRegSquarePlus />
 
-          <span>Add Menu</span>
-        </NavItem>
-        <NavItem to="/genre">
-          <FaFolderPlus />
-          <span>Genre</span>
-        </NavItem>
-        <Btn onClick={handleLogout}>
-          <BsBoxArrowLeft />
-          <span> Logout</span>
-        </Btn>
-      </NavList>
-    </Navigation>
+        <span>Add Menu</span>
+      </NavItem>
+      <NavItem to="/restaurants">
+        <BiRestaurant />
+        <span>Restuarants List</span>
+      </NavItem>
+      <NavItem to="/new-restaurants">
+        <FaKitchenSet />
+
+        <span>Create New Restuarant</span>
+      </NavItem>
+      <Btn onClick={handleLogout}>
+        <BsBoxArrowLeft />
+        <span> Logout</span>
+      </Btn>
+    </NavList>
   );
 }
 export default MainNav;
-
-const Navigation = styled.nav`
-  // Add any common styles for the navigation here
-`;
 
 const HiddenText = styled.h1`
   font-size: 0px;
@@ -116,7 +117,7 @@ const Logo = styled.h1`
   }
 `;
 
-const NavList = styled.ul`
+const NavList = styled.nav`
   display: flex;
   flex-direction: column;
   /* align-items: ce; */

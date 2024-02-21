@@ -22,7 +22,7 @@ export async function uploadMenuApi(data) {
     formData.append("ingredients", data.ingredients);
     formData.append("discount", data.discount);
     formData.append("isAvailable", data.isAvailable);
-
+    formData.append("restaurant", data.restaurant.value);
     const res = await axios.post(`${API_URL}/add-menu`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -44,6 +44,7 @@ export async function updateMenuApi(menuId, data) {
     formData.append("ingredients", data.ingredients);
     formData.append("discount", data.discount);
     formData.append("isAvailable", data.isAvailable);
+    formData.append("restaurant", data.restaurant.value);
 
     const res = await axios.put(`${API_URL}/updateMenu/${menuId}`, formData, {
       headers: {

@@ -6,6 +6,9 @@ import { useCreateOrder } from './useCreateOrder';
 import { Loader } from '../../ui/Loader';
 import { useCart } from '../cart/useCart';
 import { EmptyCart } from '../cart/EmptyCart';
+import { getAddress } from '../../services/apiGeocoding';
+import { useEffect, useState } from 'react';
+import { useGeoLocation } from './useGeoLocation';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -16,9 +19,13 @@ const isValidPhone = (str) =>
 export function CreateOrder() {
   const { createOrder } = useCreateOrder();
   const { cart, isLoading } = useCart();
+
+  const { position, address } = useGeoLocation();
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -39,23 +46,21 @@ export function CreateOrder() {
 
   return (
     <div className="h-screen px-4 py-6">
-      <h2 className=" mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
+      <h2 className="mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
 
       <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div className="mb-5 flex flex-col gap-2  sm:flex-row sm:items-center">
-          <label className=" sm:basis-40">First Name</label>
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label className="sm:basis-40">First Name</label>
           <div className="grow">
             <input
-              className="input w-full "
+              className="input w-full"
               type="text"
               id="userName"
-              {...register('userName', {
-                required: 'This field is required',
-              })}
+              {...register('userName', { required: 'This field is required' })}
             />
           </div>
         </div>
-        <P>{errors?.userName?.message}</P>
+        <ErrorMessage>{errors?.userName?.message}</ErrorMessage>
 
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">Phone number</label>
@@ -72,45 +77,47 @@ export function CreateOrder() {
             />
           </div>
         </div>
-        <P>{errors?.mobile?.message}</P>
+        <ErrorMessage>{errors?.mobile?.message}</ErrorMessage>
         <div className="relative mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className=" sm:basis-40">Address</label>
-          <div className=" grow ">
+          <label className="sm:basis-40">Address</label>
+          <div className="grow">
             <input
-              className="input w-full"
+              className="input w-full placeholder:text-gray-600 placeholder:opacity-60"
               type="text"
               name="address"
-              {...register('address', {
-                required: 'This field is required',
-              })}
+              defaultValue={address}
+              placeholder="Enter your address"
+              {...register('address', { required: 'This field is required' })}
             />
           </div>
 
-          <span className=" absolute right-0.5 top-[37px] z-50 sm:top-1 md:right-[5px] md:top-[3px]">
-            <Button
+          <span className="absolute right-0.5 top-[37px] z-50 sm:top-1 md:right-[5px] md:top-[3px]">
+            {/* <Button
               type="small"
               onClick={(e) => {
                 e.preventDefault();
+                getPosition().then((positionObj) => {
+                  setPosition(positionObj);
+                });
               }}
             >
               Get position
-            </Button>
+            </Button> */}
           </span>
         </div>
-        <P>{errors?.address?.message}</P>
+        <ErrorMessage>{errors?.address?.message}</ErrorMessage>
         <div>
-          {/* <input type="hidden" name="cart" /> */}
-          <Button type="primery">Order now</Button>
+          <Button type="small">Order now</Button>
         </div>
       </form>
     </div>
   );
 }
-const P = styled.p`
+
+const ErrorMessage = styled.p`
   display: flex;
   align-items: start;
   margin-left: 170px;
-  /* margin-bottom: 20px; */
   justify-content: start;
   color: red;
   @media ${device.tablet} {

@@ -14,6 +14,8 @@ import { MenuUpdateProvider } from "./context/MenuUpdateContext";
 import { Order } from "./pages/Order";
 import { Orders } from "./pages/Orders";
 import Dashboard from "./pages/Dashboard";
+import { Restaurant } from "./pages/Restaurant";
+import { NewRestaurants } from "./pages/NewRestaurants";
 
 const queryCLient = new QueryClient({
   defaultOptions: {
@@ -38,12 +40,14 @@ function App() {
             >
               <Route index element={<Navigate replace to="dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="menuItem" element={<Menus />} />
               <Route path="order" element={<Order />} />
               <Route path="order/:orderId" element={<Orders />} />
+              <Route path="menuItem" element={<Menus />} />
               <Route path="menu" element={<Menu />} />
               <Route path="menu/:menuId" element={<Menu />} />
-              <Route path="order" element={<Order />} />
+              <Route path="restaurants" element={<Restaurant />} />
+              <Route path="new-restaurants" element={<NewRestaurants />} />
+              {/* <Route path="order" element={<Order />} /> */}
               <Route path="genre" element={<Genre />} />
             </Route>
             <Route

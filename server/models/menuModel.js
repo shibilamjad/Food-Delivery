@@ -45,6 +45,11 @@ const menuSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    restaurant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+    },
   },
   { timestamps: true }
 );

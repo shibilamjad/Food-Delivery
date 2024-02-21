@@ -19,8 +19,9 @@ const sizes = {
     font-weight: 500;
   `,
   xxl: css`
-    font-size: 1.6rem;
-    padding: 1.2rem 2.4rem;
+    margin-top: 30px;
+    font-size: 1.4rem;
+    padding: 0.7rem 1rem;
     width: 100%;
     font-weight: 500;
   `,

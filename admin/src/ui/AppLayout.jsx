@@ -54,6 +54,7 @@ const slideOut = keyframes`
 
 const SyledBg = styled.div`
   height: 100vh;
+  overflow: scroll;
 `;
 
 const StyledIsCloseApp = styled.div`
@@ -94,11 +95,13 @@ const StyledeApp = styled.div`
 `;
 
 const Main = styled.main`
-  display: flex;
+  /* display: flex; */
   color: #ffffff;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: space-around; */
   padding: 20px;
-  background-color: var(--color-grey-50);
+  width: auto;
+  /* min-height: auto; */
+  /* background-color: var(--color-grey-50); */
   flex-grow: 1;
 `;

@@ -62,6 +62,37 @@ export const TableRowOrder = styled.div`
     border-bottom: 1px solid var(--color-grey-100);
   }
 `;
+
+export const TableRowRestaurant = styled.div`
+  display: grid;
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  grid-template-columns: 0.1fr 2fr 5fr 1fr;
+  column-gap: 0.4rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 1rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  @media ${device.tablet} {
+    font-size: 0.7rem;
+    column-gap: 0.5rem;
+    padding: 2rem 2rem;
+  }
+  @media ${device.mobileL} {
+    column-gap: 0.6rem;
+    padding: 1rem 1rem;
+    font-size: 0.5rem;
+  }
+  @media ${device.mobileS} {
+    column-gap: 0.1rem;
+    padding: 1rem 1rem;
+    font-size: 0.6rem;
+  }
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-100);
+  }
+`;
 export const Img = styled.img`
   display: block;
   height: 100px;
@@ -95,6 +126,14 @@ export const Stacked = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+`;
+export const Title = styled.h1`
+  font-weight: 600;
+  color: var(--color-grey-600);
+`;
+export const Address = styled.h1`
+  font-weight: 600;
+  color: var(--color-grey-400);
 `;
 
 export const Menu = styled.div`

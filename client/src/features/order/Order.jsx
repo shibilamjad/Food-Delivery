@@ -51,22 +51,6 @@ export function Order() {
                 {order.mobile}
               </p>
             </div>
-            {/* {order.cart && (
-              <>
-                <ul className="divide-y-2 divide-stone-200 border-b-2 border-t-2">
-                  {order.cart &&
-                    order.cart.map((cartItem) => (
-                      <OrderCart
-                        key={cartItem.menuItem._id}
-                        totalPrice={cartItem.totalPrice}
-                        quantity={cartItem.quantity}
-                        menuItem={cartItem.menuItem}
-                      />
-                    ))}
-                </ul>
-                <div className=" mt-2 space-y-4 bg-stone-200 px-6 py-6"></div>
-              </>
-            )} */}
             <OrderBill order={order} />
           </div>
         ))}

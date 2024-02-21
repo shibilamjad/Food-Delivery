@@ -16,8 +16,16 @@ import {
 import { Menu } from "@material-tailwind/react";
 
 export function MenuRow({ menu }) {
-  const { _id, name, unitPrice, discount, ingredients, isAvailable, imageUrl } =
-    menu;
+  const {
+    _id,
+    name,
+    unitPrice,
+    discount,
+    ingredients,
+    isAvailable,
+    imageUrl,
+    restaurant,
+  } = menu;
   const { deleteMenu } = useMenuDelete();
   const { setSelectedMenu, setSelectedMenuId, setIsEditing } =
     useMenuUpdateContext();

@@ -7,15 +7,17 @@
   box-sizing: border-box;
   font-family: "Rubik", sans-serif;
 }
+
 body {
-  height: 100dvh;
+  height: 100%;
+  width: auto;
   background-color: var(--color-grey-50);
 }
 #root {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 100dvh;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  /* height: 100dvh; */
 }
 
 ul {

@@ -48,12 +48,6 @@ export function OrderItem() {
                         {cart.menuItem.ingredients}
                       </span>
                     </p>
-
-                    {/* {cart.menuItem.discount > 0 && (
-                      <p className="font-semibold text-red-700">
-                        Discount: ₹{cart.menuItem.discount}
-                      </p>
-                    )} */}
                   </div>
                 </div>
               ))}

@@ -2,14 +2,15 @@ const upload = require("../middleware/multer");
 const cloudinaryImg = require("../config/cloudinery");
 const Menu = require("../models/menuModel");
 const Users = require("../models/userModel");
+const Restaurant = require("../models/restaurantModel");
 const Orders = require("../models/orderModel");
 const util = require("util");
 
 const menu = async (req, res) => {
   try {
-    const menuList = await Menu.find().select(
-      "name unitPrice imageUrl ingredients isAvailable discount"
-    );
+    const menuList = await Menu.find()
+      .select("name unitPrice imageUrl ingredients isAvailable discount")
+      .populate("restaurant", "restaurant address");
     res.status(200).json(menuList);
   } catch (error) {
     res.status(500).json({
@@ -17,7 +18,6 @@ const menu = async (req, res) => {
     });
   }
 };
-
 const addMenu = async (req, res) => {
   try {
     const uploadAsync = util.promisify(upload.single("imageUrl"));
@@ -26,11 +26,22 @@ const addMenu = async (req, res) => {
     const cloudinaryResult = await cloudinaryImg.uploader.upload(req.file.path);
     const { secure_url: imageUrl } = cloudinaryResult;
 
-    const { name, unitPrice, ingredients, isAvailable, discount } = req.body;
+    const { name, unitPrice, ingredients, isAvailable, discount, restaurant } =
+      req.body;
 
-    const isExistMovie = await Menu.findOne({ name });
+    const foundRestaurant = await Restaurant.findOne({
+      _id: restaurant,
+    });
 
-    if (isExistMovie) {
+    if (!foundRestaurant) {
+      return res.status(404).json({
+        message: `Restaurant '${restaurant}' not found`,
+      });
+    }
+
+    const isExistingMenu = await Menu.findOne({ name });
+
+    if (isExistingMenu) {
       return res.status(400).json({
         message: `${name} already created`,
       });
@@ -43,6 +54,7 @@ const addMenu = async (req, res) => {
       ingredients,
       isAvailable,
       imageUrl,
+      restaurant: foundRestaurant._id,
     });
 
     return res.status(200).json(newMenu);
@@ -53,6 +65,7 @@ const addMenu = async (req, res) => {
     });
   }
 };
+
 const updateMenu = async (req, res) => {
   try {
     const menuId = req.params.menuId;
@@ -65,13 +78,29 @@ const updateMenu = async (req, res) => {
       const cloudinaryResult = await cloudinaryImg.uploader.upload(
         req.file.path
       );
-      // const { secure_url: image } = cloudinaryResult;
       imageUrl = cloudinaryResult.secure_url;
     }
 
-    const { name, unitPrice, ingredients, isAvailable, discount } = req.body;
+    const { name, unitPrice, ingredients, isAvailable, discount, restaurant } =
+      req.body;
 
-    let updateObject = { name, unitPrice, ingredients, isAvailable, discount };
+    const foundRestaurant = await Restaurant.findOne({
+      _id: restaurant,
+    });
+
+    if (!foundRestaurant) {
+      return res.status(404).json({
+        message: `Restaurant '${restaurant}' not found`,
+      });
+    }
+    let updateObject = {
+      name,
+      unitPrice,
+      ingredients,
+      isAvailable,
+      discount,
+      restaurant: foundRestaurant._id,
+    };
 
     if (imageUrl) {
       updateObject.imageUrl = imageUrl;
@@ -90,7 +119,6 @@ const updateMenu = async (req, res) => {
     return res.status(200).json(updateMenu);
   } catch (error) {
     console.error("Error updating movie:", error);
-    // Log the error using a logging library in a production environment
     res.status(500).json({
       message: `Error updating movie: ${error.message || "Unknown error"}`,
     });
