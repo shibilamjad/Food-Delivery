@@ -2,12 +2,12 @@ import styled from "styled-components";
 import { device } from "./device";
 
 function Modal({ children }) {
-  return <StyledMovie>{children}</StyledMovie>;
+  return <StyledMenu>{children}</StyledMenu>;
 }
 
 export default Modal;
 
-const StyledMovie = styled.div`
+const StyledMenu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

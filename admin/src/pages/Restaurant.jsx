@@ -7,7 +7,6 @@ export function Restaurant() {
     <>
       <Row>
         <Heading as="h1">All Restaurats</Heading>
-        {/* <BookingTable /> */}
         <RestaurantTable />
       </Row>
     </>

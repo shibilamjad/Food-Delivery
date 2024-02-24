@@ -8,7 +8,7 @@ export function useMenuDelete() {
   const { mutate: deleteMenu } = useMutation({
     mutationFn: deleteMenuApi,
     onSuccess: () => {
-      toast.success("Movie succesfully deleted");
+      toast.success("Menu succesfully deleted");
       queryClient.invalidateQueries({ queryKey: ["menu"] });
     },
     onError: (err) => toast.error(err.message),

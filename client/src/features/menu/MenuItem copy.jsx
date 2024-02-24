@@ -1,16 +1,26 @@
 import { useNavigate } from 'react-router-dom';
+import { WiTime8 } from 'react-icons/wi';
+import { HiMiniStar } from 'react-icons/hi2';
 
 import Button from '../../ui/Button';
 import { Loader } from '../../ui/Loader';
+import { formatCurrency } from '../../utils/helpers';
 import { useAddCart } from '../cart/useAddCart';
 import { useCart } from '../cart/useCart';
 
-export function MenuItem({ items, totalDistance }) {
+export function MenuItem({ items }) {
   const navigate = useNavigate();
-  const { _id, discount, name, imageUrl, ingredients, isAvailable, unitPrice } =
-    items;
-  const isItemAvailable = isAvailable && totalDistance > 30;
-
+  const {
+    _id,
+    discount,
+    name,
+    imageUrl,
+    ingredients,
+    isAvailable,
+    unitPrice,
+    restaurant,
+  } = items;
+  console.log(items);
   const { addCart } = useAddCart();
   const { cart, isLoading } = useCart();
   const handleCartAction = (menuId) => {
@@ -36,19 +46,32 @@ export function MenuItem({ items, totalDistance }) {
         } `}
       />
       <div className="flex grow flex-col pt-0.5">
-        <p className=" font-medium capitalize">{name}</p>
-
+        <p className=" font-medium capitalize">
+          {name}({restaurant.restaurant})
+        </p>
+        <p className="  text-sm capitalize italic text-yellow-600">
+          <HiMiniStar />
+        </p>
         <p className=" text-sm capitalize italic text-stone-500">
           {ingredients}
         </p>
+        {/* <p className=" text-sm capitalize italic text-stone-500">
+          {restaurant.address}
+        </p> */}
+        <p className=" text-sm capitalize italic text-stone-500">
+          <WiTime8 />
+        </p>
+
         <div className=" mt-auto flex flex-wrap items-center justify-between gap-x-2">
-          {isAvailable && totalDistance > 30 ? (
+          {isAvailable ? (
             <div className="text-md ">
               <div className="text-red-700 line-through ">
-                {discount > 0 && `₹${unitPrice}`}
+                {discount > 0 && formatCurrency(unitPrice)}
               </div>
               <div className="text-green-700">
-                {discount > 0 ? `₹${unitPrice - discount}` : `₹${unitPrice}`}
+                {discount > 0
+                  ? formatCurrency(unitPrice - discount)
+                  : formatCurrency(unitPrice)}
               </div>
             </div>
           ) : (
@@ -70,7 +93,6 @@ export function MenuItem({ items, totalDistance }) {
                 <Button
                   key={_id}
                   type="small"
-                  disabled={totalDistance > 30}
                   onClick={() => handleCartAction(_id)}
                 >
                   Add to cart

@@ -9,7 +9,7 @@ export function Empty({ children }) {
         <p>{children}</p>
       </div>
       <div>
-        <Button onClick={() => navigate("/menu")}>Go to AddMenu</Button>
+        {/* <Button onClick={() => navigate("/menu")}>Go to AddMenu</Button> */}
       </div>
     </StyledEmpty>
   );
@@ -20,7 +20,7 @@ const StyledEmpty = styled.div`
   flex-wrap: wrap;
   align-items: center;
   color: red;
-  background-color: #fff;
+  background-color: var(--color-grey-0);
   padding: 10px;
   border-radius: 4px;
 `;
@@ -29,9 +29,9 @@ const Button = styled.button`
   background-color: #3730a3;
   border: 1px solid #3730a3;
   color: #fff;
-  padding: 4px;
+  padding: 10px;
   margin-top: 10px;
-  font-size: 10px;
+  font-size: 14px;
   border-radius: 4px;
   &:hover,
   &:focus {

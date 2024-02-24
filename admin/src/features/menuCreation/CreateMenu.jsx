@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 
-import { useMenuUpdateContext } from "../../context/MenuUpdateContext";
 import { useMenuCreate } from "./useMenuCreate";
 import { useMenuUpdate } from "./useMenuUpdate";
+import { useMenuEdit } from "../menu/useMenuEdit";
 import { Form, StyledForm } from "../../ui/FormContainer";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
@@ -15,14 +15,15 @@ import { Button } from "../../ui/Buttons";
 import { Loader } from "../../ui/Loader";
 import { useRestaurant } from "../Restaurant/useRestaurant";
 import { device } from "../../ui/device";
+import { useEffect } from "react";
 
 export function CreateMenu() {
-  const navigate = useNavigate();
-  const { updateMenu } = useMenuUpdate();
+  const { menuId } = useParams();
+  const { menuEdit, isLoading } = useMenuEdit(menuId);
+  const { updateMenu, isEditing } = useMenuUpdate();
   const { createMenu, isCreate } = useMenuCreate();
-  const { restaurants, isLoading } = useRestaurant();
-  const { isEditing, setIsEditing, selectedMenu, selectedMenuId } =
-    useMenuUpdateContext();
+  const { restaurants } = useRestaurant();
+  const isWorking = isCreate || isEditing;
 
   const {
     register,
@@ -34,22 +35,29 @@ export function CreateMenu() {
     control,
   } = useForm();
 
+  useEffect(() => {
+    if (menuEdit) {
+      setValue("name", menuEdit.name || "");
+      setValue("unitPrice", menuEdit.unitPrice || "");
+      setValue("discount", menuEdit.discount || 0);
+      setValue("ingredients", menuEdit.ingredients || "");
+      setValue("isAvailable", menuEdit.isAvailable?.toString() || "");
+    }
+  }, [menuEdit, setValue]);
+
   async function onSubmit(data) {
-    if (isEditing) {
+    if (menuEdit) {
       updateMenu({
-        menuId: selectedMenuId,
+        menuId,
         updateMenu: { ...data },
         onSuccess: (data) => {
           reset();
         },
       });
-      navigate("/menuItem");
-      setIsEditing(false);
     } else {
       await createMenu(data, {
         onSuccess: (data) => {
           reset();
-          navigate("/menuItem");
         },
       });
     }
@@ -61,39 +69,41 @@ export function CreateMenu() {
   if (isLoading) return <Loader />;
   return (
     <StyledForm>
-      <h1>{isEditing ? "Edit Menu" : "Create Menu"}</h1>
+      <h1>{menuEdit ? "Edit Menu" : "Create Menu"}</h1>
       <Form onSubmit={handleSubmit(onSubmit, onError)}>
-        <FormRow label="Restaurant name" error={errors?.restaurant?.message}>
-          <StyledSelectContainer>
-            <Controller
-              name="restaurant"
-              control={control}
-              defaultValue=""
-              rules={{ required: "Please select a restaurant" }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  className="basic-single"
-                  classNamePrefix="select"
-                  placeholder="Select Restaurant"
-                  id="restaurant"
-                  defaultValue={isEditing ? selectedMenu.restaurant : ""}
-                  options={restaurants.map((item) => ({
-                    value: item._id,
-                    label: item.restaurant,
-                  }))}
-                  isClearable
-                  styles={customStyles}
-                />
-              )}
-            />
-          </StyledSelectContainer>
-        </FormRow>
+        {!menuEdit && (
+          <FormRow label="Restaurant name" error={errors?.restaurant?.message}>
+            <StyledSelectContainer>
+              <Controller
+                name="restaurant"
+                control={control}
+                defaultValue={null}
+                rules={{ required: "Please select a restaurant" }}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    className="basic-single"
+                    classNamePrefix="select"
+                    disabled={isWorking}
+                    placeholder="Select Restaurant"
+                    id="restaurant"
+                    options={restaurants.map((item) => ({
+                      value: item._id,
+                      label: item.restaurant,
+                    }))}
+                    isClearable
+                    styles={customStyles}
+                  />
+                )}
+              />
+            </StyledSelectContainer>
+          </FormRow>
+        )}
         <FormRow label="Item name" error={errors?.name?.message}>
           <Input
             type="text"
             id="name"
-            defaultValue={isEditing ? selectedMenu.name : ""}
+            defaultValue={menuEdit ? menuEdit.name : ""}
             // disabled={isWorking}
             {...register("name", {
               required: "This field is required",
@@ -105,8 +115,8 @@ export function CreateMenu() {
           <Input
             type="number"
             id="unitPrice"
-            defaultValue={isEditing ? selectedMenu.unitPrice : ""}
-            // disabled={isLoading}
+            defaultValue={menuEdit ? menuEdit.unitPrice : ""}
+            disabled={isWorking}
             {...register("unitPrice", {
               required: "This field is required",
             })}
@@ -117,8 +127,8 @@ export function CreateMenu() {
           <Input
             type="number"
             id="discount"
-            // disabled={isWorking}
-            defaultValue={isEditing ? selectedMenu.discount : 0}
+            disabled={isWorking}
+            defaultValue={menuEdit ? menuEdit.discount : 0}
             {...register("discount", {
               required: "This field is required",
               validate: (value) =>
@@ -132,8 +142,8 @@ export function CreateMenu() {
           <Textarea
             type="number"
             id="ingredients"
-            defaultValue={isEditing ? selectedMenu.ingredients : ""}
-            // disabled={isWorking}
+            defaultValue={menuEdit ? menuEdit.ingredients : ""}
+            disabled={isWorking}
             {...register("ingredients", {
               required: "This field is required",
             })}
@@ -147,11 +157,10 @@ export function CreateMenu() {
                 <span className="label-text text-lg">SoldOut</span>
                 <input
                   type="radio"
-                  id="soldOut" // Unique ID
-                  name="availability" // Same name for both radio buttons
-                  defaultChecked={!isEditing || !selectedMenu.isAvailable} // If not editing or menu is not available
-                  className="radio checked:bg-red-500"
-                  value="false" // Value for "SoldOut"
+                  id="soldOut"
+                  name="availability"
+                  defaultChecked={!menuEdit || !menuEdit.isAvailable}
+                  value="false"
                   {...register("isAvailable")}
                 />
               </label>
@@ -161,13 +170,11 @@ export function CreateMenu() {
                 <span className="label-text text-lg">IsAvailable</span>
                 <input
                   type="radio"
-                  id="isAvailable" // Unique ID
-                  name="availability" // Same name for both radio buttons
-                  defaultChecked={
-                    isEditing ? isEditing && selectedMenu.isAvailable : true
-                  } // Always default to true
+                  id="isAvailable"
+                  name="availability"
+                  defaultChecked={menuEdit ? menuEdit.isAvailable : true} // Always default to true
                   className="radio checked:bg-blue-500"
-                  value="true" // Value for "IsAvailable"
+                  value="true"
                   {...register("isAvailable")}
                 />
               </label>
@@ -180,22 +187,21 @@ export function CreateMenu() {
             type="file"
             id="imageUrl"
             accept="image/*"
+            disabled={isWorking}
             {...register("imageUrl", {
-              required: isEditing ? false : "This field is required",
+              required: menuEdit ? false : "This field is required",
             })}
           />
         </FormRow>
         <FormRow>
-          {/* type is an HTML attribute! */}
-          <Button disabled={isCreate} type="reset">
+          <Button disabled={isWorking} type="reset">
             Cancel
           </Button>
-          <Button disabled={isCreate}>
-            {/* {isEditSession ? "Edit cabin" : "Create new cabin"}</Button> */}
-            Create Item
+          <Button disabled={isWorking}>
+            {menuEdit ? "Edit cabin" : "Create new cabin"}
           </Button>
         </FormRow>
-      </Form>{" "}
+      </Form>
     </StyledForm>
   );
 }

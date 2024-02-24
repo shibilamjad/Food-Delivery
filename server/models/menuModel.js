@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const Order = require("../models/orderModel");
-const User = require("../models/userModel");
 
 const menuSchema = new mongoose.Schema(
   {
@@ -43,11 +41,6 @@ const menuSchema = new mongoose.Schema(
 
     isAvailable: {
       type: Boolean,
-      required: true,
-    },
-    restaurant: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Restaurant",
       required: true,
     },
   },

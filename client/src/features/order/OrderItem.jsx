@@ -12,6 +12,7 @@ export function OrderItem() {
   const { isLoading, order } = useOrder();
   const orderItems = order && order.filter((items) => items.cart.length > 0);
   const navigate = useNavigate();
+
   function handleDetails(orderId) {
     setSelectedOrderId(orderId);
     navigate(`/status/${orderId}`);

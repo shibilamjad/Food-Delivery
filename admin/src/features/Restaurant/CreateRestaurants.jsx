@@ -1,16 +1,28 @@
 import { useForm } from "react-hook-form";
 import { StyledForm, Form } from "../../ui/FormContainer";
+import { useNavigate, useParams } from "react-router-dom";
+
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Button from "../../ui/Buttons";
-import styled from "styled-components";
 import Textarea from "../../ui/Textarea";
 import { Maps } from "./Maps";
+import { Loader } from "../../ui/Loader";
 import { useEffect } from "react";
 import { getAddress } from "../../service/apiGeocoding";
 import { useCreateRestaurants } from "./useNewRestaurants";
+import { useRestaurantId } from "./useRestaurantId";
+import { convertToAmPm } from "../../utils/convertToAmPm";
+import FileInput from "../../ui/FileInput";
+import { useUpdateRestaurants } from "./useUpdateRestaurants";
 
 export const CreateRestaurants = () => {
+  const navigate = useNavigate();
+
+  const { restaurantId } = useParams();
+  const { isLoading, restaurantDetail } = useRestaurantId(restaurantId);
+  const { createRestaurant } = useCreateRestaurants();
+  const { updateRestaurant } = useUpdateRestaurants();
   const {
     register,
     handleSubmit,
@@ -20,7 +32,19 @@ export const CreateRestaurants = () => {
     watch,
     setValue,
   } = useForm();
-  const { createRestaurant } = useCreateRestaurants();
+
+  useEffect(() => {
+    if (restaurantDetail) {
+      setValue("restaurant", restaurantDetail.restaurant || "");
+      setValue("address", restaurantDetail.address || "");
+      setValue("location", restaurantDetail.location || "");
+      setValue("lat", restaurantDetail.lat || "");
+      setValue("long", restaurantDetail.long || "");
+      setValue("openTime", convertToAmPm(restaurantDetail.openTime) || "");
+      setValue("closeTime", convertToAmPm(restaurantDetail.closeTime) || "");
+    }
+  }, [restaurantDetail, setValue]);
+
   // Watch latitude and longitude fields
   const latitude = watch("lat");
   const longitude = watch("long");
@@ -39,7 +63,7 @@ export const CreateRestaurants = () => {
               addressData.principalSubdivision +
               ", " +
               addressData.countryName
-          ); // Customize this line based on the response structure
+          );
         } catch (error) {
           console.error(error);
         }
@@ -48,24 +72,34 @@ export const CreateRestaurants = () => {
 
     updateAddress();
   }, [latitude, longitude, setValue]);
-
   async function onSubmit(data) {
-    // console.log(data);
-    createRestaurant(data, {
-      onSuccess(data) {
-        reset();
-      },
-    });
+    if (restaurantDetail) {
+      updateRestaurant({
+        restaurantId,
+        updateRestaurant: data,
+        onSuccess: (data) => {
+          reset();
+        },
+      });
+      navigate("/restaurants");
+    } else {
+      await createRestaurant(data, {
+        onSuccess: (data) => {
+          reset();
+        },
+      });
+      navigate("/restaurants");
+    }
   }
 
   function onError(errors) {
     console.log(errors);
   }
-
+  if (isLoading) return <Loader />;
   return (
     <>
       <StyledForm>
-        <h1>Create Menu</h1>
+        <h1> {restaurantDetail ? "Edit Restaurant" : "Create Restaurant"}</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <FormRow label="Restaurant name" error={errors?.name?.message}>
             <Input
@@ -101,7 +135,55 @@ export const CreateRestaurants = () => {
               })}
             />
           </FormRow>
-          <FormRow label="Address" error={errors?.address?.message}>
+          {/* <FormRow label="Closing Time" error={errors?.closeTime?.message}>
+            <Input
+              type="time"
+              id="closeTime"
+              // disabled={isLoading}
+              {...register("closeTime", {
+                required: "This field is required",
+              })}
+            />
+          </FormRow>
+          <FormRow label="Opening Time" error={errors?.openTime?.message}>
+            <Input
+              type="time"
+              id="openTime"
+              // disabled={isLoading}
+              {...register("openTime", {
+                required: "This field is required",
+              })}
+            />
+          </FormRow> */}
+          <FormRow label="Opening Time" error={errors?.openTime?.message}>
+            <Input
+              type="text"
+              id="openTime"
+              placeholder="HH:MM AM/PM"
+              {...register("openTime", {
+                required: "This field is required",
+                pattern: {
+                  value: /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i,
+                  message: "Please enter a valid time in HH:MM AM/PM format",
+                },
+              })}
+            />
+          </FormRow>
+          <FormRow label="Closing Time" error={errors?.closeTime?.message}>
+            <Input
+              type="text"
+              id="closeTime"
+              placeholder="HH:MM AM/PM"
+              {...register("closeTime", {
+                required: "This field is required",
+                pattern: {
+                  value: /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$/i,
+                  message: "Please enter a valid time in HH:MM AM/PM format",
+                },
+              })}
+            />
+          </FormRow>
+          <FormRow label="Full Address" error={errors?.address?.message}>
             <Textarea
               type="text"
               id="address"
@@ -112,8 +194,27 @@ export const CreateRestaurants = () => {
               })}
             />
           </FormRow>
+          <FormRow label="Short Address" error={errors?.location?.message}>
+            <Textarea
+              type="text"
+              id="location"
+              {...register("location", {
+                required: "This field is required",
+              })}
+            />
+          </FormRow>
+          <FormRow label="Item photo" error={errors?.image?.message}>
+            <FileInput
+              type="file"
+              id="image"
+              accept="image/*"
+              {...register("image", {
+                required: restaurantDetail ? false : "This field is required",
+              })}
+            />
+          </FormRow>
           <Button variation="primary" size="xxl" type="submit">
-            Create Restaurant
+            {restaurantDetail ? "Edit Restaurant" : "Create Restaurant"}
           </Button>
         </Form>
       </StyledForm>

@@ -2,6 +2,28 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3006/api';
 
+export async function getRestaurants() {
+  try {
+    const res = await axios(`${API_URL}/restaurants`);
+    const { data } = res;
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error('restaurants could not be retrieved');
+  }
+}
+
+export async function getRestaurantsMenu(restaurantId) {
+  try {
+    const res = await axios(`${API_URL}/restaurants/${restaurantId}`);
+    const { data } = res;
+    return data;
+  } catch (error) {
+    console.error(error.message);
+
+    throw new Error('order could not be retrieved');
+  }
+}
 export async function getMenu() {
   try {
     const res = await axios(`${API_URL}/menu`);
@@ -22,7 +44,6 @@ export async function getOrder(id) {
   const { data } = await res.json();
   return data;
 }
-
 export async function createOrder(newOrder) {
   try {
     const res = await axios(`${API_URL}/order`, {

@@ -154,7 +154,8 @@ const userCartList = async (req, res) => {
     const user = await Users.findById(userId).populate({
       path: "cart.menuItem",
       model: "Menu",
-      select: "name unitPrice ingredients discount quantity totalPrice",
+      select:
+        "name unitPrice ingredients imageUrl discount quantity totalPrice",
     });
     // Calculate totalPrice for each cart item
     user.cart.forEach((cartItem) => {

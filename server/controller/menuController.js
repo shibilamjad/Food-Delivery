@@ -10,11 +10,31 @@ const menu = async (req, res) => {
   try {
     const menuList = await Menu.find()
       .select("name unitPrice imageUrl ingredients isAvailable discount")
-      .populate("restaurant", "restaurant address");
+      .populate("restaurant", "restaurant address lat long ");
     res.status(200).json(menuList);
   } catch (error) {
     res.status(500).json({
-      message: `Error fetching movies: ${error.message}`,
+      message: `Error fetching Menu: ${error.message}`,
+    });
+  }
+};
+const menuEdit = async (req, res) => {
+  const { menuId } = req.params;
+
+  try {
+    const menuList = await Menu.findById(menuId).select(
+      "name unitPrice  ingredients isAvailable discount"
+    );
+
+    if (!menuList) {
+      return res.status(404).json({
+        message: "menuId not found",
+      });
+    }
+    res.status(200).json(menuList);
+  } catch (error) {
+    res.status(500).json({
+      message: `Error fetching MenuId: ${error.message}`,
     });
   }
 };
@@ -57,6 +77,20 @@ const addMenu = async (req, res) => {
       restaurant: foundRestaurant._id,
     });
 
+    const updateRestaurant = await Restaurant.findByIdAndUpdate(
+      restaurant,
+      {
+        $push: { menu: newMenu._id },
+      },
+      {
+        new: true,
+      }
+    );
+    if (!updateRestaurant) {
+      return res.status(404).json({
+        message: `Restaurant '${restaurant}' not found or could not be updated`,
+      });
+    }
     return res.status(200).json(newMenu);
   } catch (error) {
     console.error("Error adding Menu:", error);
@@ -81,25 +115,14 @@ const updateMenu = async (req, res) => {
       imageUrl = cloudinaryResult.secure_url;
     }
 
-    const { name, unitPrice, ingredients, isAvailable, discount, restaurant } =
-      req.body;
+    const { name, unitPrice, ingredients, isAvailable, discount } = req.body;
 
-    const foundRestaurant = await Restaurant.findOne({
-      _id: restaurant,
-    });
-
-    if (!foundRestaurant) {
-      return res.status(404).json({
-        message: `Restaurant '${restaurant}' not found`,
-      });
-    }
     let updateObject = {
       name,
       unitPrice,
       ingredients,
       isAvailable,
       discount,
-      restaurant: foundRestaurant._id,
     };
 
     if (imageUrl) {
@@ -170,4 +193,5 @@ module.exports = {
   addMenu,
   updateMenu,
   deleteMenu,
+  menuEdit,
 };

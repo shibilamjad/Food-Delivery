@@ -5,10 +5,10 @@ export function useMenu() {
   const {
     data: menu,
     isLoading,
-    error,
+    isError,
   } = useQuery({
     queryKey: ['menu'],
     queryFn: getMenu,
   });
-  return { isLoading, error, menu };
+  return { isLoading, isError, menu };
 }

@@ -8,7 +8,6 @@ import { useDetails } from './useOrderDetails';
 export function Order() {
   const { orderId } = useParams();
   const { details, isLoading } = useDetails(orderId);
-  console.log(details);
   if (isLoading) return <Loader />;
   const statusToTagName = {
     pending: 'bg-red-700',

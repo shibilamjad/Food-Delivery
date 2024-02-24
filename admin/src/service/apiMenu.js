@@ -1,4 +1,3 @@
-import { rating } from "@material-tailwind/react";
 import axios from "axios";
 
 const API_URL = "http://localhost:3006/api/menu";
@@ -10,7 +9,18 @@ export async function getMenu() {
     return data;
   } catch (error) {
     console.error(error.message);
-    throw new Error("Movie could not be retrieved");
+    throw new Error("Menu could not be retrieved");
+  }
+}
+
+export async function getMenuId(menuId) {
+  try {
+    const res = await axios(`${API_URL}/${menuId}`);
+    const { data } = res;
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error("Menu could not be retrieved");
   }
 }
 export async function uploadMenuApi(data) {
@@ -44,7 +54,7 @@ export async function updateMenuApi(menuId, data) {
     formData.append("ingredients", data.ingredients);
     formData.append("discount", data.discount);
     formData.append("isAvailable", data.isAvailable);
-    formData.append("restaurant", data.restaurant.value);
+    // formData.append("restaurant", data.restaurant.value);
 
     const res = await axios.put(`${API_URL}/updateMenu/${menuId}`, formData, {
       headers: {
@@ -56,10 +66,10 @@ export async function updateMenuApi(menuId, data) {
   } catch (error) {
     console.error(error);
     if (error.response && error.response.status === 409) {
-      throw new Error("Movie title already exists");
+      throw new Error("Menu title already exists");
     }
 
-    throw new Error("Movie could not be created");
+    throw new Error("Menu could not be created");
   }
 }
 
@@ -75,6 +85,6 @@ export async function deleteMenuApi(_id) {
     return data;
   } catch (error) {
     console.error(error.message);
-    throw new Error("Movie cloud not be deleted");
+    throw new Error("Menu cloud not be deleted");
   }
 }

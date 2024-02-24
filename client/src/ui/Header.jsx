@@ -7,9 +7,9 @@ import { OrderOverview } from '../features/order/orderOverview';
 function Header() {
   return (
     <header
-      className="flex flex-col items-center 
-    justify-between border-b border-stone-200
-     bg-yellow-400 px-4 py-3 uppercase sm:flex sm:flex-row sm:px-6"
+      className=" flex  flex-col items-center justify-between 
+    border-b border-stone-200 bg-yellow-400
+     px-4 py-3 uppercase shadow-lg sm:flex sm:flex-row sm:px-6"
     >
       <div>
         <Link

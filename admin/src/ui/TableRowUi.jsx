@@ -67,8 +67,9 @@ export const TableRowRestaurant = styled.div`
   display: grid;
   font-size: 1.2rem;
   text-transform: capitalize;
-  grid-template-columns: 0.1fr 2fr 5fr 1fr;
-  column-gap: 0.4rem;
+  grid-template-columns: 2fr 2fr 2fr 1fr 1fr;
+  /* column-gap: 0.4rem; */
+  margin-left: 10px;
   justify-content: space-between;
   align-items: center;
   padding: 2rem 1rem;
@@ -138,7 +139,7 @@ export const Address = styled.h1`
 
 export const Menu = styled.div`
   font-weight: 600;
-  color: var(--color-grey-300);
+  color: var(--color-grey-600);
   height: auto;
   width: 200px;
   overflow-wrap: break-word;

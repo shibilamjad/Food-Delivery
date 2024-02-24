@@ -39,24 +39,23 @@ function MainNav() {
 
         <span>Order</span>
       </NavItem>
-      <NavItem to="/menuItem">
+
+      {/* <NavItem to="/menuItem">
         <FaBowlRice />
-
         <span>Menu</span>
-      </NavItem>
-      <NavItem to="/menu">
-        <FaRegSquarePlus />
+      </NavItem> */}
 
-        <span>Add Menu</span>
-      </NavItem>
       <NavItem to="/restaurants">
         <BiRestaurant />
         <span>Restuarants List</span>
       </NavItem>
       <NavItem to="/new-restaurants">
         <FaKitchenSet />
-
         <span>Create New Restuarant</span>
+      </NavItem>
+      <NavItem to="/menu">
+        <FaRegSquarePlus />
+        <span>Add Menu</span>
       </NavItem>
       <Btn onClick={handleLogout}>
         <BsBoxArrowLeft />

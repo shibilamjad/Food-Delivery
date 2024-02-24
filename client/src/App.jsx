@@ -14,6 +14,7 @@ import { Toaster } from 'react-hot-toast';
 import { SignIn } from './features/user/SignIn';
 import { OrderItem } from './features/order/OrderItem';
 import { OrderStatusProvider } from './context/OrderStatusContext';
+import { Restaurant } from './features/Restaurant/Restaurant';
 
 function App() {
   const queryClient = new QueryClient({
@@ -30,7 +31,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<AppLayout />}>
-              <Route index element={<Navigate replace to="menu" />} />
+              <Route index element={<Navigate replace to="restaurant" />} />
+              <Route path="/restaurant" element={<Restaurant />} />
+              <Route path="/restaurant/:restaurantId" element={<Menu />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/order/new" element={<CreateOrder />} />

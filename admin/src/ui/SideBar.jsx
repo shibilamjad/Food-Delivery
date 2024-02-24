@@ -38,9 +38,8 @@ const StyledSideBar = styled.div`
   color: var(--color-grey-500);
   animation: ${({ isopen }) => (isopen ? slideOut : slideIn)} 0.5s ease-in-out;
   @media ${device.laptopL} {
-    display: flex; // Always show sidebar on laptop-sized screens
+    display: flex;
   }
-  // Add other media queries for smaller screen sizes
   @media ${device.laptop} {
     padding: 3.2rem 2.4rem;
     transition: all 0.5;

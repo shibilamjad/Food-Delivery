@@ -2,6 +2,7 @@ const router = require("express").Router();
 const multer = require("multer");
 const {
   menu,
+  menuEdit,
   addMenu,
   updateMenu,
   deleteMenu,
@@ -11,6 +12,7 @@ const upload = multer({ dest: "uploads/" });
 
 // get all menu with genre *(all)
 router.get("/", menu);
+router.get("/:menuId", menuEdit);
 
 // menu create (dashboard)
 router.post("/add-menu", addMenu);
