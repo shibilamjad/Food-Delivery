@@ -12,7 +12,7 @@ export function useRegister() {
       queryClient.setQueryData(['user'], data.user);
       toast.success('Succesfully created account');
 
-      navigate('/menu');
+      navigate('/restaurant');
     },
     onError: () => {
       toast.error('Provided email or userName are alredy exist');

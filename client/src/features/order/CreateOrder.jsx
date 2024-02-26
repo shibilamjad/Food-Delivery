@@ -6,9 +6,7 @@ import { useCreateOrder } from './useCreateOrder';
 import { Loader } from '../../ui/Loader';
 import { useCart } from '../cart/useCart';
 import { EmptyCart } from '../cart/EmptyCart';
-import { getAddress } from '../../services/apiGeocoding';
-import { useEffect, useState } from 'react';
-import { useGeoLocation } from './useGeoLocation';
+import { useGeoLocation } from '../../utils/useGeoLocation';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -45,75 +43,72 @@ export function CreateOrder() {
   if (cart.length === 0) return <EmptyCart />;
 
   return (
-    <div className="h-screen px-4 py-6">
-      <h2 className="mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
+    <StyledContainer>
+      <div className="h-screen px-4 py-6">
+        <h2 className="mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
 
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">First Name</label>
-          <div className="grow">
-            <input
-              className="input w-full"
-              type="text"
-              id="userName"
-              {...register('userName', { required: 'This field is required' })}
-            />
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
+          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="sm:basis-40">First Name</label>
+            <div className="grow">
+              <input
+                className="input w-full"
+                type="text"
+                id="userName"
+                {...register('userName', {
+                  required: 'This field is required',
+                })}
+              />
+            </div>
           </div>
-        </div>
-        <ErrorMessage>{errors?.userName?.message}</ErrorMessage>
+          <ErrorMessage>{errors?.userName?.message}</ErrorMessage>
 
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">Phone number</label>
-          <div className="grow">
-            <input
-              className="input w-full"
-              type="tel"
-              name="mobile"
-              {...register('mobile', {
-                required: 'This field is required',
-                validate: (value) =>
-                  isValidPhone(value) || 'Invalid phone number',
-              })}
-            />
+          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="sm:basis-40">Phone number</label>
+            <div className="grow">
+              <input
+                className="input w-full"
+                type="tel"
+                name="mobile"
+                {...register('mobile', {
+                  required: 'This field is required',
+                  validate: (value) =>
+                    isValidPhone(value) || 'Invalid phone number',
+                })}
+              />
+            </div>
           </div>
-        </div>
-        <ErrorMessage>{errors?.mobile?.message}</ErrorMessage>
-        <div className="relative mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <label className="sm:basis-40">Address</label>
-          <div className="grow">
-            <input
-              className="input w-full placeholder:text-gray-600 placeholder:opacity-60"
-              type="text"
-              name="address"
-              defaultValue={address}
-              placeholder="Enter your address"
-              {...register('address', { required: 'This field is required' })}
-            />
-          </div>
+          <ErrorMessage>{errors?.mobile?.message}</ErrorMessage>
+          <div className="relative mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="sm:basis-40">Address</label>
+            <div className="grow">
+              <input
+                className="input w-full placeholder:text-gray-600 placeholder:opacity-60"
+                type="text"
+                name="address"
+                defaultValue={address}
+                placeholder="Enter your address"
+                {...register('address', { required: 'This field is required' })}
+              />
+            </div>
 
-          <span className="absolute right-0.5 top-[37px] z-50 sm:top-1 md:right-[5px] md:top-[3px]">
-            {/* <Button
-              type="small"
-              onClick={(e) => {
-                e.preventDefault();
-                getPosition().then((positionObj) => {
-                  setPosition(positionObj);
-                });
-              }}
-            >
-              Get position
-            </Button> */}
-          </span>
-        </div>
-        <ErrorMessage>{errors?.address?.message}</ErrorMessage>
-        <div>
-          <Button type="small">Order now</Button>
-        </div>
-      </form>
-    </div>
+            <span className="absolute right-0.5 top-[37px] z-50 sm:top-1 md:right-[5px] md:top-[3px]"></span>
+          </div>
+          <ErrorMessage>{errors?.address?.message}</ErrorMessage>
+          <div>
+            <Button type="small">Order now</Button>
+          </div>
+        </form>
+      </div>{' '}
+    </StyledContainer>
   );
 }
-
+const StyledContainer = styled.div`
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 20px;
+`;
 const ErrorMessage = styled.p`
   display: flex;
   align-items: start;

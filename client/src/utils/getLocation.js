@@ -3,20 +3,19 @@ import haversine from 'haversine-distance';
 
 export async function getLocation(lat, long, setTotalDistance) {
   try {
+    // Get the user's current position
     const position = await getCurrentPosition();
     const currentLat = position.coords.latitude;
     const currentLong = position.coords.longitude;
 
-    const resLat = lat ? lat : null;
-    const resLong = long ? long : null;
+    // Calculate the distance between the user's current location and the restaurant's location
+    const distance = haversine(
+      { latitude: currentLat, longitude: currentLong },
+      { latitude: lat, longitude: long },
+    );
 
-    if (resLat !== null && resLong !== null) {
-      const a = { latitude: currentLat, longitude: currentLong };
-      const b = { latitude: resLat, longitude: resLong };
-      setTotalDistance(Math.round(haversine(a, b) / 1000));
-    } else {
-      console.log('Restaurant latitude or longitude is missing.');
-    }
+    // Update the total distance in the UI
+    setTotalDistance(Math.round(distance / 1000)); // Convert meters to kilometers
   } catch (error) {
     console.error('Error getting geolocation:', error);
   }

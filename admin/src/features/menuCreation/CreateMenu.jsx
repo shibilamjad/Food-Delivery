@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Select from "react-select";
 
 import { useMenuCreate } from "./useMenuCreate";
@@ -15,16 +16,14 @@ import { Button } from "../../ui/Buttons";
 import { Loader } from "../../ui/Loader";
 import { useRestaurant } from "../Restaurant/useRestaurant";
 import { device } from "../../ui/device";
-import { useEffect } from "react";
 
 export function CreateMenu() {
   const { menuId } = useParams();
   const { menuEdit, isLoading } = useMenuEdit(menuId);
-  const { updateMenu, isEditing } = useMenuUpdate();
+  const { updateMenu } = useMenuUpdate();
   const { createMenu, isCreate } = useMenuCreate();
   const { restaurants } = useRestaurant();
-  const isWorking = isCreate || isEditing;
-
+  console.log(createMenu === "true");
   const {
     register,
     handleSubmit,
@@ -66,7 +65,8 @@ export function CreateMenu() {
   function onError(errors) {
     console.log(errors);
   }
-  if (isLoading) return <Loader />;
+  if (isLoading || isCreate) return <Loader />;
+
   return (
     <StyledForm>
       <h1>{menuEdit ? "Edit Menu" : "Create Menu"}</h1>
@@ -84,13 +84,15 @@ export function CreateMenu() {
                     {...field}
                     className="basic-single"
                     classNamePrefix="select"
-                    disabled={isWorking}
                     placeholder="Select Restaurant"
                     id="restaurant"
-                    options={restaurants.map((item) => ({
-                      value: item._id,
-                      label: item.restaurant,
-                    }))}
+                    options={
+                      restaurants &&
+                      restaurants.map((item) => ({
+                        value: item._id,
+                        label: item.restaurant,
+                      }))
+                    }
                     isClearable
                     styles={customStyles}
                   />
@@ -104,7 +106,7 @@ export function CreateMenu() {
             type="text"
             id="name"
             defaultValue={menuEdit ? menuEdit.name : ""}
-            // disabled={isWorking}
+            //
             {...register("name", {
               required: "This field is required",
             })}
@@ -116,7 +118,6 @@ export function CreateMenu() {
             type="number"
             id="unitPrice"
             defaultValue={menuEdit ? menuEdit.unitPrice : ""}
-            disabled={isWorking}
             {...register("unitPrice", {
               required: "This field is required",
             })}
@@ -127,7 +128,6 @@ export function CreateMenu() {
           <Input
             type="number"
             id="discount"
-            disabled={isWorking}
             defaultValue={menuEdit ? menuEdit.discount : 0}
             {...register("discount", {
               required: "This field is required",
@@ -143,7 +143,6 @@ export function CreateMenu() {
             type="number"
             id="ingredients"
             defaultValue={menuEdit ? menuEdit.ingredients : ""}
-            disabled={isWorking}
             {...register("ingredients", {
               required: "This field is required",
             })}
@@ -187,19 +186,14 @@ export function CreateMenu() {
             type="file"
             id="imageUrl"
             accept="image/*"
-            disabled={isWorking}
             {...register("imageUrl", {
               required: menuEdit ? false : "This field is required",
             })}
           />
         </FormRow>
         <FormRow>
-          <Button disabled={isWorking} type="reset">
-            Cancel
-          </Button>
-          <Button disabled={isWorking}>
-            {menuEdit ? "Edit cabin" : "Create new cabin"}
-          </Button>
+          <Button type="reset">Cancel</Button>
+          <Button>{menuEdit ? "Edit cabin" : "Create new cabin"}</Button>
         </FormRow>
       </Form>
     </StyledForm>

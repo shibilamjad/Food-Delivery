@@ -4,6 +4,7 @@ import { Loader } from '../../ui/Loader';
 import { OrderBill } from './OrdeBill';
 import { OrderCart } from './OrderCart';
 import { useDetails } from './useOrderDetails';
+import styled from 'styled-components';
 
 export function Order() {
   const { orderId } = useParams();
@@ -15,7 +16,7 @@ export function Order() {
     success: 'bg-green-700',
   };
   return (
-    <>
+    <StyledContainer>
       <div className="mx-2 mt-3">
         <LinkButton to="/order">&larr; Back to order</LinkButton>
       </div>
@@ -24,9 +25,7 @@ export function Order() {
         {details.map((order) => (
           <div key={order._id} className="flex flex-col gap-5 ">
             <div className="flex flex-wrap items-center justify-between">
-              <h2 className="text-xl font-semibold">
-                Order Id #{order._id} status
-              </h2>
+              <h2 className="text-xl font-semibold">Order Id #{order._id}</h2>
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span
                   className={`gap-2 rounded-full p-2 text-sm font-semibold text-slate-50 ${
@@ -54,21 +53,11 @@ export function Order() {
           </div>
         ))}
       </div>
-    </>
+    </StyledContainer>
   );
 }
-{
-  /* <li key={cartItem.menuItem._id}>
-<p>
-  Item name:
-  <span className=" font-semibold">
-    {cartItem.menuItem.name}
-  </span>
-</p>
-<p>Quantity: {cartItem.quantity}</p>
-<p>Description: {cartItem.menuItem.ingredients}</p>
-<p className="font-semibold text-green-700">
-  Price: ₹{cartItem.menuItem.unitPrice}
-</p>
-</li> */
-}
+const StyledContainer = styled.div`
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto;
+`;

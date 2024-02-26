@@ -3,13 +3,13 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     fontFamily: {
-      Roboto: 'Roboto mono, monospace',
+      sans: ['Roboto mono', 'monospace'],
     },
     extend: {
       height: {
-        screen: '100dvh',
+        screen: '100vh',
       },
     },
   },
-  plugins: [],
+  plugins: [require('daisyui')],
 };

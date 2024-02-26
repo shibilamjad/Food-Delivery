@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAddress } from '../../services/apiGeocoding';
+import { getAddress } from '../services/apiGeocoding';
 
 function getPosition() {
   return new Promise(function (resolve, reject) {
@@ -10,6 +10,7 @@ function getPosition() {
 export function useGeoLocation() {
   const [position, setPosition] = useState(null);
   const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,11 +37,11 @@ export function useGeoLocation() {
       try {
         if (!position) return;
 
-        // Only fetch address if position is available
         const addressObj = await getAddress(position);
         const formattedAddress = `${addressObj?.locality}, ${addressObj?.city} ${addressObj?.postcode}, ${addressObj?.countryName}`;
-
+        const formattedCity = `${addressObj?.localityInfo.administrative[2].name}`;
         setAddress(formattedAddress);
+        setCity(formattedCity);
       } catch (error) {
         console.error('Error getting address:', error);
       }
@@ -49,5 +50,5 @@ export function useGeoLocation() {
     fetchAddress();
   }, [position]);
 
-  return { position, address };
+  return { position, address, city };
 }

@@ -174,6 +174,7 @@ const deleteRestaurants = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   getRestaurantList,
   addNewRestaurants,

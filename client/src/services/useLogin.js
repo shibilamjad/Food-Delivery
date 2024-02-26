@@ -15,7 +15,7 @@ export function useLogin() {
       queryClient.setQueryData(['user'], data.user);
       toast.success('Succesfully login');
       // setIsAuthenticated(true);
-      navigate('/menu');
+      navigate('/restaurant');
     },
     onError: (err) => {
       toast.error('Provided email or password are incorrect');

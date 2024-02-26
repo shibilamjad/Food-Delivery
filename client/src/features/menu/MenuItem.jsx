@@ -42,7 +42,7 @@ export function MenuItem({ items, totalDistance }) {
           {ingredients}
         </p>
         <div className=" mt-auto flex flex-wrap items-center justify-between gap-x-2">
-          {isAvailable && totalDistance > 30 ? (
+          {isAvailable ? (
             <div className="text-md ">
               <div className="text-red-700 line-through ">
                 {discount > 0 && `₹${unitPrice}`}

@@ -101,7 +101,7 @@ export const CreateRestaurants = () => {
       <StyledForm>
         <h1> {restaurantDetail ? "Edit Restaurant" : "Create Restaurant"}</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormRow label="Restaurant name" error={errors?.name?.message}>
+          <FormRow label="Restaurant name" error={errors?.restaurant?.message}>
             <Input
               type="text"
               id="restaurant"
@@ -135,26 +135,6 @@ export const CreateRestaurants = () => {
               })}
             />
           </FormRow>
-          {/* <FormRow label="Closing Time" error={errors?.closeTime?.message}>
-            <Input
-              type="time"
-              id="closeTime"
-              // disabled={isLoading}
-              {...register("closeTime", {
-                required: "This field is required",
-              })}
-            />
-          </FormRow>
-          <FormRow label="Opening Time" error={errors?.openTime?.message}>
-            <Input
-              type="time"
-              id="openTime"
-              // disabled={isLoading}
-              {...register("openTime", {
-                required: "This field is required",
-              })}
-            />
-          </FormRow> */}
           <FormRow label="Opening Time" error={errors?.openTime?.message}>
             <Input
               type="text"
@@ -194,8 +174,8 @@ export const CreateRestaurants = () => {
               })}
             />
           </FormRow>
-          <FormRow label="Short Address" error={errors?.location?.message}>
-            <Textarea
+          <FormRow label="City" error={errors?.location?.message}>
+            <Input
               type="text"
               id="location"
               {...register("location", {

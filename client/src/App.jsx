@@ -7,7 +7,7 @@ import { Menu } from './features/menu/Menu';
 import { CreateOrder } from './features/order/CreateOrder';
 import { Order } from './features/order/Order';
 import { Register } from './features/user/Register';
-import { Home } from './ui/Home';
+import { ProtectedRoutesHomePage } from './features/ProtectedRoutes ';
 import { Error } from './ui/Error';
 import { Cart } from './features/cart/Cart';
 import { Toaster } from 'react-hot-toast';
@@ -30,7 +30,13 @@ function App() {
       <OrderStatusProvider>
         <BrowserRouter>
           <Routes>
-            <Route element={<AppLayout />}>
+            <Route
+              element={
+                // <ProtectedRoutesHomePage>
+                <AppLayout />
+                // </ProtectedRoutesHomePage>
+              }
+            >
               <Route index element={<Navigate replace to="restaurant" />} />
               <Route path="/restaurant" element={<Restaurant />} />
               <Route path="/restaurant/:restaurantId" element={<Menu />} />

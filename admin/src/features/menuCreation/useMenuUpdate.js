@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export function useMenuUpdate() {
   const queryClient = useQueryClient();
 
-  const { mutate: updateMenu, isLoading: isEditing } = useMutation({
+  const { mutate: updateMenu } = useMutation({
     mutationFn: (data) => updateMenuApi(data.menuId, data.updateMenu),
     onSuccess: (data) => {
       toast.success("Menu successfully updated");
@@ -15,5 +15,5 @@ export function useMenuUpdate() {
       toast.error(`Failed to update menu: ${error.message}`);
     },
   });
-  return { updateMenu, isEditing };
+  return { updateMenu };
 }

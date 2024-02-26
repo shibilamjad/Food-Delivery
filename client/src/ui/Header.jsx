@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import SearchOrder from '../features/order/SearchOrder';
 import CartOverview from '../features/cart/CartOverview';
 import styled from 'styled-components';
 import { OrderOverview } from '../features/order/orderOverview';
+import { RestaurantOverview } from '../features/Restaurant/RestaurantOverview';
 
 function Header() {
   return (
@@ -12,21 +12,16 @@ function Header() {
      px-4 py-3 uppercase shadow-lg sm:flex sm:flex-row sm:px-6"
     >
       <div>
-        <Link
-          className=" py-2 font-semibold tracking-widest text-stone-800"
-          to="/"
-        >
-          Fast React Pizza co.
-        </Link>
+        <h1 className=" py-2 text-[20px] font-semibold tracking-widest text-stone-800">
+          Fast And Go .
+        </h1>
       </div>
-      <div>
-        <SearchOrder />
-      </div>
+
       <StyledNav>
+        <RestaurantOverview />
         <CartOverview />
         <OrderOverview />
       </StyledNav>
-      {/* <UserName /> */}
     </header>
   );
 }
@@ -35,5 +30,6 @@ export default Header;
 
 const StyledNav = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 10px;
 `;
