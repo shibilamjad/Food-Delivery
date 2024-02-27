@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Menu",
         },
+        restaurant: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Restaurant",
+        },
         quantity: {
           type: Number,
           default: 1,

@@ -1,62 +1,42 @@
 import styled from 'styled-components';
-import { Loader } from '../../ui/Loader';
 import { Empty } from '../../ui/Empty';
 import { useRestaurant } from './useRestaurant';
 import { RestaurantsItem } from './RestaurantsItem';
 import { useGeoLocation } from '../../utils/useGeoLocation';
 import { AvailableItem } from './AvailableItem';
 import { device } from '../../ui/device';
-import { Skeletons } from '../../ui/Skeleton';
 import { LoaderSkelten } from '../../ui/LoaderSkelten';
+import { useAvailable } from './useAvailable';
 
 export function Restaurant() {
-  const { restaurants, isLoading, isError } = useRestaurant();
-
-  const { city, position } = useGeoLocation();
-  console.log(city);
-  if (isLoading) return <LoaderSkelten />;
+  const { allRestaurant, isLoading, isError } = useRestaurant();
+  const { availableRestaurants, isLoading: isAvailable } = useAvailable();
+  const { city } = useGeoLocation();
+  if (isLoading || isAvailable) return <LoaderSkelten />;
   if (isError) return <Empty>Something went wrong. Please try again.</Empty>;
-  console.log(city);
   return (
     <>
-      {city ? (
-        <StyledContainer>
-          <Header>
-            <h1>
-              Restaurants Available in your Location <span>{city}</span>
-            </h1>
-          </Header>
-          <StyledRestaurant>
-            {restaurants.map((item) => (
+      <StyledContainer>
+        <Header>
+          <h1>
+            Restaurants Available in your Location <span>{city}</span>
+          </h1>
+        </Header>
+        <StyledRestaurant>
+          {availableRestaurants &&
+            availableRestaurants.map((item) => (
               <AvailableItem items={item} key={item._id} />
             ))}
-          </StyledRestaurant>
-          <Header>
-            <h1>Our Popular Restaurants</h1>
-          </Header>
-          <StyledRestaurant>
-            {restaurants.map((item) => (
-              <RestaurantsItem items={item} key={item._id} />
-            ))}
-          </StyledRestaurant>
-        </StyledContainer>
-      ) : (
-        <StyledContainer>
-          <Header>
-            <h1>Loading ...</h1>
-          </Header>
-          <StyledRestaurant>
-            <Skeletons />
-          </StyledRestaurant>
-          <Header>
-            <h1>Loading ...</h1>
-          </Header>
-          <StyledRestaurant>
-            <Skeletons />
-            <Skeletons />
-          </StyledRestaurant>
-        </StyledContainer>
-      )}
+        </StyledRestaurant>
+        <Header>
+          <h1>Our Popular Restaurants</h1>
+        </Header>
+        <StyledRestaurant>
+          {allRestaurant.map((item) => (
+            <RestaurantsItem items={item} key={item._id} />
+          ))}
+        </StyledRestaurant>
+      </StyledContainer>
     </>
   );
 }

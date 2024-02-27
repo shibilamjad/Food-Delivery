@@ -47,6 +47,7 @@ export function Menu() {
           {restaurantMenu.menu.map((items) => (
             <MenuItem
               items={items}
+              restaurantId={restaurantId}
               totalDistance={totalDistance}
               key={items._id}
             />

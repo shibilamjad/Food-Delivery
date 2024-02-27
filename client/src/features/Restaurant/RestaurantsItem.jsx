@@ -1,40 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import { WiTime8 } from 'react-icons/wi';
 import { HiMiniStar } from 'react-icons/hi2';
-
-import { Loader } from '../../ui/Loader';
-import { useAddCart } from '../cart/useAddCart';
-import { useCart } from '../cart/useCart';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import { getLocation } from '../../utils/getLocation';
 
 export function RestaurantsItem({ items }) {
-  const [totalDistance, setTotalDistance] = useState(null);
   const navigate = useNavigate();
   const {
     _id: restaurantId,
     address,
     location,
     image,
-    lat,
-    long,
     openTime,
     closeTime,
     restaurant,
     menu,
+    distance,
   } = items;
-  const { addCart } = useAddCart();
-  const { cart, isLoading } = useCart();
-
-  useEffect(() => {
-    getLocation(lat, long, setTotalDistance);
-  }, [lat, long]);
 
   const handleMenuItems = (restaurantId) => {
     navigate(`/restaurant/${restaurantId}`);
   };
-  if (isLoading) return <Loader />;
   return (
     <>
       {menu.length > 0 && (
@@ -60,12 +45,12 @@ export function RestaurantsItem({ items }) {
               </div>
               <div className="flex items-center">
                 <WiTime8 /> :
-                {totalDistance > 30 ? (
+                {distance > 30 ? (
                   <h2 className="text-sm text-red-600">
                     Very Long your distance
                   </h2>
                 ) : (
-                  `30 - 40 (${totalDistance})`
+                  `30 - 40 (${distance}km)`
                 )}
               </div>
 
@@ -78,11 +63,6 @@ export function RestaurantsItem({ items }) {
     </>
   );
 }
-const Button = styled.button`
-  display: flex;
-  align-items: start;
-  justify-content: start;
-`;
 
 const StyledMenu = styled.div`
   height: 100%;

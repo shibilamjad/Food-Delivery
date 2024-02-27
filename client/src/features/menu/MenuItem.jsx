@@ -5,21 +5,21 @@ import { Loader } from '../../ui/Loader';
 import { useAddCart } from '../cart/useAddCart';
 import { useCart } from '../cart/useCart';
 
-export function MenuItem({ items, totalDistance }) {
+export function MenuItem({ items, totalDistance, restaurantId }) {
   const navigate = useNavigate();
+
   const { _id, discount, name, imageUrl, ingredients, isAvailable, unitPrice } =
     items;
-  const isItemAvailable = isAvailable && totalDistance > 30;
-
   const { addCart } = useAddCart();
   const { cart, isLoading } = useCart();
-  const handleCartAction = (menuId) => {
+  const handleCartAction = (menuId, restaurantId) => {
     try {
       const alreadySelected = cart.some((item) => item.menuItem._id === menuId);
       if (alreadySelected) {
         navigate('/cart');
       } else {
-        addCart(menuId);
+        console.log(restaurantId, menuId);
+        addCart({ menuId, restaurantId });
       }
     } catch (error) {
       console.error(error);
@@ -71,7 +71,7 @@ export function MenuItem({ items, totalDistance }) {
                   key={_id}
                   type="small"
                   disabled={totalDistance > 30}
-                  onClick={() => handleCartAction(_id)}
+                  onClick={() => handleCartAction(_id, restaurantId)}
                 >
                   Add to cart
                 </Button>

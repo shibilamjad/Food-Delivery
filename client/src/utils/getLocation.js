@@ -14,7 +14,6 @@ export async function getLocation(lat, long, setTotalDistance) {
       { latitude: lat, longitude: long },
     );
 
-    // Update the total distance in the UI
     setTotalDistance(Math.round(distance / 1000)); // Convert meters to kilometers
   } catch (error) {
     console.error('Error getting geolocation:', error);

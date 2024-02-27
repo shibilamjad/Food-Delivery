@@ -40,11 +40,6 @@ function MainNav() {
         <span>Order</span>
       </NavItem>
 
-      {/* <NavItem to="/menuItem">
-        <FaBowlRice />
-        <span>Menu</span>
-      </NavItem> */}
-
       <NavItem to="/restaurants">
         <BiRestaurant />
         <span>Restuarants List</span>

@@ -16,11 +16,18 @@ const userOrderConfirm = async (req, res) => {
       path: "orderHistory",
       model: "Orders",
       select: "userName mobile address delivery totalPrice",
-      populate: {
-        path: "cart",
-        model: "Menu",
-        select: "name unitPrice ingredients discount quantity imageUrl",
-      },
+      populate: [
+        {
+          path: "cart",
+          model: "Menu",
+          select: "name unitPrice ingredients discount quantity imageUrl",
+        },
+        {
+          path: "cart",
+          model: "Restaurant",
+          select: "restaurant image",
+        },
+      ],
       options: { sort: { createdAt: -1 } },
       limit: 1,
     });
@@ -47,8 +54,9 @@ const userOrderDetails = async (req, res) => {
       .populate({
         path: "cart.menuItem",
         model: "Menu",
-        select: "name unitPrice ingredients discount ",
+        select: "name unitPrice ingredients discount",
       })
+
       .populate({
         path: "cart.quantity",
       });
@@ -106,6 +114,11 @@ const ordersAdmin = async (req, res) => {
         path: "cart.menuItem",
         model: "Menu",
         select: "name unitPrice",
+      })
+      .populate({
+        path: "cart.restaurant",
+        model: "Restaurant",
+        select: "restaurant image location",
       });
     res.status(200).json(orderList);
   } catch (error) {
@@ -124,6 +137,11 @@ const ordersDetailsAdmin = async (req, res) => {
         path: "cart.menuItem",
         model: "Menu",
         select: "name unitPrice ingredients discount imageUrl totalPrice",
+      })
+      .populate({
+        path: "cart.restaurant",
+        model: "Restaurant",
+        select: "restaurant address location",
       });
     // Calculate totalPrice for each cart item
     orderList.cart.forEach((cartItem) => {
@@ -194,7 +212,6 @@ const createOrder = async (req, res) => {
       address,
       totalPrice,
       cart: cartItems,
-      // orderItems: cartItems,
     });
 
     // Push the orderId into the orderHistory array

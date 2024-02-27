@@ -15,13 +15,12 @@ export async function cartListApi() {
     throw new Error(`Error fetching createUser: ${error.message}`);
   }
 }
-
-export async function addCartApi(menuId) {
+export async function addCartApi({ menuId, restaurantId }) {
   const userId = localStorage.getItem('token');
   try {
     const res = await axios.put(
       `${API_URL}/addCart`,
-      { menuId },
+      { menuId, restaurantId },
       {
         headers: {
           accesstoken: userId,

@@ -1,6 +1,5 @@
 const Users = require("../models/userModel");
 const Admin = require("../models/adminModel");
-const Menus = require("../models/menuModel");
 const {
   generatePasswordHash,
   checkePasswordHash,
@@ -10,7 +9,6 @@ const {
   generateRefreshToken,
   verifyRefreshToken,
 } = require("../utils/jwt");
-const { use } = require("../routes/user");
 
 const userList = async (req, res) => {
   try {
@@ -151,12 +149,18 @@ const logout = async (req, res) => {
 const userCartList = async (req, res) => {
   const { userId } = req.body;
   try {
-    const user = await Users.findById(userId).populate({
-      path: "cart.menuItem",
-      model: "Menu",
-      select:
-        "name unitPrice ingredients imageUrl discount quantity totalPrice",
-    });
+    const user = await Users.findById(userId)
+      .populate({
+        path: "cart.menuItem",
+        model: "Menu",
+        select:
+          "name unitPrice ingredients imageUrl discount quantity totalPrice",
+      })
+      .populate({
+        path: "cart.restaurant",
+        model: "Restaurant",
+        select: "restaurant",
+      });
     // Calculate totalPrice for each cart item
     user.cart.forEach((cartItem) => {
       cartItem.totalPrice =
@@ -174,7 +178,7 @@ const userCartList = async (req, res) => {
 
 const addUserCart = async (req, res) => {
   try {
-    const { menuId, userId } = req.body;
+    const { menuId, userId, restaurantId } = req.body;
 
     // Check if the user exists
     const user = await Users.findById(userId);
@@ -199,12 +203,12 @@ const addUserCart = async (req, res) => {
     // Add menuId to the user's cart if it doesn't already exist
     await Users.findOneAndUpdate(
       { _id: userId },
-      { $addToSet: { cart: { menuItem: menuId } } }
+      { $addToSet: { cart: { menuItem: menuId, restaurant: restaurantId } } }
     );
 
     res.status(200).json({
       success: true,
-      message: `${menuId} successfully added`,
+      message: `${menuId} and ${restaurantId}  successfully added`,
     });
   } catch (error) {
     res.status(400).json({

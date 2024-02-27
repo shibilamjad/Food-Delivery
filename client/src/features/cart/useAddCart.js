@@ -8,9 +8,9 @@ export function useAddCart() {
     mutationFn: addCartApi,
     onSuccess: (data) => {
       queryClient.invalidateQueries(['cart'], data.user);
-      toast.success('Successfully Cart added');
+      toast.success('Successfully added to cart');
     },
-    onError: () => toast.error('Cart already added to WatchLater'),
+    onError: () => toast.error('Failed to add to cart'),
   });
   return { addCart };
 }
