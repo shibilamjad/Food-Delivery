@@ -2,7 +2,6 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import GlobalStyles from "./style/GlobelCol";
 
-import { Menu } from "./pages/Menu";
 import { Login } from "./pages/Login";
 import { AppLayout } from "./ui/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -43,8 +42,6 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="order" element={<Order />} />
             <Route path="order/:orderId" element={<Orders />} />
-            <Route path="menu" element={<Menu />} />
-            <Route path="menu/:menuId" element={<Menu />} />
             <Route path="restaurants" element={<Restaurant />} />
             <Route path="restaurants/:restaurantId" element={<Menus />} />
             <Route path="new-restaurants" element={<NewRestaurants />} />
