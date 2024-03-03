@@ -18,17 +18,17 @@ const deliveryBoySchema = new mongoose.Schema({
     trim: true,
     required: [true, "Password field cannot be empty"],
   },
-  location: {
-    type: {
-      type: String,
-      enum: ["Point"],
-      // required: true,
-    },
-    coordinates: {
-      type: [Number],
-      // required: true,
-    },
-  },
+  // location: {
+  //   type: {
+  //     type: String,
+  //     enum: ["Point"],
+  //     required: true,
+  //   },
+  //   coordinates: {
+  //     type: [Number],
+  //     required: true,
+  //   },
+  // },
   online: {
     type: Boolean,
     default: false,

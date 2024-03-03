@@ -23,7 +23,11 @@ const server = http.createServer(app);
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:8081",
+    ],
     methods: ["GET", "POST"],
   },
 });
@@ -31,7 +35,11 @@ const io = require("socket.io")(server, {
 // Initialize express app
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:8081",
+    ],
     credentials: true,
     cookie: {
       sameSite: "none",
@@ -60,7 +68,24 @@ app.all("*", (req, res) => {
 
 // Create HTTP server
 io.on("connection", async (socket) => {
-  await fetchAndEmitAvailableOrders(socket);
+  try {
+    console.log("A user connected");
+    // fetch available order and emit to the client
+    await fetchAndEmitAvailableOrders(socket);
+
+    // // assign order in nearest delivery boy
+    // socket.on("newOrder", async (order) => {
+    //   await assignOrderToNearestDeliveryBoy(order);
+    // });
+
+    // discounect
+    socket.on("disconnect", () => {
+      console.log("A user disconnect");
+    });
+  } catch (error) {
+    console.error("Error handling connection:", error);
+    socket.emit("error", "An error occurred while handling the connection");
+  }
 });
 
 // Start the server

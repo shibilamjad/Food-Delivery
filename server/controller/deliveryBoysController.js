@@ -2,13 +2,38 @@ const Order = require("../models/orderModel");
 const DeliveryBoy = require("../models/deliveyBoyModel");
 const { generatePasswordHash } = require("../utils/bcrypt ");
 const { generateAccessToken, generateRefreshToken } = require("../utils/jwt");
+const { calculateBoundingBox } = require("../utils/calculateBoundingBox");
 
 const fetchAndEmitAvailableOrders = async (socket) => {
   try {
     console.log("A user connected");
+    // Call the deliveryBoyLocation function to get the delivery boy's location
+    const deliveryBoyCoordinates = await deliveryBoyLocation();
+
+    // Check if delivery boy's coordinates are valid
+    if (
+      !deliveryBoyCoordinates ||
+      !deliveryBoyCoordinates.latitude ||
+      !deliveryBoyCoordinates.longitude
+    ) {
+      throw new Error("Failed to fetch delivery boy's location");
+    }
+
+    //  bounding box for the 3 km radius around the delivery boy's location
+    const boundingBox = calculateBoundingBox(deliveryBoyLocation, 3);
 
     // Fetch available orders directly within the Socket.IO connection
-    const orderList = await Order.find({ delivery: "pending" })
+    const orderList = await Order.find({
+      delivery: "pending",
+      deliveryLocation: {
+        $geoWithib: {
+          $geometry: {
+            type: "Polygon",
+            coordinates: [boundingBox],
+          },
+        },
+      },
+    })
       .select("userName delivery createdAt cart")
       .populate({
         path: "cart.menuItem",
@@ -22,49 +47,18 @@ const fetchAndEmitAvailableOrders = async (socket) => {
       });
 
     // Emit available orders when a new client connects
-    socket.emit("availableOrders", orderList);
+    if (socket) {
+      socket.emit("availableOrders", orderList);
+    } else {
+      throw new Error("Socket is undefined");
+    }
 
     // Handle disconnection
     socket.on("disconnect", () => {
       console.log("A user disconnected");
     });
   } catch (error) {
-    console.error("Error handling connection:", error);
-    socket.emit("error", "An error occurred while handling the connection");
-  }
-};
-
-const assignOrderToNearestDeliveryBoy = async (order) => {
-  try {
-    // Find the nearest online delivery boy
-    const nearestDeliveryBoy = await DeliveryBoy.findOne({
-      online: true,
-    }).sort({
-      location: {
-        $near: {
-          $geometry: {
-            type: "Point",
-            coordinates: order.deliveryLocation.coordinates,
-          },
-        },
-      },
-    });
-
-    if (!nearestDeliveryBoy) {
-      throw new Error("No online delivery boy available");
-    }
-
-    // Assign the order to the nearest delivery boy
-    order.deliveryBoy = nearestDeliveryBoy._id;
-    await order.save();
-
-    // Emit real-time update about the order assignment
-    io.emit("orderAssigned", {
-      orderId: order._id,
-      deliveryBoyId: nearestDeliveryBoy._id,
-    });
-  } catch (error) {
-    console.error("Error assigning order:", error);
+    console.error("Error fetching available orders:", error);
     throw error;
   }
 };
@@ -96,6 +90,10 @@ const deliveyBoyRegister = async (req, res) => {
       name,
       mobile,
       password: passwordHashed,
+      // location: {
+      //   type: "Point",
+      //   coordinates: location.coordinates,
+      // },
     });
 
     // Generate tokens for the newly registered user
@@ -113,7 +111,7 @@ const deliveyBoyRegister = async (req, res) => {
       return res.json({
         _id: createUser._id,
         mobile: createUser.email,
-        name: createUser.userName,
+        name: createUser.name,
         accessToken,
       });
     }
@@ -124,4 +122,7 @@ const deliveyBoyRegister = async (req, res) => {
   }
 };
 
-module.exports = { fetchAndEmitAvailableOrders, deliveyBoyRegister };
+module.exports = {
+  fetchAndEmitAvailableOrders,
+  deliveyBoyRegister,
+};
