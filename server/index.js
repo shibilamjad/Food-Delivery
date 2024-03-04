@@ -8,13 +8,13 @@ const orderRoute = require("./routes/order");
 const restaurantRoute = require("./routes/restaurant");
 const dashBoardRoute = require("./routes/dashboard");
 const deliveryBoyRoute = require("./routes/deliveyBoy");
-const Order = require("./models/orderModel");
 
 const cookieParser = require("cookie-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const {
   fetchAndEmitAvailableOrders,
+  updateDeliveryBoyLocation,
 } = require("./controller/deliveryBoysController");
 
 require("dotenv").config();
@@ -26,7 +26,7 @@ const io = require("socket.io")(server, {
     origin: [
       "http://localhost:5173",
       "http://localhost:5174",
-      "http://localhost:8081",
+      "http://localhost:5175",
     ],
     methods: ["GET", "POST"],
   },
@@ -38,7 +38,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:5174",
-      "http://localhost:8081",
+      "http://localhost:5175",
     ],
     credentials: true,
     cookie: {
@@ -71,13 +71,17 @@ io.on("connection", async (socket) => {
   try {
     console.log("A user connected");
     // fetch available order and emit to the client
-    await fetchAndEmitAvailableOrders(socket);
+    // await fetchAndEmitAvailableOrders(socket);
 
-    // // assign order in nearest delivery boy
-    // socket.on("newOrder", async (order) => {
-    //   await assignOrderToNearestDeliveryBoy(order);
-    // });
-
+    socket.on("deliveryBoyLocationUpdate", async (location) => {
+      try {
+        // Update delivery boy's location in the database
+        await updateDeliveryBoyLocation(location);
+        io.emit("deliveryBoyLocationUpdate", location);
+      } catch (error) {
+        console.error("Error updating delivery boy location:", error);
+      }
+    });
     // discounect
     socket.on("disconnect", () => {
       console.log("A user disconnect");

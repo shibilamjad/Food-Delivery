@@ -7,6 +7,7 @@ import { useOrder } from './useOrder';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
+import Map from '../../ui/Map';
 
 export function OrderItem() {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -72,6 +73,7 @@ export function OrderItem() {
             </li>
           ))}
         </ul>
+        <Map />
       </div>
     </StyledContainer>
   );

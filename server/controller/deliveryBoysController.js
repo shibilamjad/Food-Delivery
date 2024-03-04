@@ -4,59 +4,91 @@ const { generatePasswordHash } = require("../utils/bcrypt ");
 const { generateAccessToken, generateRefreshToken } = require("../utils/jwt");
 const { calculateBoundingBox } = require("../utils/calculateBoundingBox");
 
+const updateDeliveryBoyLocation = async (location) => {
+  try {
+    const { latitude, longitude, deliveryBoyId } = location;
+
+    // Update delivery boy's location in the database
+    const updatedDeliveryBoy = await DeliveryBoy.findByIdAndUpdate(
+      deliveryBoyId,
+      {
+        $set: {
+          location: {
+            type: "Point",
+            coordinates: [longitude, latitude],
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedDeliveryBoy) {
+      throw new Error("Delivery boy not found");
+    }
+    console.log(
+      "Delivery boy location updated successfully",
+      updatedDeliveryBoy
+    );
+
+    return updatedDeliveryBoy;
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const fetchAndEmitAvailableOrders = async (socket) => {
   try {
     console.log("A user connected");
     // Call the deliveryBoyLocation function to get the delivery boy's location
-    const deliveryBoyCoordinates = await deliveryBoyLocation();
+    // const deliveryBoyCoordinates = await deliveryBoyLocation();
 
-    // Check if delivery boy's coordinates are valid
-    if (
-      !deliveryBoyCoordinates ||
-      !deliveryBoyCoordinates.latitude ||
-      !deliveryBoyCoordinates.longitude
-    ) {
-      throw new Error("Failed to fetch delivery boy's location");
-    }
+    // // Check if delivery boy's coordinates are valid
+    // if (
+    //   !deliveryBoyCoordinates ||
+    //   !deliveryBoyCoordinates.latitude ||
+    //   !deliveryBoyCoordinates.longitude
+    // ) {
+    //   throw new Error("Failed to fetch delivery boy's location");
+    // }
 
-    //  bounding box for the 3 km radius around the delivery boy's location
-    const boundingBox = calculateBoundingBox(deliveryBoyLocation, 3);
+    // //  bounding box for the 3 km radius around the delivery boy's location
+    // const boundingBox = calculateBoundingBox(deliveryBoyLocation, 3);
 
-    // Fetch available orders directly within the Socket.IO connection
-    const orderList = await Order.find({
-      delivery: "pending",
-      deliveryLocation: {
-        $geoWithib: {
-          $geometry: {
-            type: "Polygon",
-            coordinates: [boundingBox],
-          },
-        },
-      },
-    })
-      .select("userName delivery createdAt cart")
-      .populate({
-        path: "cart.menuItem",
-        model: "Menu",
-        select: "name unitPrice",
-      })
-      .populate({
-        path: "cart.restaurant",
-        model: "Restaurant",
-        select: "restaurant image lat long",
-      });
+    // // Fetch available orders directly within the Socket.IO connection
+    // const orderList = await Order.find({
+    //   delivery: "pending",
+    //   deliveryLocation: {
+    //     $geoWithib: {
+    //       $geometry: {
+    //         type: "Polygon",
+    //         coordinates: [boundingBox],
+    //       },
+    //     },
+    //   },
+    // })
+    //   .select("userName delivery createdAt cart")
+    //   .populate({
+    //     path: "cart.menuItem",
+    //     model: "Menu",
+    //     select: "name unitPrice",
+    //   })
+    //   .populate({
+    //     path: "cart.restaurant",
+    //     model: "Restaurant",
+    //     select: "restaurant image lat long",
+    //   });
 
-    // Emit available orders when a new client connects
-    if (socket) {
-      socket.emit("availableOrders", orderList);
-    } else {
-      throw new Error("Socket is undefined");
-    }
+    // // Emit available orders when a new client connects
+    // if (socket) {
+    //   socket.emit("availableOrders", orderList);
+    // } else {
+    //   throw new Error("Socket is undefined");
+    // }
 
-    // Handle disconnection
-    socket.on("disconnect", () => {
-      console.log("A user disconnected");
-    });
+    // // Handle disconnection
+    // socket.on("disconnect", () => {
+    //   console.log("A user disconnected");
+    // });
   } catch (error) {
     console.error("Error fetching available orders:", error);
     throw error;
@@ -125,4 +157,5 @@ const deliveyBoyRegister = async (req, res) => {
 module.exports = {
   fetchAndEmitAvailableOrders,
   deliveyBoyRegister,
+  updateDeliveryBoyLocation,
 };

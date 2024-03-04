@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import LinkButton from '../../ui/LinkButton';
 import { Loader } from '../../ui/Loader';
 import { OrderBill } from './OrdeBill';
-import { OrderCart } from './OrderCart';
 import { useDetails } from './useOrderDetails';
 import styled from 'styled-components';
 
