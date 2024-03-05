@@ -1,84 +1,77 @@
-import React, { useState } from 'react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import GetPlace from './getPlace';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
+
+const BASE_URL = 'https://nominatim.openstreetmap.org/search';
+const DEBOUNCE_DELAY = 300; // milliseconds
 
 function Map() {
-  const [initialized, setInitialized] = useState(false);
-  const [map, setMap] = useState(null);
   const [query, setQuery] = useState('');
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [error, setError] = useState(null);
 
-  const initializeMap = () => {
-    const leafletMap = L.map('map').setView([51.505, -0.09], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(leafletMap);
-    setMap(leafletMap);
-    setInitialized(true);
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return function (...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
   };
 
-  const handleSearch = async () => {
-    if (!initialized) {
-      initializeMap();
-    }
+  const handleSearch = async (query) => {
     try {
       const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?q=${query}&format=json`,
+        `${BASE_URL}?q=${query}&format=json&limit=5`,
       );
-      if (response.data.length > 0) {
-        const { lat, lon } = response.data[0];
-        setLatitude(lat);
-        setLongitude(lon);
-        map.setView([lat, lon], 13);
-      }
+      setSearchResults(response.data);
+      setError(null);
     } catch (error) {
-      console.error('Error fetching location:', error);
+      console.error('Error fetching cities:', error);
+      setError('Error fetching cities. Please try again later.');
+      setSearchResults([]);
     }
   };
 
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          map.setView(
-            [position.coords.latitude, position.coords.longitude],
-            13,
-          );
-        },
-        (error) => {
-          console.error('Error getting current location:', error);
-        },
-      );
+  const debouncedSearch = debounce(handleSearch, DEBOUNCE_DELAY);
+
+  useEffect(() => {
+    if (query.trim() !== '') {
+      debouncedSearch(query);
     } else {
-      console.error('Geolocation is not supported by this browser.');
+      setSearchResults([]);
     }
+  }, [query]);
+
+  const handleChange = (e) => {
+    setQuery(e.target.value);
   };
+
+  console.log(searchResults);
+
   return (
-    <div>
-      <input
-        type="text"
+    <Stack spacing={2} sx={{ width: 300 }}>
+      <Autocomplete
+        freeSolo
+        id="free-solo-2-demo"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Enter location"
+        onChange={(e, value) => setQuery(value)}
+        disableClearable
+        options={searchResults.map((option) => option.display_name)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Search input"
+            InputProps={{
+              ...params.InputProps,
+              type: 'search',
+            }}
+            onChange={handleChange}
+          />
+        )}
       />
-      <button onClick={handleSearch}>Search</button>
-      <button onClick={getCurrentLocation}>Get Current Location</button>
-      <div id="map" style={{ width: '100%', height: '200px', zoom: 2 }} />
-      {latitude && longitude && (
-        <p>
-          Latitude: {latitude}, Longitude: {longitude}
-        </p>
-      )}
-      <div>
-        <GetPlace latitude={latitude} longitude={longitude} />
-      </div>
-    </div>
+    </Stack>
   );
 }
 

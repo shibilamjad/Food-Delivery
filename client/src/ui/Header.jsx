@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import CartOverview from '../features/cart/CartOverview';
 import styled from 'styled-components';
 import { OrderOverview } from '../features/order/orderOverview';
@@ -16,7 +15,6 @@ function Header() {
           Fast And Go .
         </h1>
       </div>
-
       <StyledNav>
         <RestaurantOverview />
         <CartOverview />

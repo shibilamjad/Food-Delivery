@@ -16,7 +16,6 @@ function GetPlace({ latitude, longitude }) {
             `${BASE_URL}?latitude=${latitude}&longitude=${longitude}`,
           );
           const data = await res.json();
-          console.log(data);
 
           if (!data.countryCode)
             throw new Error(

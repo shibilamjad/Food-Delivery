@@ -157,6 +157,20 @@ const ordersDetailsAdmin = async (req, res) => {
     });
   }
 };
+const getRestaurantIdFromOrder = async (orderId) => {
+  try {
+    const order = await Order.findById(orderId);
+    if (!order) {
+      throw new Error("Order not found");
+    }
+    const restaurantId = order.cart.map((item) => item.restaurant);
+    return restaurantId;
+  } catch (error) {
+    console.error("Error getting restaurantId from order:", error);
+    throw error;
+  }
+};
+
 const ordersNotification = async (req, res) => {
   try {
     const orderList = await Order.find()
@@ -241,4 +255,5 @@ module.exports = {
   ordersAdmin,
   ordersDetailsAdmin,
   ordersNotification,
+  getRestaurantIdFromOrder,
 };

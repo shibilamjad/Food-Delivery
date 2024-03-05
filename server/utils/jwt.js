@@ -30,10 +30,24 @@ const generateTokensAndSetCookies = (res, userId) => {
 
   return accessToken;
 };
+const extractDeliveryBoyId = (token) => {
+  try {
+    // Decode the token
+    const decodedToken = jwt.decode(token);
 
+    // Extract the deliveryBoyId
+    const deliveryBoyId = decodedToken._id;
+
+    return deliveryBoyId;
+  } catch (error) {
+    console.error("Error extracting deliveryBoyId:", error);
+    return null;
+  }
+};
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
   generateTokensAndSetCookies,
+  extractDeliveryBoyId,
 };

@@ -6,23 +6,33 @@ import { OrderRow } from "./OrderRow";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
 
-const socket = io("http://localhost:3006");
 export function OrderTable() {
   const [orders, setOrders] = useState([]);
   const [location, setLocation] = useState(null);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const socket = io("http://localhost:3006", {
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      },
+    });
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          const deliveryBoyId = localStorage.getItem("token");
 
           socket.emit("deliveryBoyLocationUpdate", {
+            token: token,
             latitude,
             longitude,
-            deliveryBoyId,
           });
+
           setLocation({ latitude, longitude });
         },
         (error) => {
@@ -33,18 +43,16 @@ export function OrderTable() {
       console.error("Geolocation is not supported by this browser.");
     }
 
-    // delivery boy location updates from the server
-    socket.on("deliveryBoyLocationUpdate", (updatedLocation) => {
-      setLocation(updatedLocation);
-    });
-
+    // Cleanup function
     return () => {
       socket.disconnect();
     };
   }, []);
-  console.log(location);
+
   const { order, isLoading } = useOrders();
+
   if (isLoading) return <Loader />;
+
   return (
     <>
       <Table role="table">

@@ -7,6 +7,7 @@ import { AvailableItem } from './AvailableItem';
 import { device } from '../../ui/device';
 import { LoaderSkelten } from '../../ui/LoaderSkelten';
 import { useAvailable } from './useAvailable';
+import Map from '../../ui/Map';
 
 export function Restaurant() {
   const { allRestaurant, isLoading, isError } = useRestaurant();
@@ -17,6 +18,7 @@ export function Restaurant() {
   return (
     <>
       <StyledContainer>
+        <Map />
         <Header>
           <h1>
             Restaurants Available in your Location <span>{city}</span>

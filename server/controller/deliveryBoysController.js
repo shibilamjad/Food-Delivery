@@ -1,13 +1,16 @@
 const Order = require("../models/orderModel");
 const DeliveryBoy = require("../models/deliveyBoyModel");
+const Restaurant = require("../models/restaurantModel");
 const { generatePasswordHash } = require("../utils/bcrypt ");
 const { generateAccessToken, generateRefreshToken } = require("../utils/jwt");
-const { calculateBoundingBox } = require("../utils/calculateBoundingBox");
+const { calculateDistance } = require("../utils/calculateDistance");
 
-const updateDeliveryBoyLocation = async (location) => {
+const updateDeliveryBoyLocation = async (
+  deliveryBoyId,
+  latitude,
+  longitude
+) => {
   try {
-    const { latitude, longitude, deliveryBoyId } = location;
-
     // Update delivery boy's location in the database
     const updatedDeliveryBoy = await DeliveryBoy.findByIdAndUpdate(
       deliveryBoyId,
@@ -25,70 +28,64 @@ const updateDeliveryBoyLocation = async (location) => {
     if (!updatedDeliveryBoy) {
       throw new Error("Delivery boy not found");
     }
-    console.log(
-      "Delivery boy location updated successfully",
-      updatedDeliveryBoy
-    );
 
     return updatedDeliveryBoy;
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error updating delivery boy location:", error);
   }
 };
-
-const fetchAndEmitAvailableOrders = async (socket) => {
+const getDistanceBetweenRestaurantAndDeliveryBoy = async (
+  deliveryBoyId,
+  latitude,
+  longitude
+) => {
   try {
-    console.log("A user connected");
-    // Call the deliveryBoyLocation function to get the delivery boy's location
-    // const deliveryBoyCoordinates = await deliveryBoyLocation();
+    // Calculate distance between restaurant and delivery boy
+    const order = await Order.findOne({
+      "cart.deliveryBoy": deliveryBoyId,
+    }).populate({
+      path: "cart",
+      populate: { path: "restaurant" },
+    });
 
-    // // Check if delivery boy's coordinates are valid
-    // if (
-    //   !deliveryBoyCoordinates ||
-    //   !deliveryBoyCoordinates.latitude ||
-    //   !deliveryBoyCoordinates.longitude
-    // ) {
-    //   throw new Error("Failed to fetch delivery boy's location");
-    // }
+    if (!order) {
+      console.log("No order found for the delivery boy.");
+      return;
+    }
 
-    // //  bounding box for the 3 km radius around the delivery boy's location
-    // const boundingBox = calculateBoundingBox(deliveryBoyLocation, 3);
+    const restaurant = order.cart.restaurant;
+    const restaurantCoords = [restaurant.long, restaurant.lat];
+    const deliveryBoyCoords = [longitude, latitude];
 
-    // // Fetch available orders directly within the Socket.IO connection
-    // const orderList = await Order.find({
-    //   delivery: "pending",
-    //   deliveryLocation: {
-    //     $geoWithib: {
-    //       $geometry: {
-    //         type: "Polygon",
-    //         coordinates: [boundingBox],
-    //       },
-    //     },
-    //   },
-    // })
-    //   .select("userName delivery createdAt cart")
-    //   .populate({
-    //     path: "cart.menuItem",
-    //     model: "Menu",
-    //     select: "name unitPrice",
-    //   })
-    //   .populate({
-    //     path: "cart.restaurant",
-    //     model: "Restaurant",
-    //     select: "restaurant image lat long",
-    //   });
+    const distance = calculateDistance(restaurantCoords, deliveryBoyCoords);
 
-    // // Emit available orders when a new client connects
-    // if (socket) {
-    //   socket.emit("availableOrders", orderList);
-    // } else {
-    //   throw new Error("Socket is undefined");
-    // }
+    console.log(
+      "Distance between restaurant and delivery boy:",
+      distance,
+      "km"
+    );
 
-    // // Handle disconnection
-    // socket.on("disconnect", () => {
-    //   console.log("A user disconnected");
-    // });
+    // Check if the delivery boy is within 1 km of the restaurant
+    if (distance <= 1) {
+      console.log("Delivery boy is within 1 km of the restaurant");
+    } else {
+      console.log("Delivery boy is not within 1 km of the restaurant");
+    }
+
+    // Fetch nearby restaurants within 1 km of the delivery boy
+    const nearbyRestaurants = await Restaurant.aggregate([
+      {
+        $geoNear: {
+          near: { type: "Point", coordinates: deliveryBoyCoords },
+          distanceField: "distance",
+          maxDistance: 1000, // 1 km
+          spherical: true,
+        },
+      },
+    ]);
+
+    // Emit nearby restaurants to the client
+    io.emit("nearbyRestaurants", nearbyRestaurants);
   } catch (error) {
     console.error("Error fetching available orders:", error);
     throw error;
@@ -122,10 +119,10 @@ const deliveyBoyRegister = async (req, res) => {
       name,
       mobile,
       password: passwordHashed,
-      // location: {
-      //   type: "Point",
-      //   coordinates: location.coordinates,
-      // },
+      location: {
+        type: "Point",
+        coordinates: location.coordinates,
+      },
     });
 
     // Generate tokens for the newly registered user
@@ -155,7 +152,7 @@ const deliveyBoyRegister = async (req, res) => {
 };
 
 module.exports = {
-  fetchAndEmitAvailableOrders,
+  getDistanceBetweenRestaurantAndDeliveryBoy,
   deliveyBoyRegister,
   updateDeliveryBoyLocation,
 };

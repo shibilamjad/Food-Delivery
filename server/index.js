@@ -8,13 +8,18 @@ const orderRoute = require("./routes/order");
 const restaurantRoute = require("./routes/restaurant");
 const dashBoardRoute = require("./routes/dashboard");
 const deliveryBoyRoute = require("./routes/deliveyBoy");
+const Restaurant = require("./models/restaurantModel");
+const Orders = require("./models/orderModel");
+const { getRestaurantIdFromOrder } = require("./controller/orderController");
+const jwt = require("jsonwebtoken");
+const { extractDeliveryBoyId } = require("./utils/jwt");
 
 const cookieParser = require("cookie-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const {
-  fetchAndEmitAvailableOrders,
   updateDeliveryBoyLocation,
+  getDistanceBetweenRestaurantAndDeliveryBoy,
 } = require("./controller/deliveryBoysController");
 
 require("dotenv").config();
@@ -66,23 +71,34 @@ app.all("*", (req, res) => {
   res.status(404).json("This page does not exist");
 });
 
-// Create HTTP server
+// socket io
 io.on("connection", async (socket) => {
   try {
-    console.log("A user connected");
-    // fetch available order and emit to the client
-    // await fetchAndEmitAvailableOrders(socket);
-
-    socket.on("deliveryBoyLocationUpdate", async (location) => {
+    // Socket event for updating delivery boy's location
+    socket.on("deliveryBoyLocationUpdate", async (data) => {
       try {
+        const { latitude, longitude, token } = data;
+        const deliveryBoyId = extractDeliveryBoyId(token);
+
+        console.log(`Delivery boy connected: ${deliveryBoyId}`);
         // Update delivery boy's location in the database
-        await updateDeliveryBoyLocation(location);
-        io.emit("deliveryBoyLocationUpdate", location);
+        await updateDeliveryBoyLocation(deliveryBoyId, latitude, longitude);
+        io.emit("deliveryBoyLocationUpdate", data);
+
+        await getDistanceBetweenRestaurantAndDeliveryBoy(
+          deliveryBoyId,
+          latitude,
+          longitude
+        );
       } catch (error) {
         console.error("Error updating delivery boy location:", error);
+        socket.emit(
+          "error",
+          "An error occurred while updating the delivery boy's location"
+        );
       }
     });
-    // discounect
+    // Socket event for disconnection
     socket.on("disconnect", () => {
       console.log("A user disconnect");
     });
