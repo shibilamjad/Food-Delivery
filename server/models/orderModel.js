@@ -27,7 +27,10 @@ const orderSchema = new mongoose.Schema(
       enum: statusOptions,
       default: "pending",
     },
-
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
     cart: [
       {
         _id: {

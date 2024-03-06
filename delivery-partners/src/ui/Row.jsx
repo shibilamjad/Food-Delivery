@@ -48,7 +48,7 @@ export const TableHeader = styled.header`
 export const TableHeaderOrder = styled.header`
   display: grid;
   font-size: 1rem;
-  grid-template-columns: 2fr 2fr 1fr 2fr 2fr 1fr;
+  grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
   font-weight: 600;
   column-gap: 0.4rem;
   align-items: center;
@@ -94,6 +94,6 @@ export const Table = styled.div`
     font-size: 0.8rem;
   }
   @media ${device.mobileS} {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
   }
 `;

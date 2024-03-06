@@ -25,7 +25,7 @@ export const TableRow = styled.div`
   @media ${device.mobileS} {
     column-gap: 0.5rem;
     padding: 0.1rem 1rem;
-    font-size: 0.6rem;
+    font-size: 0.8rem;
   }
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
@@ -36,8 +36,8 @@ export const TableRowOrder = styled.div`
   display: grid;
   font-size: 1.2rem;
   text-transform: capitalize;
-  grid-template-columns: 2fr 2fr 1fr 2fr 2fr 1fr;
-  column-gap: 0.4rem;
+  grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
+  column-gap: 0.5rem;
   justify-content: space-between;
   align-items: center;
   padding: 2rem 1rem;
@@ -50,13 +50,13 @@ export const TableRowOrder = styled.div`
   }
   @media ${device.mobileL} {
     column-gap: 0.6rem;
-    padding: 1rem 1rem;
-    font-size: 0.5rem;
+    /* padding: 1rem 1rem; */
+    font-size: 0.8rem;
   }
   @media ${device.mobileS} {
     column-gap: 0.1rem;
     padding: 1rem 1rem;
-    font-size: 0.6rem;
+    font-size: 0.8rem;
   }
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);

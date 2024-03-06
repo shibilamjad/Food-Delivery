@@ -10,10 +10,10 @@ import { OrderData } from "./OrderData";
 import { device } from "../../ui/device";
 
 export function OrderDetails() {
-  const { orderId } = useParams();
-  const { details, isLoading } = useOrderDetails(orderId);
+  // const { orderId } = useParams();
+  // const { details, isLoading } = useOrderDetails(orderId);
   const moveBack = useMoveBack();
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
 
   const statusToTagName = {
     pending: "red",
@@ -26,11 +26,10 @@ export function OrderDetails() {
         <HeadingGroup>
           <Heading>
             <>Booking #id </>
-            {details._id}
+            {/* {details._id} */}
           </Heading>
-          <Tag type={statusToTagName[details.delivery]}>
-            {details.delivery.replace("-", " ")}
-          </Tag>
+          {/* <Tag type={statusToTagName[details.delivery]}> */}
+          {/* <Tag type={statusToTagName}>{details.delivery.replace("-", " ")}</Tag> */}
           <ButtonGroup>
             <Button onClick={moveBack}>&larr; Back</Button>
           </ButtonGroup>

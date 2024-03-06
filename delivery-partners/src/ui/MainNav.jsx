@@ -5,7 +5,12 @@ import { BsBoxArrowLeft } from "react-icons/bs";
 
 // import { useLogout } from "../features/Authentication/useLogout";
 import { device } from "./device";
-import { FaBabyCarriage, FaKitchenSet, FaRegSquarePlus } from "react-icons/fa6";
+import {
+  FaBabyCarriage,
+  FaIdCard,
+  FaKitchenSet,
+  FaRegSquarePlus,
+} from "react-icons/fa6";
 import { BiRestaurant } from "react-icons/bi";
 
 function MainNav() {
@@ -29,6 +34,10 @@ function MainNav() {
       <NavItem to="/order">
         <FaBabyCarriage />
         <span>Orders</span>
+      </NavItem>
+      <NavItem to="/detailsOrder">
+        <FaIdCard />
+        <span>Details</span>
       </NavItem>
       <NavItem to="/restaurants">
         <BiRestaurant />

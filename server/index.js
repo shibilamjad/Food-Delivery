@@ -8,18 +8,15 @@ const orderRoute = require("./routes/order");
 const restaurantRoute = require("./routes/restaurant");
 const dashBoardRoute = require("./routes/dashboard");
 const deliveryBoyRoute = require("./routes/deliveyBoy");
-const Restaurant = require("./models/restaurantModel");
-const Orders = require("./models/orderModel");
-const { getRestaurantIdFromOrder } = require("./controller/orderController");
-const jwt = require("jsonwebtoken");
 const { extractDeliveryBoyId } = require("./utils/jwt");
+const Orders = require("./models/orderModel");
+const Users = require("./models/userModel");
 
 const cookieParser = require("cookie-parser");
 const http = require("http");
 const socketIo = require("socket.io");
 const {
   updateDeliveryBoyLocation,
-  getDistanceBetweenRestaurantAndDeliveryBoy,
 } = require("./controller/deliveryBoysController");
 
 require("dotenv").config();
@@ -84,12 +81,6 @@ io.on("connection", async (socket) => {
         // Update delivery boy's location in the database
         await updateDeliveryBoyLocation(deliveryBoyId, latitude, longitude);
         io.emit("deliveryBoyLocationUpdate", data);
-
-        await getDistanceBetweenRestaurantAndDeliveryBoy(
-          deliveryBoyId,
-          latitude,
-          longitude
-        );
       } catch (error) {
         console.error("Error updating delivery boy location:", error);
         socket.emit(
@@ -111,3 +102,64 @@ io.on("connection", async (socket) => {
 // Start the server
 const PORT = process.env.PORT || 3005;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// // socket io
+// io.on("connection", async (socket) => {
+//   try {
+//     // Socket event for updating delivery boy's location
+//     socket.on("deliveryBoyLocationUpdate", async (data) => {
+//       try {
+//         const { latitude, longitude, token } = data;
+//         const deliveryBoyId = extractDeliveryBoyId(token);
+
+//         console.log(`Delivery boy connected: ${deliveryBoyId}`);
+//         // Update delivery boy's location in the database
+//         await updateDeliveryBoyLocation(deliveryBoyId, latitude, longitude);
+//         io.emit("deliveryBoyLocationUpdate", data);
+
+//         // Get nearby orders
+//         const nearbyOrders = await getDeliveryBoyOrders(deliveryBoyId);
+//         socket.emit("nearbyOrders", nearbyOrders);
+//       } catch (error) {
+//         console.error("Error updating delivery boy location:", error);
+//         socket.emit(
+//           "error",
+//           "An error occurred while updating the delivery boy's location"
+//         );
+//       }
+//     });
+//     socket.on("takeOrder", async (data) => {
+//       try {
+//         const { token, orderId, userId } = data;
+//         const deliveryBoyId = extractDeliveryBoyId(token);
+
+//         // update the order status "ongoing"
+//         const order = await Orders.findByIdAndUpdate(
+//           orderId,
+//           {
+//             delivery: "ongoing",
+//           },
+//           { new: true }
+//         );
+
+//         const takeOrderResult = await takeOrderDeliveryBoy(
+//           deliveryBoyId,
+//           orderId,
+//           userId
+//         );
+//         socket.emit("orderTaken", { orderId, deliveryBoyId });
+//         io.emit("orderUpdated", order, takeOrderResult);
+//       } catch (error) {
+//         console.error("Error taking order:", error);
+//         socket.emit("error", "An error occurred while taking the order");
+//       }
+//     });
+//     // Socket event for disconnection
+//     socket.on("disconnect", () => {
+//       console.log("A user disconnect");
+//     });
+//   } catch (error) {
+//     console.error("Error handling connection:", error);
+//     socket.emit("error", "An error occurred while handling the connection");
+//   }
+// });

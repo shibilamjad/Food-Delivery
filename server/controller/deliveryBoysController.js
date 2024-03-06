@@ -1,9 +1,16 @@
 const Order = require("../models/orderModel");
 const DeliveryBoy = require("../models/deliveyBoyModel");
 const Restaurant = require("../models/restaurantModel");
+const Users = require("../models/userModel");
 const { generatePasswordHash } = require("../utils/bcrypt ");
-const { generateAccessToken, generateRefreshToken } = require("../utils/jwt");
-const { calculateDistance } = require("../utils/calculateDistance");
+const jwt = require("jsonwebtoken");
+
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  extractDeliveryBoyId,
+} = require("../utils/jwt");
+const { compareDistance } = require("../utils/compareDistance");
 
 const updateDeliveryBoyLocation = async (
   deliveryBoyId,
@@ -26,7 +33,7 @@ const updateDeliveryBoyLocation = async (
     );
 
     if (!updatedDeliveryBoy) {
-      throw new Error("Delivery boy not found");
+      return console.log("delivery boy not found");
     }
 
     return updatedDeliveryBoy;
@@ -34,64 +41,93 @@ const updateDeliveryBoyLocation = async (
     console.error("Error updating delivery boy location:", error);
   }
 };
-const getDistanceBetweenRestaurantAndDeliveryBoy = async (
-  deliveryBoyId,
-  latitude,
-  longitude
-) => {
+
+const getDeliveryBoyOrder = async (req, res) => {
   try {
-    // Calculate distance between restaurant and delivery boy
-    const order = await Order.findOne({
-      "cart.deliveryBoy": deliveryBoyId,
-    }).populate({
+    const token = req.headers.token;
+    const deliveryBoyId = extractDeliveryBoyId(token);
+
+    // delivery boy coordinates
+    const deliveryBoy = await DeliveryBoy.findById(deliveryBoyId);
+    if (!deliveryBoy) {
+      return res.status(400).json({
+        message: `deliveryBoy not found`,
+      });
+    }
+    const deliveryBoyCoordinates = deliveryBoy.location.coordinates;
+    const deliveryBoyLatitude = deliveryBoyCoordinates[1];
+    const deliveryBoyLongitude = deliveryBoyCoordinates[0];
+
+    // find order only pending and populate the cart with restaurant details
+    const order = await Order.find({ delivery: "pending" }).populate({
       path: "cart",
-      populate: { path: "restaurant" },
+      populate: [
+        {
+          path: "restaurant",
+        },
+        {
+          path: "menuItem",
+        },
+      ],
     });
 
-    if (!order) {
-      console.log("No order found for the delivery boy.");
-      return;
-    }
+    // Filter orders that are within 10km(for test) from the delivery boy
+    const nearbyOrders = order.filter((order) => {
+      return order.cart.some((cartItem) => {
+        const restaurant = cartItem.restaurant;
+        const restaurantLatitude = restaurant.lat;
+        const restaurantLongitude = restaurant.long;
 
-    const restaurant = order.cart.restaurant;
-    const restaurantCoords = [restaurant.long, restaurant.lat];
-    const deliveryBoyCoords = [longitude, latitude];
+        // Calculate the distance between delivery boy and restaurant
+        const distance = compareDistance(
+          deliveryBoyLatitude,
+          deliveryBoyLongitude,
+          restaurantLatitude,
+          restaurantLongitude
+        );
 
-    const distance = calculateDistance(restaurantCoords, deliveryBoyCoords);
-
-    console.log(
-      "Distance between restaurant and delivery boy:",
-      distance,
-      "km"
-    );
-
-    // Check if the delivery boy is within 1 km of the restaurant
-    if (distance <= 1) {
-      console.log("Delivery boy is within 1 km of the restaurant");
-    } else {
-      console.log("Delivery boy is not within 1 km of the restaurant");
-    }
-
-    // Fetch nearby restaurants within 1 km of the delivery boy
-    const nearbyRestaurants = await Restaurant.aggregate([
-      {
-        $geoNear: {
-          near: { type: "Point", coordinates: deliveryBoyCoords },
-          distanceField: "distance",
-          maxDistance: 1000, // 1 km
-          spherical: true,
-        },
-      },
-    ]);
-
-    // Emit nearby restaurants to the client
-    io.emit("nearbyRestaurants", nearbyRestaurants);
+        // Return true if the distance is less than or equal to 10km
+        return distance <= 10; // 10km
+      });
+    });
+    res.json(nearbyOrders);
   } catch (error) {
     console.error("Error fetching available orders:", error);
     throw error;
   }
 };
 
+const takeOrderDeliveryBoy = async (req, res) => {
+  try {
+    const { deliveryBoyId, orderId } = req.body;
+    const deliveryBoy = await DeliveryBoy.findById(deliveryBoyId);
+    if (!deliveryBoy) {
+      return res.status(400).json({
+        message: "delivery boy not found",
+      });
+    }
+
+    // Check if the order is already in progress
+    const isInProgress = deliveryBoy.inprogress.some((id) =>
+      id.equals(orderId)
+    );
+    if (isInProgress) {
+      return console.log(`${orderId} already selected`);
+    }
+
+    // Add the order to inprogress array
+    deliveryBoy.inprogress.push(orderId);
+    await deliveryBoy.save();
+
+    return deliveryBoy;
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+// authentication delivery boy
 const deliveyBoyRegister = async (req, res) => {
   try {
     const { name, mobile, password } = req.body;
@@ -152,7 +188,8 @@ const deliveyBoyRegister = async (req, res) => {
 };
 
 module.exports = {
-  getDistanceBetweenRestaurantAndDeliveryBoy,
+  getDeliveryBoyOrder,
   deliveyBoyRegister,
   updateDeliveryBoyLocation,
+  takeOrderDeliveryBoy,
 };

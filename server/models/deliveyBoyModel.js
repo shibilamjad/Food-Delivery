@@ -33,12 +33,12 @@ const deliveryBoySchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  orders: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Orders",
-    },
-  ],
+  // orders: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Orders",
+  //   },
+  // ],
   inprogress: [
     {
       type: mongoose.Schema.Types.ObjectId,

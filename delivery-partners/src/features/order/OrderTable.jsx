@@ -1,26 +1,16 @@
+import io from "socket.io-client";
 import { Table, TableHeaderOrder } from "../../ui/Row";
-import { useOrders } from "./useOrder";
+import { useDeliveryBoyOrder } from "./useOrder";
 import { Loader } from "../../ui/Loader";
 import { OrderRow } from "./OrderRow";
+import { useEffect } from "react";
 
-import io from "socket.io-client";
-import { useEffect, useState } from "react";
-
+const token = localStorage.getItem("token");
 export function OrderTable() {
-  const [orders, setOrders] = useState([]);
-  const [location, setLocation] = useState(null);
+  const { order, isLoading } = useDeliveryBoyOrder();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const socket = io("http://localhost:3006", {
-      transportOptions: {
-        polling: {
-          extraHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      },
-    });
+    const socket = io("http://localhost:3006");
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -33,7 +23,7 @@ export function OrderTable() {
             longitude,
           });
 
-          setLocation({ latitude, longitude });
+          // setLocation({ latitude, longitude });
         },
         (error) => {
           console.error("Error getting location", error);
@@ -49,20 +39,15 @@ export function OrderTable() {
     };
   }, []);
 
-  const { order, isLoading } = useOrders();
-
   if (isLoading) return <Loader />;
-
   return (
     <>
       <Table role="table">
         <TableHeaderOrder role="row">
           <div>Image</div>
-          <div>Item</div>
-          <div>Qty</div>
-          <div>Dates</div>
+          <div>Restaurant</div>
+          <div>Time</div>
           <div>Status</div>
-          <div>More</div>
           <div></div>
         </TableHeaderOrder>
         {order.map((items) => (

@@ -226,6 +226,7 @@ const createOrder = async (req, res) => {
       address,
       totalPrice,
       cart: cartItems,
+      userId,
     });
 
     // Push the orderId into the orderHistory array

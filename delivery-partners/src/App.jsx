@@ -43,6 +43,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="order" element={<Order />} />
             <Route path="order/:orderId" element={<Orders />} />
+            <Route path="detailsOrder" element={<Orders />} />
             <Route path="restaurants" element={<Restaurant />} />
             <Route path="restaurants/:restaurantId" element={<Menus />} />
             <Route path="new-restaurants" element={<NewRestaurants />} />

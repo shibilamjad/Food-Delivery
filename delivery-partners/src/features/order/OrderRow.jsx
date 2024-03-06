@@ -1,24 +1,19 @@
 import styled from "styled-components";
-import { FaRegEye } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Dates,
-  EditSection,
-  Menu,
-  Stacked,
-  StyledButton,
-  StyledIcon,
-  TableRowOrder,
-} from "../../ui/TableRowUi";
+import { Dates, Stacked, TableRowOrder } from "../../ui/TableRowUi";
 import { device } from "../../ui/device";
+import { getTimeDifference } from "../../utils/getTimeDifference";
+import { useTakeOrder } from "./useTakeOrder";
 
 export function OrderRow({ order }) {
-  const { delivery, createdAt, cart, _id } = order;
+  const { delivery, createdAt, cart, userId, _id: orderId } = order;
+  const { takeOrder } = useTakeOrder();
   const navigate = useNavigate();
-  function handleClick(orderId) {
-    navigate(`/order/${orderId}`);
-  }
+
+  const handleTakeOrder = (orderId) => {
+    takeOrder(orderId);
+  };
 
   const restaurantImageSet = new Set(cart.map((item) => item.restaurant.image));
   const restaurantImages = [...restaurantImageSet];
@@ -39,29 +34,18 @@ export function OrderRow({ order }) {
           <Stacked>
             {cart.map((items) => (
               <StyledCart key={items._id}>
-                <h1>{items.menuItem.name}</h1>
+                <h1>{items.restaurant.restaurant}</h1>
               </StyledCart>
             ))}
           </Stacked>
-          <Stacked>
-            {cart.map((items) => (
-              <StyledCart key={items._id}>
-                <div>{items.quantity}</div>
-              </StyledCart>
-            ))}
-          </Stacked>
-          <Dates>{new Date(createdAt).toLocaleString()}</Dates>
+          <Dates>{getTimeDifference(createdAt)}</Dates>
           <Tag type={statusToTagName[delivery]}>
             {delivery.replace("-", " ")}
           </Tag>
 
-          <StyledIcon>
-            <StyledButton onClick={() => handleClick(_id)}>
-              <EditSection>
-                <FaRegEye />
-              </EditSection>
-            </StyledButton>
-          </StyledIcon>
+          <StyledButton onClick={() => handleTakeOrder(orderId)}>
+            Take Order
+          </StyledButton>
         </TableRowOrder>
       )}
     </>
@@ -82,7 +66,7 @@ export const Img = styled.img`
     width: 50px;
     margin: 5px;
     height: 50px;
-    object-fit: fill;
+    object-fit: cover;
     object-position: center;
     /* transform: scale(1.5) translateX(-7px); */
   }
@@ -91,7 +75,7 @@ export const Img = styled.img`
     width: 30px;
     margin: 5px;
     height: 28px;
-    object-fit: fill;
+    object-fit: cover;
     object-position: fill;
     /* transform: scale(1.5) translateX(-7px); */
   }
@@ -124,11 +108,33 @@ const Tag = styled.span`
     padding: 0.4rem 0.8rem;
   }
   @media ${device.mobileL} {
-    font-size: 0.3rem;
+    font-size: 0.5rem;
     padding: 0.3rem 0.6rem;
   }
   @media ${device.mobileS} {
-    font-size: 0.3rem;
+    font-size: 0.5rem;
     padding: 0.3rem 0.6rem;
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: var(--color-brand-700);
+  border: none;
+  padding: 0.5rem;
+  border-radius: 10px;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+
+  @media ${device.mobileL} {
+    font-size: 0.7rem;
+  }
+  @media ${device.mobileS} {
+    font-size: 0.7rem;
+  }
+  &:hover {
+    background-color: var(--color-brand-500);
+  }
+  &:active {
+    border: var(--color-grey-500);
   }
 `;

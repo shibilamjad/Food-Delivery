@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getOrder } from "../../service/apOrder";
+import { getDeliveryBoyOrders } from "../../service/apiDeliveryBoy";
 
-export function useOrders() {
+export function useDeliveryBoyOrder() {
   const { data: order, isLoading } = useQuery({
-    queryKey: ["order"],
-    queryFn: getOrder,
+    queryKey: ["orders"],
+    queryFn: getDeliveryBoyOrders,
   });
   return { order, isLoading };
 }
