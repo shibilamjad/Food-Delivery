@@ -1,14 +1,8 @@
 import { FaAlignJustify, FaBell, FaXmark } from "react-icons/fa6";
 import styled, { keyframes } from "styled-components";
-import { NotificationBar } from "./NotificationBar";
 import { useState } from "react";
 
 export function Header({ handleIsOpen, isOpen }) {
-  const [isNotify, setIsNotify] = useState(false);
-  console.log(isNotify);
-  function handleIsNotify() {
-    setIsNotify(!isNotify);
-  }
   return (
     <>
       <Headers>
@@ -23,12 +17,6 @@ export function Header({ handleIsOpen, isOpen }) {
               <h1>Dashboard</h1>
             </div>
           </StledContent>
-          <Container>
-            <Button onClick={handleIsNotify}>
-              <FaBell />
-            </Button>
-            {isNotify && <NotificationBar setIsNotify={setIsNotify} />}
-          </Container>
         </StyledHeader>
       </Headers>
     </>

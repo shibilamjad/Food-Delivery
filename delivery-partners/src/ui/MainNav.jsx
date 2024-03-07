@@ -11,7 +11,7 @@ import {
   FaKitchenSet,
   FaRegSquarePlus,
 } from "react-icons/fa6";
-import { BiRestaurant } from "react-icons/bi";
+import { BiHistory, BiRestaurant } from "react-icons/bi";
 
 function MainNav() {
   // const { logout } = useLogout();
@@ -39,8 +39,8 @@ function MainNav() {
         <FaIdCard />
         <span>Details</span>
       </NavItem>
-      <NavItem to="/restaurants">
-        <BiRestaurant />
+      <NavItem to="/compleated">
+        <BiHistory />
         <span>Order History</span>
       </NavItem>
       <Btn onClick={handleLogout}>

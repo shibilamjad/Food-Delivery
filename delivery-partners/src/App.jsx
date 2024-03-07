@@ -9,9 +9,9 @@ import { ProtectedRoutesHomePage } from "./features/ProtectedRoutes ";
 import ProtectedRouterAfterLogIn from "./features/ProtectedRouterAfterLogIn ";
 import { Menus } from "./pages/Menus";
 import { Order } from "./pages/Order";
-import { Orders } from "./pages/Orders";
+import { OrderInprogress } from "./pages/OrderInprogress";
 import Dashboard from "./pages/Dashboard";
-import { Restaurant } from "./pages/Restaurant";
+import { OrderCompleated } from "./pages/OrderCompleated";
 import { NewRestaurants } from "./pages/NewRestaurants";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Register } from "./features/Authentication/Register";
@@ -42,9 +42,8 @@ function App() {
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="order" element={<Order />} />
-            <Route path="order/:orderId" element={<Orders />} />
-            <Route path="detailsOrder" element={<Orders />} />
-            <Route path="restaurants" element={<Restaurant />} />
+            <Route path="detailsOrder" element={<OrderInprogress />} />
+            <Route path="compleated" element={<OrderCompleated />} />
             <Route path="restaurants/:restaurantId" element={<Menus />} />
             <Route path="new-restaurants" element={<NewRestaurants />} />
             <Route

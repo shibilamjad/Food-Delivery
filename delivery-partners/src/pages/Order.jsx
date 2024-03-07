@@ -15,7 +15,7 @@ export function Order() {
   return (
     <>
       <Row>
-        <Heading as="h1">All Orders</Heading>
+        <Heading as="h1">Available Orders</Heading>
         {/* <BookingTable /> */}
         <OrderTable />
       </Row>

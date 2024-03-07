@@ -21,24 +21,61 @@ export async function getDeliveryBoyOrders() {
 }
 export async function takeDeliveryBoyOrdersApi(orderId) {
   try {
-    const deliveryBoyId = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-    const res = await axios.post(
-      `${API_URL}/takeorder`,
-      {
-        orderId,
+    const res = await axios.post(`${API_URL}/takeorder`, {
+      orderId,
+      token,
+    });
+    const { data } = res;
+
+    return data;
+  } catch (error) {
+    if (
+      error.response &&
+      error.response.status === 400 &&
+      error.response.data.message ===
+        "Delivery boy can handle only one order at a time"
+    ) {
+      throw new Error("Delivery boy can handle only one order at a time");
+    } else {
+      console.error(error.message);
+      throw new Error(error.response);
+    }
+  }
+}
+
+export async function orderDetailsApi() {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios(`${API_URL}/details/order`, {
+      headers: {
+        token: token,
       },
-      {
-        headers: {
-          Authorization: deliveryBoyId,
-        },
-      }
-    );
+    });
     const { data } = res;
 
     return data;
   } catch (error) {
     console.error(error.message);
-    throw new Error("Order could not be retrieved");
+    throw new Error(error.response);
+  }
+}
+
+export async function deliveryBoyOrderConfirmApi(orderId) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.post(`${API_URL}/confirm`, {
+      orderId,
+      token,
+    });
+    const { data } = res;
+
+    return data;
+  } catch (error) {
+    console.error("Error confirming order:", error);
+    throw error;
   }
 }

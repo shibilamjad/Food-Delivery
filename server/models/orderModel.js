@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const statusOptions = ["success", "pending", "ongoing"];
+const statusOptions = ["success", "pending", "inprogress"];
 
 // Declare the Schema of the Mongo model
 const orderSchema = new mongoose.Schema(

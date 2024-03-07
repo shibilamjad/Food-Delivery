@@ -1,43 +1,30 @@
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 
 import { Row } from "../../ui/Row";
-import { useMoveBack } from "../../hooks/useMoveBack";
 import { Tag } from "../../ui/TableRowUi";
-import { useOrderDetails } from "./useOrderDetails";
-import { Loader } from "../../ui/Loader";
 import { OrderData } from "./OrderData";
 import { device } from "../../ui/device";
 
-export function OrderDetails() {
-  // const { orderId } = useParams();
-  // const { details, isLoading } = useOrderDetails(orderId);
-  const moveBack = useMoveBack();
-  // if (isLoading) return <Loader />;
-
+export function OrderDetails({ inprogress }) {
   const statusToTagName = {
     pending: "red",
-    ongoing: "blue",
+    inprogress: "blue",
     success: "green",
   };
   return (
     <StyledContainer>
-      <Row type="vertical">
-        <HeadingGroup>
-          <Heading>
-            <>Booking #id </>
-            {/* {details._id} */}
-          </Heading>
-          {/* <Tag type={statusToTagName[details.delivery]}> */}
-          {/* <Tag type={statusToTagName}>{details.delivery.replace("-", " ")}</Tag> */}
-          <ButtonGroup>
-            <Button onClick={moveBack}>&larr; Back</Button>
-          </ButtonGroup>
-        </HeadingGroup>
-        <OrderData details={details} />
-      </Row>
-
-      {/* <BookingDataBox booking={bookings} /> */}
+      {inprogress.map((detail) => (
+        <Row type="vertical" key={detail._id}>
+          <HeadingGroup>
+            <Heading>
+              Order #id
+              <span>{detail._id}</span>
+            </Heading>
+            <Tag type={statusToTagName[detail.delivery]}>{detail.delivery}</Tag>
+          </HeadingGroup>
+          <OrderData details={detail} />
+        </Row>
+      ))}
     </StyledContainer>
   );
 }
@@ -51,6 +38,7 @@ const HeadingGroup = styled.div`
   flex-wrap: wrap;
   gap: 2.4rem;
   align-items: center;
+  justify-content: space-between;
   @media ${device.tablet} {
     gap: 1.4rem;
 
@@ -65,6 +53,9 @@ const Heading = styled.h1`
   font-size: 25px;
   font-weight: 700;
   margin: 5px;
+  span {
+    margin-left: 10px;
+  }
   @media ${device.tablet} {
     font-size: 20px;
 

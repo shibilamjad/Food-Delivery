@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { format, isToday } from "date-fns";
 import {
   FaCartArrowDown,
   FaCity,
@@ -12,36 +11,63 @@ import {
 import { DataItem } from "../../ui/DataItem";
 import { device } from "../../ui/device";
 import { BiRestaurant } from "react-icons/bi";
+import { getTimeDifference } from "../../utils/getTimeDifference";
+import ModalConfirm from "../../ui/ModalConfirm";
+import { useState } from "react";
+import { ConfirmOrder } from "./ConfirmOrder";
 
 export function OrderData({ details }) {
-  const { userName, mobile, address, delivery, createdAt, cart } = details;
+  const {
+    userName,
+    mobile,
+    address,
+    delivery,
+    createdAt,
+    cart,
+    _id: orderId,
+  } = details;
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  // 1) restaurant name
+  const restaurantNames = [
+    ...new Set(cart.map((item) => item.restaurant.restaurant)),
+  ];
+
+  // 2) restaurant Address
+  const restaurantAddresses = [
+    ...new Set(cart.map((item) => item.restaurant.address)),
+  ];
+
+  // 3) restaurant location
+  const restaurantLocations = [
+    ...new Set(cart.map((item) => item.restaurant.location)),
+  ];
+
+  // 4) discount
   const discount = details.cart.reduce(
-    (totalDiscount, item) => totalDiscount + item.menuItem.discount,
+    (totalDiscount, item) =>
+      totalDiscount + (item.menuItem.discount || 0) * item.quantity,
     0
   );
 
-  // 1) restaurant name
-  const restaurantNamesSet = new Set(
-    cart.map((item) => item.restaurant.restaurant)
+  // 5) normalPrice
+  const normalPrice = details.cart.reduce(
+    (totalPrice, item) =>
+      totalPrice + (item.menuItem.unitPrice || 0) * item.quantity,
+    0
   );
-  const restaurantNames = [...restaurantNamesSet];
 
-  // 2) restaurant Address
-  const restaurantAddressSet = new Set(
-    cart.map((item) => item.restaurant.address)
-  );
-  const restaurantAddress = [...restaurantAddressSet];
+  const totalAmount = normalPrice - discount;
 
-  // 3) restaurant location
-  const restaurantlocationSet = new Set(
-    cart.map((item) => item.restaurant.location)
-  );
-  const restaurantlocation = [...restaurantlocationSet];
-
-  const totalAmount = calculateTotal(details.cart);
   const statusToTagName = {
     pending: "red",
-    ongoing: "blue",
+    inprogress: "blue",
     success: "green",
   };
   return (
@@ -49,11 +75,7 @@ export function OrderData({ details }) {
       <Header>
         <FaCartArrowDown />
         <p>Order in {userName}</p>
-
-        <p>
-          {format(new Date(createdAt), "EEE, MMM dd yyyy")} (
-          {isToday(new Date(createdAt)) ? "Today" : createdAt})
-        </p>
+        <p>{getTimeDifference(createdAt)}</p>
       </Header>
 
       <Section>
@@ -63,10 +85,10 @@ export function OrderData({ details }) {
             {restaurantNames}
           </DataItem>
           <DataItem icon={<FaCity />} label="location">
-            {restaurantlocation}
+            {restaurantLocations}
           </DataItem>
           <DataItem icon={<FaLocationDot />} label="Address">
-            {restaurantAddress}
+            {restaurantAddresses}
           </DataItem>
         </StyledRestaurant>
         <DataItem label="Details of users"></DataItem>
@@ -101,7 +123,7 @@ export function OrderData({ details }) {
         <Price type={statusToTagName[delivery]}>
           <StyledBill>
             <p>Bill</p>
-            <p>Total Amount: ₹{totalAmount + discount}</p>
+            <p>Total Amount: ₹{normalPrice + discount}</p>
             <p>Discount: ₹{discount}</p>
             <p>Total Payable Amount: ₹{totalAmount}</p>
           </StyledBill>
@@ -109,13 +131,17 @@ export function OrderData({ details }) {
       </Section>
 
       <Footer>
-        {/* <p>Booked {format(new Date(created_at), "EEE, MMM dd yyyy, p")}</p> */}
+        <Button onClick={openModal} type={statusToTagName[delivery]}>
+          Complete Order
+        </Button>
+        {modalOpen && (
+          <ModalConfirm onClose={closeModal}>
+            <ConfirmOrder onClose={closeModal} orderId={orderId} />
+          </ModalConfirm>
+        )}
       </Footer>
     </StyledBookingDataBox>
   );
-}
-function calculateTotal(cart) {
-  return cart.reduce((total, item) => total + item.totalPrice, 0);
 }
 
 const StyledBookingDataBox = styled.section`
@@ -294,4 +320,15 @@ const Footer = styled.footer`
   font-size: 1.2rem;
   color: var(--color-grey-500);
   text-align: right;
+`;
+
+const Button = styled.button`
+  color: var(--color-${(props) => props.type}-700);
+  padding: 10px;
+  background-color: var(--color-${(props) => props.type}-100);
+  border-radius: 40px;
+`;
+
+const H1 = styled.h1`
+  color: var(--color-grey-500);
 `;

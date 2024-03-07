@@ -25,7 +25,7 @@ export function OrderRow({ order }) {
 
   const statusToTagName = {
     pending: "red",
-    ongoing: "blue",
+    inprogress: "blue",
     success: "green",
   };
   return (

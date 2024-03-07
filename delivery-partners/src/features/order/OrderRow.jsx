@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 import { Dates, Stacked, TableRowOrder } from "../../ui/TableRowUi";
 import { device } from "../../ui/device";
@@ -7,9 +6,8 @@ import { getTimeDifference } from "../../utils/getTimeDifference";
 import { useTakeOrder } from "./useTakeOrder";
 
 export function OrderRow({ order }) {
-  const { delivery, createdAt, cart, userId, _id: orderId } = order;
+  const { delivery, createdAt, cart, _id: orderId } = order;
   const { takeOrder } = useTakeOrder();
-  const navigate = useNavigate();
 
   const handleTakeOrder = (orderId) => {
     takeOrder(orderId);
@@ -20,7 +18,7 @@ export function OrderRow({ order }) {
 
   const statusToTagName = {
     pending: "red",
-    ongoing: "blue",
+    inprogress: "blue",
     success: "green",
   };
   return (
@@ -39,9 +37,7 @@ export function OrderRow({ order }) {
             ))}
           </Stacked>
           <Dates>{getTimeDifference(createdAt)}</Dates>
-          <Tag type={statusToTagName[delivery]}>
-            {delivery.replace("-", " ")}
-          </Tag>
+          <Tag type={statusToTagName[delivery]}>{delivery}</Tag>
 
           <StyledButton onClick={() => handleTakeOrder(orderId)}>
             Take Order

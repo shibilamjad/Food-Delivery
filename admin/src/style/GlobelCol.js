@@ -31,8 +31,9 @@ const GlobelStyled = createGlobalStyle`
 --color-red-100: #fee2e2;
 --color-red-700: #b91c1c;
 --color-red-800: #991b1b;
+--backdrop-color: rgba(255, 255, 255, 0.1);
 
---backdrop-color: rgba(0, 0, 0, 0.3);
+/* --backdrop-color: rgba(0, 0, 0, 0.3); */
 
 --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
 --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);

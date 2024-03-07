@@ -58,18 +58,15 @@ const getDeliveryBoyOrder = async (req, res) => {
     const deliveryBoyLatitude = deliveryBoyCoordinates[1];
     const deliveryBoyLongitude = deliveryBoyCoordinates[0];
 
-    // find order only pending and populate the cart with restaurant details
-    const order = await Order.find({ delivery: "pending" }).populate({
-      path: "cart",
-      populate: [
-        {
-          path: "restaurant",
-        },
-        {
-          path: "menuItem",
-        },
-      ],
-    });
+    const order = await Order.find({ delivery: "pending" })
+      .select("cart delivery createdAt ")
+      .populate({
+        path: "cart",
+        populate: [
+          { path: "menuItem", model: "Menu" },
+          { path: "restaurant", model: "Restaurant" },
+        ],
+      });
 
     // Filter orders that are within 10km(for test) from the delivery boy
     const nearbyOrders = order.filter((order) => {
@@ -99,7 +96,9 @@ const getDeliveryBoyOrder = async (req, res) => {
 
 const takeOrderDeliveryBoy = async (req, res) => {
   try {
-    const { deliveryBoyId, orderId } = req.body;
+    const { token, orderId } = req.body;
+    const deliveryBoyId = extractDeliveryBoyId(token);
+
     const deliveryBoy = await DeliveryBoy.findById(deliveryBoyId);
     if (!deliveryBoy) {
       return res.status(400).json({
@@ -112,18 +111,127 @@ const takeOrderDeliveryBoy = async (req, res) => {
       id.equals(orderId)
     );
     if (isInProgress) {
-      return console.log(`${orderId} already selected`);
+      return res.status(400).json({
+        message: `${orderId} is already selected`,
+      });
     }
 
+    // Check if delivery boy already has an order in progress
+    if (deliveryBoy.inprogress.length > 0) {
+      return res.status(400).json({
+        message: "Delivery boy can handle only one order at a time",
+      });
+    }
     // Add the order to inprogress array
     deliveryBoy.inprogress.push(orderId);
     await deliveryBoy.save();
 
-    return deliveryBoy;
+    // Update the order status to "inprogress"
+    await Order.findByIdAndUpdate(orderId, { delivery: "inprogress" });
+
+    res.status(200).json(deliveryBoy);
   } catch (error) {
     return res.status(400).json({
       message: error.message,
     });
+  }
+};
+
+const orderdetailsDeliveryBoy = async (req, res) => {
+  const token = req.headers.token;
+  try {
+    const deliveryBoyId = extractDeliveryBoyId(token);
+
+    const details = await DeliveryBoy.findById(deliveryBoyId)
+      .select("inprogress")
+      .populate({
+        path: "inprogress",
+        populate: {
+          path: "cart",
+          populate: [
+            { path: "menuItem", model: "Menu" },
+            { path: "restaurant", model: "Restaurant" },
+          ],
+        },
+      });
+
+    if (!details) {
+      return res.status(400).json({
+        message: "Delivery boy not found",
+      });
+    }
+    res.status(200).json(details);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+const confirmOrderDeliveryBoy = async (req, res) => {
+  try {
+    const { token, orderId } = req.body;
+    const deliveryBoyId = extractDeliveryBoyId(token);
+
+    const deliveryBoy = await DeliveryBoy.findById(deliveryBoyId);
+
+    if (!deliveryBoy) {
+      return res.status(404).json({
+        message: "Delivery boy not found",
+      });
+    }
+    const index = deliveryBoy.inprogress.indexOf(orderId);
+    if (index === -1) {
+      return res.status(404).json({
+        message: "Order not found in the delivery boy's inprogress list",
+      });
+    }
+    deliveryBoy.ordersCompleated.push(orderId);
+    deliveryBoy.inprogress.splice(index, 1);
+
+    // Update both deliveryBoy and Order
+    await Promise.all([
+      deliveryBoy.save(),
+      Order.findByIdAndUpdate(orderId, { delivery: "success" }),
+    ]);
+    res.status(200).json({
+      message: "Order successfully confirmed",
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+const completedOrdersDetails = async (req, res) => {
+  try {
+    const token = req.headers.token;
+    const deliveryBoyId = extractDeliveryBoyId(token);
+
+    const deliveryBoy = await DeliveryBoy.findById(deliveryBoyId)
+      .select("ordersCompleted")
+      .populate({
+        path: "ordersCompleted",
+        select: "cart delivery createdAt",
+        populate: [
+          { path: "cart", populate: { path: "menuItem", model: "Menu" } },
+          {
+            path: "cart",
+            populate: { path: "restaurant", model: "Restaurant" },
+          },
+        ],
+      });
+    if (!deliveryBoy) {
+      return res.status(400).json({
+        message: `deliveryBoy not found`,
+      });
+    }
+
+    res.status(200).json(deliveryBoy);
+  } catch (error) {
+    console.error("Error fetching available orders:", error);
+    throw error;
   }
 };
 
@@ -192,4 +300,7 @@ module.exports = {
   deliveyBoyRegister,
   updateDeliveryBoyLocation,
   takeOrderDeliveryBoy,
+  orderdetailsDeliveryBoy,
+  confirmOrderDeliveryBoy,
+  completedOrdersDetails,
 };

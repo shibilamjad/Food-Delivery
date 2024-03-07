@@ -5,7 +5,6 @@ import {
   FaCity,
   FaLocationDot,
   FaMobileScreenButton,
-  FaRegAddressCard,
   FaRegUser,
 } from "react-icons/fa6";
 
@@ -41,7 +40,7 @@ export function OrderData({ details }) {
   const totalAmount = calculateTotal(details.cart);
   const statusToTagName = {
     pending: "red",
-    ongoing: "blue",
+    inprogress: "blue",
     success: "green",
   };
   return (

@@ -1,7 +1,4 @@
-import axios from 'axios';
 import { axiosInstance } from '../utils/interceptors';
-
-const API_URL = 'http://localhost:3006/api';
 
 export async function login({ email, password }) {
   try {

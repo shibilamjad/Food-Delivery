@@ -21,6 +21,16 @@ export function OrderItem() {
   }
   if (isLoading) return <Loader />;
   if (order.length === 0) return <EmptyOrder />;
+  const getStatusClasses = (status) => {
+    const statusToClassName = {
+      pending: 'bg-red-700',
+      inprogress: 'bg-blue-700',
+      success: 'bg-green-700',
+    };
+
+    return statusToClassName[status] || 'bg-gray-700';
+  };
+
   return (
     <StyledContainer>
       <div className="px-3 py-3">
@@ -66,7 +76,11 @@ export function OrderItem() {
                   Details
                 </button>
 
-                <p className=" rounded-sm bg-red-700 p-1 font-normal text-yellow-50 sm:p-2 sm:font-semibold ">
+                <p
+                  className={`rounded-sm p-1 font-normal text-white ${getStatusClasses(
+                    item.delivery,
+                  )} sm:p-2 sm:font-semibold`}
+                >
                   Status: {item.delivery}
                 </p>
               </div>

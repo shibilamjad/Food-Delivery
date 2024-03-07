@@ -11,7 +11,7 @@ export function Order() {
   if (isLoading) return <Loader />;
   const statusToTagName = {
     pending: 'bg-red-700',
-    ongoing: 'bg-blue-700',
+    inprogress: 'bg-blue-700',
     success: 'bg-green-700',
   };
   return (

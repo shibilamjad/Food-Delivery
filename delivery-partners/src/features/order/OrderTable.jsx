@@ -38,7 +38,6 @@ export function OrderTable() {
       socket.disconnect();
     };
   }, []);
-
   if (isLoading) return <Loader />;
   return (
     <>
