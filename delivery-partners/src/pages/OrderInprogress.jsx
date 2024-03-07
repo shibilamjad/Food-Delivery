@@ -1,7 +1,7 @@
-import { OrderDetails } from "../features/order/OrderDetails";
-import { useOrderDetails } from "../features/order/useOrderDetails";
+import { OrderDetails } from "../features/orderInprogress/OrderDetails";
+import { useOrderDetails } from "../features/orderInprogress/useOrderDetails";
 import { Loader } from "../ui/Loader";
-import { EmptyOrder } from "../features/order/EmptyOrder";
+import { EmptyOrder } from "../features/orderInprogress/EmptyOrder";
 
 export function OrderInprogress() {
   const { details, isLoading } = useOrderDetails();

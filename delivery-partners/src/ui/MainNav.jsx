@@ -39,7 +39,7 @@ function MainNav() {
         <FaIdCard />
         <span>Details</span>
       </NavItem>
-      <NavItem to="/compleated">
+      <NavItem to="/completed">
         <BiHistory />
         <span>Order History</span>
       </NavItem>

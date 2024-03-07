@@ -45,7 +45,7 @@ const deliveryBoySchema = new mongoose.Schema({
       ref: "Orders",
     },
   ],
-  ordersCompleated: [
+  ordersCompleted: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Orders",

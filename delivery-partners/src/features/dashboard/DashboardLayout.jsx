@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Stats from "../../ui/Stats";
+import Stats from "./Stats";
 import { useDashboard } from "./useDashBoard";
 import { Loader } from "../../ui/Loader";
 import SalesChart from "./SalesChart";

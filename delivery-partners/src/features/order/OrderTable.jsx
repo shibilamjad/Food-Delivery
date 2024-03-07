@@ -33,7 +33,6 @@ export function OrderTable() {
       console.error("Geolocation is not supported by this browser.");
     }
 
-    // Cleanup function
     return () => {
       socket.disconnect();
     };

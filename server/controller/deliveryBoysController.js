@@ -186,7 +186,7 @@ const confirmOrderDeliveryBoy = async (req, res) => {
         message: "Order not found in the delivery boy's inprogress list",
       });
     }
-    deliveryBoy.ordersCompleated.push(orderId);
+    deliveryBoy.ordersCompleted.push(orderId);
     deliveryBoy.inprogress.splice(index, 1);
 
     // Update both deliveryBoy and Order

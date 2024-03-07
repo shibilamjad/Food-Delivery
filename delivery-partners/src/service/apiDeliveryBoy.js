@@ -62,6 +62,23 @@ export async function orderDetailsApi() {
     throw new Error(error.response);
   }
 }
+export async function completedDetails() {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios(`${API_URL}/complete`, {
+      headers: {
+        token: token,
+      },
+    });
+    const { data } = res;
+
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error(error.response);
+  }
+}
 
 export async function deliveryBoyOrderConfirmApi(orderId) {
   try {
@@ -77,5 +94,16 @@ export async function deliveryBoyOrderConfirmApi(orderId) {
   } catch (error) {
     console.error("Error confirming order:", error);
     throw error;
+  }
+}
+
+export async function getOrderDetailsApi(orderId) {
+  try {
+    const res = await axios(`${API_URL}/details/${orderId}`);
+    const { data } = res;
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error("order could not be retrieved");
   }
 }

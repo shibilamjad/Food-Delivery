@@ -4,7 +4,7 @@ import {
   HiOutlineCalendarDays,
   HiOutlineChartBar,
 } from "react-icons/hi2";
-import Stat from "../features/dashboard/Stat";
+import Stat from "./Stat";
 
 function Stats({ orderStats }) {
   const { delivery } = orderStats;

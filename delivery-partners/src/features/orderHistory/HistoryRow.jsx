@@ -1,27 +1,25 @@
-import styled from "styled-components";
 import { FaRegEye } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
 
 import {
-  Dates,
+  Address,
+  Charge,
   EditSection,
-  Menu,
-  Stacked,
   StyledButton,
   StyledIcon,
-  TableRowOrder,
+  Title,
 } from "../../ui/TableRowUi";
+import styled from "styled-components";
 import { device } from "../../ui/device";
+import { useNavigate } from "react-router-dom";
 
-export function OrderRow({ order }) {
-  const { delivery, createdAt, cart, _id } = order;
+export function HistoryRow({ cart, delivery, orderId }) {
   const navigate = useNavigate();
-  function handleClick(orderId) {
-    navigate(`/order/${orderId}`);
-  }
 
   const restaurantImageSet = new Set(cart.map((item) => item.restaurant.image));
   const restaurantImages = [...restaurantImageSet];
+  function handleMenu(orderId) {
+    navigate(`/completed/${orderId}`);
+  }
 
   const statusToTagName = {
     pending: "red",
@@ -30,40 +28,19 @@ export function OrderRow({ order }) {
   };
   return (
     <>
-      {cart.length > 0 && (
-        <TableRowOrder>
-          <Stacked>
-            <Img src={restaurantImages} />
-          </Stacked>
-
-          <Stacked>
-            {cart.map((items) => (
-              <StyledCart key={items._id}>
-                <h1>&#x2022; {items.menuItem.name}</h1>
-              </StyledCart>
-            ))}
-          </Stacked>
-          <Stacked>
-            {cart.map((items) => (
-              <StyledCart key={items._id}>
-                <div>{items.quantity}</div>
-              </StyledCart>
-            ))}
-          </Stacked>
-          <Dates>{new Date(createdAt).toLocaleString()}</Dates>
-          <Tag type={statusToTagName[delivery]}>
-            {delivery.replace("-", " ")}
-          </Tag>
-
-          <StyledIcon>
-            <StyledButton onClick={() => handleClick(_id)}>
-              <EditSection>
-                <FaRegEye />
-              </EditSection>
-            </StyledButton>
-          </StyledIcon>
-        </TableRowOrder>
-      )}
+      <Img src={restaurantImages} />
+      {cart.map((items) => (
+        <Title key={items._id}>&#x2022; {items.menuItem.name}</Title>
+      ))}
+      <Tag type={statusToTagName[delivery]}>{delivery}</Tag>
+      <Charge>20rs</Charge>
+      <StyledIcon>
+        <StyledButton>
+          <EditSection onClick={() => handleMenu(orderId)}>
+            <FaRegEye />
+          </EditSection>
+        </StyledButton>
+      </StyledIcon>
     </>
   );
 }
@@ -72,7 +49,6 @@ export const Img = styled.img`
   display: block;
   height: 100px;
   width: 100px;
-  padding-right: 10px;
   margin: 10px;
   object-fit: cover;
   object-position: center;
@@ -92,19 +68,8 @@ export const Img = styled.img`
     margin: 5px;
     height: 28px;
     object-fit: cover;
-    object-position: center;
+    object-position: fill;
     /* transform: scale(1.5) translateX(-7px); */
-  }
-`;
-
-const StyledCart = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  align-items: center;
-  justify-content: space-between;
-  h1 {
-    margin-left: 10px;
   }
 `;
 
@@ -124,11 +89,11 @@ const Tag = styled.span`
     padding: 0.4rem 0.8rem;
   }
   @media ${device.mobileL} {
-    font-size: 0.3rem;
+    font-size: 0.5rem;
     padding: 0.3rem 0.6rem;
   }
   @media ${device.mobileS} {
-    font-size: 0.3rem;
+    font-size: 0.5rem;
     padding: 0.3rem 0.6rem;
   }
 `;

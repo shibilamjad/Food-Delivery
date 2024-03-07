@@ -12,6 +12,7 @@ export function useTakeOrder() {
     onSuccess: () => {
       toast.success("Your Order successfully placed");
       queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["details"] });
       navigate("/detailsOrder");
     },
     onError: (err) => toast.error(err.message),

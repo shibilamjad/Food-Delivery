@@ -7,14 +7,13 @@ import { AppLayout } from "./ui/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProtectedRoutesHomePage } from "./features/ProtectedRoutes ";
 import ProtectedRouterAfterLogIn from "./features/ProtectedRouterAfterLogIn ";
-import { Menus } from "./pages/Menus";
 import { Order } from "./pages/Order";
 import { OrderInprogress } from "./pages/OrderInprogress";
 import Dashboard from "./pages/Dashboard";
-import { OrderCompleated } from "./pages/OrderCompleated";
-import { NewRestaurants } from "./pages/NewRestaurants";
+import { OrderCompleted } from "./pages/OrderCompleted";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Register } from "./features/Authentication/Register";
+import CheckDetails from "./pages/CheckDetails";
 
 const queryCLient = new QueryClient({
   defaultOptions: {
@@ -43,13 +42,8 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="order" element={<Order />} />
             <Route path="detailsOrder" element={<OrderInprogress />} />
-            <Route path="compleated" element={<OrderCompleated />} />
-            <Route path="restaurants/:restaurantId" element={<Menus />} />
-            <Route path="new-restaurants" element={<NewRestaurants />} />
-            <Route
-              path="new-restaurants/:restaurantId"
-              element={<NewRestaurants />}
-            />
+            <Route path="completed" element={<OrderCompleted />} />
+            <Route path="completed/:orderId" element={<CheckDetails />} />
           </Route>
           <Route
             path="sign-in"

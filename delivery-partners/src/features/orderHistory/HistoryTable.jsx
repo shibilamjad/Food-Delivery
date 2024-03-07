@@ -1,28 +1,25 @@
 import styled from "styled-components";
-import { getRestaurants } from "../../service/apiRestaurants";
 import { Loader } from "../../ui/Loader";
 import { Table } from "../../ui/Row";
-import { RestaurantList } from "./RestaurantList";
-import { useRestaurant } from "./useRestaurant";
+import { HistoryList } from "./HistoryList";
+import { useCompleted } from "./useCompleted";
 import { device } from "../../ui/device";
 
-export const RestaurantTable = () => {
-  const { restaurants, isLoading } = useRestaurant();
+export const HistoryTable = () => {
+  const { orderCompleted, isLoading } = useCompleted();
   if (isLoading) return <Loader />;
 
   return (
     <Table role="table">
       <TableHeaderOrder>
         <div>Image</div>
-        <div>Restaurant</div>
-        <div>Location</div>
-        <div>Active</div>
+        <div>Items</div>
+        <div>Status</div>
+        <div>Charge</div>
         <div>More</div>
         <div></div>
       </TableHeaderOrder>
-      {restaurants.map((items) => (
-        <RestaurantList restaurants={items} key={items._id} />
-      ))}
+      <HistoryList order={orderCompleted.ordersCompleted} />
     </Table>
   );
 };
@@ -41,7 +38,7 @@ const TableHeaderOrder = styled.header`
   color: var(--color-grey-400);
   padding: 1rem 1rem;
   @media ${device.tablet} {
-    font-size: 0.7rem;
+    font-size: 1rem;
     column-gap: 0.5rem;
     padding: 1rem 2rem;
   }
@@ -53,6 +50,6 @@ const TableHeaderOrder = styled.header`
   @media ${device.mobileS} {
     column-gap: 0.1rem;
     padding: 1rem 1rem;
-    font-size: 0.6rem;
+    font-size: 0.5rem;
   }
 `;

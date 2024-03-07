@@ -12,14 +12,3 @@ export async function getOrderDetailsApi(orderId) {
     throw new Error("order could not be retrieved");
   }
 }
-export async function getOrderNofitysApi() {
-  try {
-    const res = await axios(`${API_URL}/notify`);
-    const { data } = res;
-
-    return data;
-  } catch (error) {
-    console.error(error.message);
-    throw new Error("order could not be retrieved");
-  }
-}

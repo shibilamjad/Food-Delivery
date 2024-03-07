@@ -4,7 +4,6 @@ import {
   FaCity,
   FaLocationDot,
   FaMobileScreenButton,
-  FaRegAddressCard,
   FaRegUser,
 } from "react-icons/fa6";
 

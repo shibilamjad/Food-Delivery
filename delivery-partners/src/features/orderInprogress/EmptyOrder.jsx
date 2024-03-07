@@ -25,7 +25,8 @@ const StyledContainer = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  /* height: 100vh; */
+  padding-top: 30px;
 
   div {
     display: flex;

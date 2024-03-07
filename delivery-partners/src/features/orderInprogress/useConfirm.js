@@ -12,7 +12,7 @@ export function useConfirm() {
     onSuccess: () => {
       toast.success("Your Order successfully compleated");
       queryClient.invalidateQueries({ queryKey: ["details"] });
-      navigate("/restaurants");
+      navigate("/completed");
     },
     onError: (err) => toast.error(err.message),
   });

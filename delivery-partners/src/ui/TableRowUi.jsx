@@ -76,19 +76,19 @@ export const TableRowRestaurant = styled.div`
   box-shadow: var(--shadow-sm);
   position: relative;
   @media ${device.tablet} {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     column-gap: 0.5rem;
     padding: 2rem 2rem;
   }
   @media ${device.mobileL} {
     column-gap: 0.6rem;
     padding: 1rem 1rem;
-    font-size: 0.5rem;
+    font-size: 0.7rem;
   }
   @media ${device.mobileS} {
     column-gap: 0.1rem;
     padding: 1rem 1rem;
-    font-size: 0.6rem;
+    font-size: 0.7rem;
   }
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
@@ -133,6 +133,11 @@ export const Title = styled.h1`
   color: var(--color-grey-600);
 `;
 export const Address = styled.h1`
+  font-weight: 600;
+  color: var(--color-grey-400);
+`;
+
+export const Charge = styled.h1`
   font-weight: 600;
   color: var(--color-grey-400);
 `;
