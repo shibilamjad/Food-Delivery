@@ -6,36 +6,15 @@ import styled from "styled-components";
 import { device } from "../../ui/device";
 import { useForm } from "react-hook-form";
 import { useDeliveyBoyRegister } from "./useDeliveyBoyRegister ";
-import { useEffect, useState } from "react";
 
 export function Register() {
   const { register, handleSubmit, getValues, formState } = useForm();
   const { errors } = formState;
   const { signUp, isLoading } = useDeliveyBoyRegister();
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-        },
-        (error) => {
-          setError(error.message);
-        }
-      );
-    } else {
-      setError("Geolocation is not supported by this browser.");
-    }
-  }, []);
 
   async function onSubmit(data) {
     try {
-      console.log(data);
-      await signUp({ ...data, latitude, longitude });
+      await signUp(data);
     } catch (error) {
       console.error(error);
     }

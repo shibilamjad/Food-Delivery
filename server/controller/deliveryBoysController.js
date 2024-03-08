@@ -1,9 +1,6 @@
 const Order = require("../models/orderModel");
 const DeliveryBoy = require("../models/deliveyBoyModel");
-const Restaurant = require("../models/restaurantModel");
-const Users = require("../models/userModel");
 const { generatePasswordHash } = require("../utils/bcrypt ");
-const jwt = require("jsonwebtoken");
 
 const {
   generateAccessToken,
@@ -263,10 +260,6 @@ const deliveyBoyRegister = async (req, res) => {
       name,
       mobile,
       password: passwordHashed,
-      location: {
-        type: "Point",
-        coordinates: location.coordinates,
-      },
     });
 
     // Generate tokens for the newly registered user

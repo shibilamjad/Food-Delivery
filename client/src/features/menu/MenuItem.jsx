@@ -5,7 +5,7 @@ import { Loader } from '../../ui/Loader';
 import { useAddCart } from '../cart/useAddCart';
 import { useCart } from '../cart/useCart';
 
-export function MenuItem({ items, totalDistance, restaurantId }) {
+export function MenuItem({ items, distance, restaurantId }) {
   const navigate = useNavigate();
 
   const { _id, discount, name, imageUrl, ingredients, isAvailable, unitPrice } =
@@ -70,7 +70,7 @@ export function MenuItem({ items, totalDistance, restaurantId }) {
                 <Button
                   key={_id}
                   type="small"
-                  disabled={totalDistance > 30}
+                  disabled={distance > 30}
                   onClick={() => handleCartAction(_id, restaurantId)}
                 >
                   Add to cart

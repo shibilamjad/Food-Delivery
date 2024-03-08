@@ -4,6 +4,7 @@ import {
   Address,
   Charge,
   EditSection,
+  Stacked,
   StyledButton,
   StyledIcon,
   Title,
@@ -29,9 +30,14 @@ export function HistoryRow({ cart, delivery, orderId }) {
   return (
     <>
       <Img src={restaurantImages} />
-      {cart.map((items) => (
-        <Title key={items._id}>&#x2022; {items.menuItem.name}</Title>
-      ))}
+      <Stacked>
+        {cart.map((items) => (
+          <StyledCart key={items._id}>
+            <h1>&#x2022; {items.menuItem.name}</h1>
+          </StyledCart>
+        ))}
+      </Stacked>
+
       <Tag type={statusToTagName[delivery]}>{delivery}</Tag>
       <Charge>20rs</Charge>
       <StyledIcon>
@@ -73,6 +79,16 @@ export const Img = styled.img`
   }
 `;
 
+const StyledCart = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  justify-content: space-between;
+  h1 {
+    margin-left: 10px;
+  }
+`;
 const Tag = styled.span`
   width: fit-content;
   text-transform: uppercase;

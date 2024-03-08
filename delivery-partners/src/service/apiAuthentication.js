@@ -40,13 +40,7 @@ export async function getUsers() {
     throw new Error(`Error fetching user: ${error.message}`);
   }
 }
-export async function createDeliveryBoy({
-  mobile,
-  password,
-  name,
-  latitude,
-  longitude,
-}) {
+export async function createDeliveryBoy({ mobile, password, name }) {
   try {
     const res = await axiosInstance("/signup", {
       method: "POST",
@@ -55,7 +49,6 @@ export async function createDeliveryBoy({
         mobile,
         password,
         name,
-        location: { coordinates: [latitude, longitude] },
       },
     });
     localStorage.setItem("token", res.data.accessToken);

@@ -1,22 +1,18 @@
+import { useNavigate } from 'react-router-dom';
 import { FcKindle } from 'react-icons/fc';
+import styled from 'styled-components';
 
 import LinkButton from '../../ui/LinkButton';
 import { Loader } from '../../ui/Loader';
 import { EmptyOrder } from './EmptyOrder';
 import { useOrder } from './useOrder';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import styled from 'styled-components';
-import Map from '../../ui/Map';
 
 export function OrderItem() {
-  const [selectedOrderId, setSelectedOrderId] = useState(null);
   const { isLoading, order } = useOrder();
   const orderItems = order && order.filter((items) => items.cart.length > 0);
   const navigate = useNavigate();
 
   function handleDetails(orderId) {
-    setSelectedOrderId(orderId);
     navigate(`/status/${orderId}`);
   }
   if (isLoading) return <Loader />;
@@ -27,10 +23,8 @@ export function OrderItem() {
       inprogress: 'bg-blue-700',
       success: 'bg-green-700',
     };
-
     return statusToClassName[status] || 'bg-gray-700';
   };
-
   return (
     <StyledContainer>
       <div className="px-3 py-3">
@@ -87,7 +81,6 @@ export function OrderItem() {
             </li>
           ))}
         </ul>
-        <Map />
       </div>
     </StyledContainer>
   );

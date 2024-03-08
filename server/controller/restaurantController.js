@@ -2,11 +2,64 @@ const Restaurant = require("../models/restaurantModel");
 const cloudinaryImg = require("../config/cloudinery");
 const util = require("util");
 const upload = require("../middleware/multer");
+const User = require("../models/userModel");
+const { extractUserId } = require("../utils/jwt");
+const { compareDistance } = require("../utils/compareDistance");
 
 const getRestaurantList = async (req, res) => {
   try {
     const restaurant = await Restaurant.find();
     res.status(200).json(restaurant);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+const getRestaurantAvailable = async (req, res) => {
+  try {
+    const { token } = req.headers;
+    const userId = extractUserId(token);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found",
+      });
+    }
+    const userCoordinates = user.location.coordinates;
+    const userLatitude = userCoordinates[1];
+    const userLongitude = userCoordinates[0];
+
+    const restaurants = await Restaurant.find();
+    // Map each restaurant to include distance and estimated time
+    const restaurantsWithDistanceAndTime = restaurants.map((restaurant) => {
+      const restaurantLatitude = restaurant.lat;
+      const restaurantLongitude = restaurant.long;
+      // calculate the distance between user and restaurants
+      const distance = compareDistance(
+        userLatitude,
+        userLongitude,
+        restaurantLatitude,
+        restaurantLongitude
+      );
+      // Assuming an average speed of 40 km/h
+      const estimatedTimeInHours = distance / 40; // in hours
+      const estimatedTimeInMinutes = estimatedTimeInHours * 60; // convert hours to minutes
+      return {
+        ...restaurant.toObject(),
+        distance,
+        estimatedTime: estimatedTimeInMinutes,
+      };
+    });
+
+    // filter near by restaurants in user 30km inside
+    const nearByRestaurants = restaurantsWithDistanceAndTime.filter(
+      (restaurant) => {
+        return restaurant.distance <= 30; // 30km inside restaurants only fetch
+      }
+    );
+
+    res.status(200).json(nearByRestaurants);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -29,16 +82,50 @@ const getRestaurantId = async (req, res) => {
   }
 };
 const getRestaurantMenus = async (req, res) => {
-  const { restaurantId } = req.params;
   try {
+    const { restaurantId } = req.params;
+    const { token } = req.headers;
+    const userId = extractUserId(token);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found",
+      });
+    }
     const restaurant = await Restaurant.findById(restaurantId)
-      .select(" restaurant address lat long location  openTime  closeTime")
+      .select("restaurant address lat long location openTime closeTime")
       .populate({
         path: "menu",
         select: "name unitPrice ingredients isAvailable discount imageUrl",
       })
       .select("restaurant");
-    res.status(200).json(restaurant);
+    // Calculate distance and estimated time between user and restaurant
+    const userCoordinates = user.location.coordinates;
+    const userLatitude = userCoordinates[1];
+    const userLongitude = userCoordinates[0];
+
+    const restaurantCoordinates = [restaurant.long, restaurant.lat];
+    const restaurantLatitude = restaurantCoordinates[1];
+    const restaurantLongitude = restaurantCoordinates[0];
+
+    const distance = compareDistance(
+      userLatitude,
+      userLongitude,
+      restaurantLatitude,
+      restaurantLongitude
+    );
+
+    // Assuming an average speed of 40 km/h
+    const estimatedTimeInHours = distance / 40; // in hours
+    const estimatedTimeInMinutes = estimatedTimeInHours * 60; // convert hours to minutes
+
+    const restaurantWithDistanceAndTime = {
+      ...restaurant.toObject(),
+      distance,
+      estimatedTime: estimatedTimeInMinutes,
+    };
+
+    res.status(200).json(restaurantWithDistanceAndTime);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -176,6 +263,7 @@ const deleteRestaurants = async (req, res) => {
 };
 
 module.exports = {
+  getRestaurantAvailable,
   getRestaurantList,
   addNewRestaurants,
   updateRestaurants,

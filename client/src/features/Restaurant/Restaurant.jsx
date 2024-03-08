@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import io from 'socket.io-client';
+import { useEffect } from 'react';
+
 import { Empty } from '../../ui/Empty';
 import { useRestaurant } from './useRestaurant';
 import { RestaurantsItem } from './RestaurantsItem';
@@ -12,7 +15,37 @@ import Map from '../../ui/Map';
 export function Restaurant() {
   const { allRestaurant, isLoading, isError } = useRestaurant();
   const { availableRestaurants, isLoading: isAvailable } = useAvailable();
+  console.log(availableRestaurants);
   const { city } = useGeoLocation();
+
+  useEffect(() => {
+    const socket = io('http://localhost:3006');
+    const token = localStorage.getItem('token');
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+
+          socket.emit('userLocationUpdate', {
+            token: token,
+            latitude,
+            longitude,
+          });
+        },
+        (error) => {
+          console.error('Error getting location', error);
+        },
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   if (isLoading || isAvailable) return <LoaderSkelten />;
   if (isError) return <Empty>Something went wrong. Please try again.</Empty>;
   return (

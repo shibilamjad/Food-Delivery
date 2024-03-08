@@ -13,9 +13,32 @@ export async function getRestaurants() {
   }
 }
 
+export async function getAvailableRestaurnat() {
+  try {
+    const token = localStorage.getItem('token');
+
+    const res = await axios.get(`${API_URL}/restaurants/available`, {
+      headers: {
+        token: token,
+      },
+    });
+    const { data } = res;
+
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error('Restaurants could not be retrieved');
+  }
+}
+
 export async function getRestaurantsMenu(restaurantId) {
   try {
-    const res = await axios(`${API_URL}/restaurants/${restaurantId}`);
+    const token = localStorage.getItem('token');
+    const res = await axios(`${API_URL}/restaurants/${restaurantId}`, {
+      headers: {
+        token: token,
+      },
+    });
     const { data } = res;
     return data;
   } catch (error) {

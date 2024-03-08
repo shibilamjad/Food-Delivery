@@ -19,6 +19,17 @@ const userSchema = new mongoose.Schema(
       trim: true,
       required: [true, "Password field cannot be empty"],
     },
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0],
+      },
+    },
     orderHistory: [
       {
         type: mongoose.Schema.Types.ObjectId,

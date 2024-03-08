@@ -10,6 +10,32 @@ const {
   verifyRefreshToken,
 } = require("../utils/jwt");
 
+const updateUserLocation = async (userId, latitude, longitude) => {
+  try {
+    // Update User location in the database
+    const updatedUser = await Users.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          location: {
+            type: "Point",
+            coordinates: [longitude, latitude],
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return console.log("user  not found");
+    }
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user location:", error);
+  }
+};
+
 const userList = async (req, res) => {
   try {
     const usersList = await Users.find().select("createdAt ");
@@ -435,4 +461,5 @@ module.exports = {
   adminLogin,
   clearCart,
   cartQuantity,
+  updateUserLocation,
 };

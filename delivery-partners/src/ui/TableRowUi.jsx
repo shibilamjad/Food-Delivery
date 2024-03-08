@@ -129,6 +129,8 @@ export const Stacked = styled.div`
   gap: 0.6rem;
 `;
 export const Title = styled.h1`
+  display: flex;
+  flex-direction: column;
   font-weight: 600;
   color: var(--color-grey-600);
 `;

@@ -5,12 +5,12 @@ import { Loader } from "../../ui/Loader";
 import { OrderRow } from "./OrderRow";
 import { useEffect } from "react";
 
-const token = localStorage.getItem("token");
 export function OrderTable() {
   const { order, isLoading } = useDeliveryBoyOrder();
 
   useEffect(() => {
     const socket = io("http://localhost:3006");
+    const token = localStorage.getItem("token");
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

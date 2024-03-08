@@ -8,9 +8,11 @@ const {
   deleteRestaurants,
   getRestaurantMenus,
   getRestaurantId,
+  getRestaurantAvailable,
 } = require("../controller/restaurantController");
 
 router.get("/", getRestaurantList);
+router.get("/available", getRestaurantAvailable);
 router.get("/edit/:restaurantId", getRestaurantId);
 router.get("/:restaurantId", getRestaurantMenus);
 router.post("/createRestaurant", addNewRestaurants);
