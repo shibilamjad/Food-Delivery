@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import Button from '../../ui/Button';
 import styled from 'styled-components';
 import { device } from '../../ui/device';
 import { useCreateOrder } from './useCreateOrder';
@@ -7,6 +6,7 @@ import { Loader } from '../../ui/Loader';
 import { useCart } from '../cart/useCart';
 import { EmptyCart } from '../cart/EmptyCart';
 import { useGeoLocation } from '../../utils/useGeoLocation';
+import Map from '../../ui/Map';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -47,7 +47,7 @@ export function CreateOrder() {
       <div className="h-screen px-4 py-6">
         <h2 className="mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
 
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <form>
           <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
             <label className="sm:basis-40">First Name</label>
             <div className="grow">
@@ -79,27 +79,14 @@ export function CreateOrder() {
             </div>
           </div>
           <ErrorMessage>{errors?.mobile?.message}</ErrorMessage>
-          <div className="relative mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label className="sm:basis-40">Address</label>
-            <div className="grow">
-              <input
-                className="input w-full placeholder:text-gray-600 placeholder:opacity-60"
-                type="text"
-                name="address"
-                defaultValue={address}
-                placeholder="Enter your address"
-                {...register('address', { required: 'This field is required' })}
-              />
-            </div>
-
-            <span className="absolute right-0.5 top-[37px] z-50 sm:top-1 md:right-[5px] md:top-[3px]"></span>
-          </div>
-          <ErrorMessage>{errors?.address?.message}</ErrorMessage>
+          <Map />
           <div>
-            <Button type="small">Order now</Button>
+            <Button onClick={handleSubmit(onSubmit, onError)} type="submit">
+              Order now
+            </Button>
           </div>
         </form>
-      </div>{' '}
+      </div>
     </StyledContainer>
   );
 }
@@ -120,5 +107,18 @@ const ErrorMessage = styled.p`
   }
   @media ${device.mobileL} {
     margin-left: 0px;
+  }
+`;
+
+const Button = styled.button`
+  background-color: #f0bf40;
+  width: 100%;
+  margin-top: 50px;
+  padding: 10px 15px;
+  border-radius: 40px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #ffee36; /* Adjusting hover color */
   }
 `;

@@ -21,15 +21,13 @@ export function AvailableItem({ items }) {
   if (estimatedTime < 10) {
     estimatedTimeRange = '20-30';
   } else if (estimatedTime < 20) {
-    estimatedTimeRange = '20-30';
-  } else if (estimatedTime < 30) {
-    estimatedTimeRange = '20-30';
-  } else if (estimatedTime < 40) {
     estimatedTimeRange = '30-40';
-  } else if (estimatedTime < 50) {
+  } else if (estimatedTime < 30) {
     estimatedTimeRange = '40-50';
+  } else if (estimatedTime < 40) {
+    estimatedTimeRange = '50-60';
   } else {
-    estimatedTimeRange = '50+';
+    estimatedTimeRange = '60+';
   }
 
   const handleMenuItems = (restaurantId) => {
@@ -59,7 +57,7 @@ export function AvailableItem({ items }) {
               <HiMiniStar />: 3.4
             </div>
             <div className="flex items-center">
-              <WiTime8 /> :{estimatedTimeRange} ({Math.round(distance)}
+              <WiTime8 /> :{estimatedTimeRange} mins ({Math.round(distance)}
               km)
             </div>
 

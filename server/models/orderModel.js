@@ -1,8 +1,8 @@
+const { type } = require("express/lib/response");
 const mongoose = require("mongoose");
 
 const statusOptions = ["success", "pending", "inprogress"];
 
-// Declare the Schema of the Mongo model
 const orderSchema = new mongoose.Schema(
   {
     userName: {
@@ -45,6 +45,9 @@ const orderSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Restaurant",
         },
+        deliveryCharge: {
+          type: Number,
+        },
         quantity: {
           type: Number,
         },
@@ -57,5 +60,4 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-//Export the model
 module.exports = mongoose.model("Orders", orderSchema);
