@@ -18,10 +18,17 @@ const orderSchema = new mongoose.Schema(
     },
 
     address: {
+      type: Object,
+      required: true,
+    },
+    latitude: {
       type: String,
       required: true,
     },
-
+    longitude: {
+      type: String,
+      required: true,
+    },
     delivery: {
       type: String,
       enum: statusOptions,
@@ -30,6 +37,10 @@ const orderSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
+    },
+    deliveryCharge: {
+      type: Number,
+      required: true,
     },
     cart: [
       {
@@ -45,9 +56,7 @@ const orderSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Restaurant",
         },
-        deliveryCharge: {
-          type: Number,
-        },
+
         quantity: {
           type: Number,
         },

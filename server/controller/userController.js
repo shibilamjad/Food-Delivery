@@ -185,7 +185,7 @@ const userCartList = async (req, res) => {
       .populate({
         path: "cart.restaurant",
         model: "Restaurant",
-        select: "restaurant",
+        select: "restaurant lat long",
       });
     // Calculate totalPrice for each cart item
     user.cart.forEach((cartItem) => {

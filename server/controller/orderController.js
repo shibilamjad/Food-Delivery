@@ -201,11 +201,20 @@ const createOrder = async (req, res) => {
       });
     }
 
-    const { userName, mobile, address } = req.body;
-    if (!userName || !mobile || !address) {
+    const { userName, mobile, address, latitude, longitude, deliveryCharge } =
+      req.body;
+    if (
+      !userName ||
+      !mobile ||
+      !address ||
+      !latitude ||
+      !longitude ||
+      !deliveryCharge
+    ) {
       return res.status(400).json({
         success: false,
-        message: "Please provide userName, mobile, and address.",
+        message:
+          "Please provide userName, mobile, and address,latitude ,longitude ,deliveryCharge.",
       });
     }
 
@@ -224,7 +233,10 @@ const createOrder = async (req, res) => {
       userName,
       mobile,
       address,
+      latitude,
+      longitude,
       totalPrice,
+      deliveryCharge,
       cart: cartItems,
       userId,
     });

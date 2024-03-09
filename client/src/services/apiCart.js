@@ -75,7 +75,7 @@ export async function deleateCartApi(cartItemId) {
     throw new Error(`Error deleting menu: ${error.message}`);
   }
 }
-export async function clearCartApi(menuId) {
+export async function clearCartApi() {
   const userId = localStorage.getItem('token');
   try {
     const res = await axios.delete(

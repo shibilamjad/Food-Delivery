@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   MapContainer,
@@ -11,12 +11,44 @@ import {
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 
-function Map() {
+function Map({ setLattitude, setLongitude, setAddress, setCountry, setError }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [mapPosition, setMapPosition] = useState([51.505, -0.09]); // Default map position
   const [markers, setMarkers] = useState([]);
-  const [s, serS] = useState([]);
+  const [cityName, setCityName] = useState('');
+  const [disrictName, setDistrictName] = useState('');
+  const [villageName, setVillagetName] = useState('');
+  const [stateName, setStateName] = useState('');
+  // location
+  useEffect(() => {
+    async function fetchCityName(lat, lng) {
+      try {
+        const response = await axios.get(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`,
+        );
+        setCityName(response.data.localityInfo.administrative[3].name);
+        setDistrictName(response.data.localityInfo.administrative[2].name);
+        setVillagetName(response.data.localityInfo.administrative[4].name);
+        setStateName(response.data.localityInfo.administrative[1].name);
+        setCountry(response.data.countryCode);
+        setAddress({
+          cityName: response.data.localityInfo.administrative[3].name,
+          districtName: response.data.localityInfo.administrative[2].name,
+          villageName: response.data.localityInfo.administrative[4].name,
+          stateName: response.data.localityInfo.administrative[1].name,
+        });
+        setError(null);
+      } catch (error) {
+        setError(error);
+      }
+    }
 
+    if (selectedLocation) {
+      const { latitude, longitude } = selectedLocation;
+      fetchCityName(latitude, longitude);
+    }
+  }, [selectedLocation, setAddress]);
+  // map postion in current and address
   const updateMapPosition = (e) => {
     e.preventDefault();
     if (navigator.geolocation) {
@@ -24,6 +56,8 @@ function Map() {
         (position) => {
           const { latitude, longitude } = position.coords;
           setMapPosition([latitude, longitude]);
+          setLattitude(latitude);
+          setLongitude(longitude);
           setSelectedLocation({ latitude, longitude });
           setMarkers([
             { id: new Date().getTime(), lat: latitude, lng: longitude },
@@ -37,18 +71,23 @@ function Map() {
       console.error('Geolocation is not supported by this browser.');
     }
   };
-
+  // marker can move and get address
   const AddMarkerToClickLocation = () => {
     const map = useMapEvents({
       click(e) {
         const { lat, lng } = e.latlng;
         setMarkers([{ id: new Date().getTime(), lat, lng }]);
         setSelectedLocation({ latitude: lat, longitude: lng });
+        setLattitude(lat);
+        setLongitude(lng);
         setMapPosition([lat, lng]);
       },
     });
 
     return null;
+  };
+  const onError = (errors) => {
+    console.log(errors);
   };
   return (
     <StyledContainer>
@@ -64,22 +103,24 @@ function Map() {
         />
         <AddMarkerToClickLocation />
         {markers.map((marker) => (
-          <>
-            <Marker key={marker.id} position={[marker.lat, marker.lng]}>
+          <React.Fragment key={marker.id}>
+            <Marker position={[marker.lat, marker.lng]}>
               <Popup>
                 Marker at ({marker.lat}, {marker.lng})
               </Popup>
             </Marker>
             <ChangeCenter position={[marker.lat, marker.lng]} />
-          </>
+          </React.Fragment>
         ))}
       </MapContainer>
       <Button onClick={updateMapPosition}>Current Location</Button>
+
       <div>
-        {selectedLocation && (
+        {cityName && (
           <DetailsContainer>
-            <p>Latitude: {selectedLocation.latitude}</p>
-            <p>Longitude: {selectedLocation.longitude}</p>
+            <p>
+              Address: {villageName}-{cityName}-{disrictName}-{stateName}
+            </p>
           </DetailsContainer>
         )}
       </div>

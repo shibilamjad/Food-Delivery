@@ -14,6 +14,9 @@ export const createOrderApi = async (data) => {
       userName: data.userName,
       mobile: data.mobile,
       address: data.address,
+      lattitude: data.lattitude,
+      longitude: data.longitude,
+      deliveryCharge: data.deliveryCharge,
     };
 
     const response = await axios.post(`${API_URL}/create`, requestData, {
