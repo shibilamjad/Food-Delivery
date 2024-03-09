@@ -27,7 +27,7 @@ export async function getRestaurantId(restaurantId) {
 
 export async function getRestaurantsMenu(restaurantId) {
   try {
-    const res = await axios(`${API_URL}/${restaurantId}`);
+    const res = await axios(`${API_URL}/admin/${restaurantId}`);
     const { data } = res;
     return data;
   } catch (error) {

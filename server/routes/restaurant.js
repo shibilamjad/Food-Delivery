@@ -6,15 +6,17 @@ const {
   addNewRestaurants,
   updateRestaurants,
   deleteRestaurants,
-  getRestaurantMenus,
+  getRestaurantMenusDeliveryBoy,
   getRestaurantId,
   getRestaurantAvailable,
+  getRestaurantMenusAdmin,
 } = require("../controller/restaurantController");
 
 router.get("/", getRestaurantList);
 router.get("/available", getRestaurantAvailable);
 router.get("/edit/:restaurantId", getRestaurantId);
-router.get("/:restaurantId", getRestaurantMenus);
+router.get("/:restaurantId", getRestaurantMenusDeliveryBoy);
+router.get("/admin/:restaurantId", getRestaurantMenusAdmin);
 router.post("/createRestaurant", addNewRestaurants);
 router.put("/update/:restaurantId", updateRestaurants);
 router.delete("/deleteRestaurant", deleteRestaurants);

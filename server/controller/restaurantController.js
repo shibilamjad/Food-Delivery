@@ -81,7 +81,7 @@ const getRestaurantId = async (req, res) => {
     });
   }
 };
-const getRestaurantMenus = async (req, res) => {
+const getRestaurantMenusDeliveryBoy = async (req, res) => {
   try {
     const { restaurantId } = req.params;
     const { token } = req.headers;
@@ -133,6 +133,29 @@ const getRestaurantMenus = async (req, res) => {
   }
 };
 
+const getRestaurantMenusAdmin = async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+    if (!restaurantId) {
+      return res.status(400).json({
+        message: "restaurant id not found",
+      });
+    }
+    const restaurant = await Restaurant.findById(restaurantId)
+      .select("restaurant address lat long location openTime closeTime")
+      .populate({
+        path: "menu",
+        select: "name unitPrice ingredients isAvailable discount imageUrl",
+      })
+      .select("restaurant");
+
+    res.status(200).json(restaurant);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
 const addNewRestaurants = async (req, res) => {
   try {
     const uploadAsync = util.promisify(upload.single("image"));
@@ -268,6 +291,7 @@ module.exports = {
   addNewRestaurants,
   updateRestaurants,
   deleteRestaurants,
-  getRestaurantMenus,
+  getRestaurantMenusDeliveryBoy,
   getRestaurantId,
+  getRestaurantMenusAdmin,
 };

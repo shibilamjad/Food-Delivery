@@ -50,7 +50,7 @@ const userOrderDetails = async (req, res) => {
   const { orderId } = req.params;
   try {
     const order = await Order.findById(orderId)
-      .select("userName address mobile delivery createdAt")
+      .select("userName address mobile delivery createdAt deliveryCharge ")
       .populate({
         path: "cart.menuItem",
         model: "Menu",
@@ -132,7 +132,7 @@ const ordersDetailsAdmin = async (req, res) => {
   const { orderId } = req.params;
   try {
     const orderList = await Order.findById(orderId)
-      .select("userName mobile delivery createdAt address cart")
+      .select("userName mobile delivery createdAt address deliveryCharge cart")
       .populate({
         path: "cart.menuItem",
         model: "Menu",

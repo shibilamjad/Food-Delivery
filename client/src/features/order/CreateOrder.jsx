@@ -28,7 +28,7 @@ export function CreateOrder() {
     villageName: '',
     stateName: '',
   });
-  const [lattitude, setLattitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [totalAmt, setTotalAmt] = useState(null);
   const [distance, setDistance] = useState(null);
@@ -40,42 +40,16 @@ export function CreateOrder() {
     formState: { errors },
   } = useForm();
 
-  // form submission
-  const onSubmit = async (data) => {
-    try {
-      if (!country) {
-        toast.error('Address is required');
-
-        return;
-      }
-      if (error) {
-        toast.error(
-          'Our Delivery Service Not Available in Your Location Please Click Correct Location',
-        );
-
-        return;
-      }
-
-      const formData = { ...data, address, lattitude, longitude };
-      createOrder(formData);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-  // form error handling
-  const onError = (errors) => {
-    console.log(errors);
-  };
   // total amount calculate
   useEffect(() => {
     if (cart) {
       const totalAmount = calculateTotal(cart);
       setTotalAmt(totalAmount);
     }
-    if (lattitude && longitude) {
+    if (latitude && longitude) {
       getDistances();
     }
-  }, [cart, lattitude, longitude]);
+  }, [cart, latitude, longitude]);
 
   // discount total
   const discount =
@@ -93,7 +67,7 @@ export function CreateOrder() {
       const distance = await getDistance(
         restaurantLat[0],
         restaurantLong[0],
-        lattitude,
+        latitude,
         longitude,
       );
       setDistance(distance);
@@ -135,7 +109,45 @@ export function CreateOrder() {
     estimatedTimeRange = '60+';
   }
   // totoal payable amount
-  const totalPayableAmt = totalAmt + deliveryCharge;
+  const deliveryCharges = totalAmt + deliveryCharge;
+
+  // form submission
+  const onSubmit = async (data) => {
+    try {
+      if (!country) {
+        toast.error('Address is required');
+
+        return;
+      }
+      if (error) {
+        toast.error(
+          'Our Delivery Service Not Available in Your Location Please Click Correct Location',
+        );
+
+        return;
+      }
+      if (distance && distance > 30) {
+        toast.error('Our Delivery Service Not Available in Your Location');
+
+        return;
+      }
+
+      const formData = {
+        ...data,
+        address,
+        latitude,
+        longitude,
+        deliveryCharge,
+      };
+      createOrder(formData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  // form error handling
+  const onError = (errors) => {
+    console.log(errors);
+  };
 
   if (isLoading) return <Loader />;
   if (cart.length === 0) return <EmptyCart />;
@@ -180,7 +192,7 @@ export function CreateOrder() {
 
           <Map
             setAddress={setAddress}
-            setLattitude={setLattitude}
+            setLattitude={setLatitude}
             setLongitude={setLongitude}
             setCountry={setCountry}
             setError={setError}
@@ -218,7 +230,7 @@ export function CreateOrder() {
 
             <p>
               Expected Estimated Time:
-              {distance && distance < 30 ? (
+              {distance && distance <= 30 ? (
                 <span className="font-semibold">{estimatedTimeRange} mint</span>
               ) : distance && distance > 30 ? (
                 <span className="text-red-500">Not Available</span>
@@ -242,8 +254,8 @@ export function CreateOrder() {
             <p className="text-red-500 ">Discount: ₹{discount}</p>
             <p className="mt-4 border-t-2  text-green-700">
               Total Payable Amount:
-              {distance && distance < 30 ? (
-                <span>₹{totalPayableAmt}</span>
+              {distance && distance <= 30 ? (
+                <span>₹{deliveryCharges}</span>
               ) : distance && distance > 30 ? (
                 <span className="text-red-500">₹{totalAmt}</span>
               ) : (

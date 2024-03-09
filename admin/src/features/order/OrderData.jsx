@@ -13,12 +13,19 @@ import { device } from "../../ui/device";
 import { BiRestaurant } from "react-icons/bi";
 
 export function OrderData({ details }) {
-  const { userName, mobile, address, delivery, createdAt, cart } = details;
+  const {
+    userName,
+    mobile,
+    address,
+    delivery,
+    deliveryCharge,
+    createdAt,
+    cart,
+  } = details;
   const discount = details.cart.reduce(
     (totalDiscount, item) => totalDiscount + item.menuItem.discount,
     0
   );
-
   // 1) restaurant name
   const restaurantNamesSet = new Set(
     cart.map((item) => item.restaurant.restaurant)
@@ -76,7 +83,7 @@ export function OrderData({ details }) {
           {mobile}
         </DataItem>
         <DataItem icon={<FaLocationDot />} label="Address">
-          {address}
+          {address.villageName}-{address.cityName}-{address.stateName}
         </DataItem>
 
         <Guest>
@@ -101,8 +108,9 @@ export function OrderData({ details }) {
           <StyledBill>
             <p>Bill</p>
             <p>Total Amount: ₹{totalAmount + discount}</p>
+            <p>Delivery Charge: ₹{deliveryCharge}</p>
             <p>Discount: ₹{discount}</p>
-            <p>Total Payable Amount: ₹{totalAmount}</p>
+            <p>Total Payable Amount: ₹{totalAmount + deliveryCharge}</p>
           </StyledBill>
         </Price>
       </Section>

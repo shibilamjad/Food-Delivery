@@ -54,7 +54,7 @@ function App() {
             />
           </Route>
           <Route
-            path="login"
+            path="sign-in"
             element={
               // <ProtectedRouterAfterLogIn>
               <Login />

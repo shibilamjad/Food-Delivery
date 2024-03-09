@@ -28,7 +28,12 @@ export function OrderBill({ order }) {
       <div className="mt-2 border-t-2  border-black pt-1 text-[20px] font-semibold ">
         <p>Total Amount: ₹{totalAmount + discount}</p>
         <p className="text-red-700 ">Discount: ₹{discount}</p>
-        <p className="text-green-700 ">Total Payable Amount: ₹{totalAmount}</p>
+        <p className="text-green-700 ">
+          DeliveryCharge: ₹{order.deliveryCharge}
+        </p>
+        <p className="mt-4 border-t-2 text-green-700 ">
+          Total Payable Amount: ₹{totalAmount + order.deliveryCharge}
+        </p>
       </div>
     </div>
   );

@@ -8,7 +8,6 @@ import { device } from "../../ui/device";
 export const HistoryTable = () => {
   const { orderCompleted, isLoading } = useCompleted();
   if (isLoading) return <Loader />;
-
   return (
     <Table role="table">
       <TableHeaderOrder>
@@ -19,6 +18,9 @@ export const HistoryTable = () => {
         <div>More</div>
         <div></div>
       </TableHeaderOrder>
+      <Empty>
+        <p>No Orders are Completed , Please take some orders </p>
+      </Empty>
       <HistoryList order={orderCompleted.ordersCompleted} />
     </Table>
   );
@@ -52,4 +54,12 @@ const TableHeaderOrder = styled.header`
     padding: 1rem 1rem;
     font-size: 0.5rem;
   }
+`;
+
+const Empty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--color-red-700);
 `;

@@ -37,8 +37,6 @@ export function OrderDetails() {
         </HeadingGroup>
         <OrderData details={details} />
       </Row>
-
-      {/* <BookingDataBox booking={bookings} /> */}
     </StyledContainer>
   );
 }

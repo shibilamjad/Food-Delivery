@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import io from "socket.io-client";
 import { Table, TableHeaderOrder } from "../../ui/Row";
 import { useDeliveryBoyOrder } from "./useOrder";
@@ -7,7 +8,7 @@ import { useEffect } from "react";
 
 export function OrderTable() {
   const { order, isLoading } = useDeliveryBoyOrder();
-
+  console.log(order);
   useEffect(() => {
     const socket = io("http://localhost:3006");
     const token = localStorage.getItem("token");
@@ -48,6 +49,11 @@ export function OrderTable() {
           <div>Status</div>
           <div></div>
         </TableHeaderOrder>
+        {order.length === 0 && (
+          <Empty>
+            <p>Your Current Location Areas(10km) Are Not Get any Orders</p>
+          </Empty>
+        )}
         {order.map((items) => (
           <OrderRow order={items} key={items._id} />
         ))}
@@ -55,3 +61,10 @@ export function OrderTable() {
     </>
   );
 }
+const Empty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--color-red-700);
+`;

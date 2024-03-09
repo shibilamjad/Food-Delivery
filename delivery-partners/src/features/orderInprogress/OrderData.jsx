@@ -24,7 +24,9 @@ export function OrderData({ details }) {
     createdAt,
     cart,
     _id: orderId,
+    deliveryCharge,
   } = details;
+  console.log(details);
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -98,7 +100,8 @@ export function OrderData({ details }) {
           {mobile}
         </DataItem>
         <DataItem icon={<FaLocationDot />} label="Address">
-          {address}
+          {address.villageName}-{address.cityName} {address.disrictName}-
+          {address.stateName}
         </DataItem>
 
         <Guest>
@@ -108,9 +111,6 @@ export function OrderData({ details }) {
                 <Img src={item.menuItem.imageUrl} alt={item.menuItem.name} />
                 <P>
                   Item: <span>{item.menuItem.name}</span>
-                </P>
-                <P>
-                  Item: <span>{item.menuItem.ingredients}</span>
                 </P>
                 <P>
                   Quantity: <span>{item.quantity}</span>
@@ -123,8 +123,9 @@ export function OrderData({ details }) {
           <StyledBill>
             <p>Bill</p>
             <p>Total Amount: ₹{normalPrice + discount}</p>
+            <p>Delivery Charge: ₹{deliveryCharge}</p>
             <p>Discount: ₹{discount}</p>
-            <p>Total Payable Amount: ₹{totalAmount}</p>
+            <p>Total Payable Amount: ₹{totalAmount + deliveryCharge}</p>
           </StyledBill>
         </Price>
       </Section>

@@ -14,7 +14,7 @@ export const createOrderApi = async (data) => {
       userName: data.userName,
       mobile: data.mobile,
       address: data.address,
-      lattitude: data.lattitude,
+      latitude: data.latitude,
       longitude: data.longitude,
       deliveryCharge: data.deliveryCharge,
     };

@@ -41,8 +41,10 @@ export function Order() {
               <p className="items-center text-sm text-stone-700">
                 Created at: {new Date(order.createdAt).toLocaleString()}
               </p>
-              <p className="items-center text-sm text-stone-700">
-                {order.address}
+
+              <p>
+                Address: {order.address.villageName}-{order.address.cityName}-
+                {order.address.disrictName}-{order.address.stateName}
               </p>
               <p className="items-center text-sm text-stone-700">
                 {order.mobile}
