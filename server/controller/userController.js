@@ -1,5 +1,6 @@
 const Users = require("../models/userModel");
 const Admin = require("../models/adminModel");
+
 const {
   generatePasswordHash,
   checkePasswordHash,
@@ -50,22 +51,22 @@ const userList = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { userName, password, email } = req.body;
+    const { userName, mobile, password } = req.body;
 
-    const isExistEmail = await Users.findOne({ email });
+    const isExistMobile = await Users.findOne({ mobile });
     const isExistUserName = await Users.findOne({ userName });
 
     // Check if email already exists
-    if (isExistEmail) {
+    if (isExistMobile) {
       return res.status(409).json({
-        message: `${email} already created`,
+        message: `${mobile} already registered`,
       });
     }
 
     // Check if username already exists
     if (isExistUserName) {
       return res.status(400).json({
-        message: `${userName} already created`,
+        message: `${userName} already registered`,
       });
     }
 
@@ -73,7 +74,7 @@ const register = async (req, res) => {
     const passwordHashed = await generatePasswordHash(password);
     const createUser = await Users.create({
       userName,
-      email,
+      mobile,
       password: passwordHashed,
     });
 
@@ -91,7 +92,7 @@ const register = async (req, res) => {
     if (createUser) {
       return res.json({
         _id: createUser._id,
-        email: createUser.email,
+        mobile: createUser.mobile,
         userName: createUser.userName,
         accessToken,
       });

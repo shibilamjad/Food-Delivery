@@ -8,11 +8,11 @@ const userSchema = new mongoose.Schema(
       trim: true,
       index: true,
     },
-    email: {
+    mobile: {
       type: String,
       trim: true,
-      required: [true, "Email field cannot be empty"],
-      unique: [true, "Email Already exists"],
+      required: [true, "mobile field cannot be empty"],
+      unique: [true, "mobile Already exists"],
     },
     password: {
       type: String,
