@@ -4,5 +4,5 @@ import { AppLayout } from '../ui/AppLayout';
 export const ProtectedRoutesHomePage = () => {
   const token = localStorage.getItem('token');
 
-  return token ? <AppLayout /> : <Navigate to="/sign-in" />;
+  return token ? <AppLayout /> : <Navigate to="/sign-up" />;
 };

@@ -13,6 +13,7 @@ const {
   adminRegister,
   adminLogin,
   cartQuantity,
+  userDetailsInOrder,
 } = require("../controller/userController");
 
 const { checkAuth } = require("../middleware/checkAuth ");
@@ -20,6 +21,7 @@ const { checkAuth } = require("../middleware/checkAuth ");
 // users list
 router.get("/", userList);
 
+router.get("/orderUser", checkAuth, userDetailsInOrder);
 // User create
 router.post("/signup", register);
 

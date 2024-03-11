@@ -15,7 +15,6 @@ export function AvailableItem({ items }) {
     distance,
     estimatedTime,
   } = items;
-
   let estimatedTimeRange = '';
 
   if (estimatedTime < 10) {
@@ -29,7 +28,6 @@ export function AvailableItem({ items }) {
   } else {
     estimatedTimeRange = '60+';
   }
-
   const handleMenuItems = (restaurantId) => {
     navigate(`/restaurant/${restaurantId}`);
   };

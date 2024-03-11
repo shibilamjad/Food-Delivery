@@ -15,7 +15,7 @@ export function useRegister() {
       navigate('/restaurant');
     },
     onError: () => {
-      toast.error('Provided email or userName are alredy exist');
+      toast.error('Provided Mobile  are alredy exist');
     },
   });
   return { signUp, isLoading };

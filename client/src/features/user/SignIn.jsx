@@ -1,22 +1,21 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { TextField } from '@mui/material';
 
-import { useLogin } from '../../services/useLogin';
+import { useLogin } from './useLogin';
 import { useForm } from 'react-hook-form';
 import { ModelAuth } from '../../ui/ModelAuth';
 import { Input } from '../../ui/Input';
 import {
   AlignCenter,
-  Button,
   Error,
   H1,
   NavLink,
   StyledSign,
 } from '../../ui/AuthStyles';
+import { device } from '../../ui/device';
 
 export function SignIn() {
   const { login, isLoading } = useLogin();
-  const navigate = useNavigate();
 
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
@@ -32,29 +31,36 @@ export function SignIn() {
 
   return (
     <ModelAuth>
-      <div>
+      <StyledImage>
+        <Img src="../../../sign-up.png" alt="image" />
         <H1>Sign in</H1>
-      </div>
+      </StyledImage>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <Input
-            type="email"
-            placeholder="Email"
-            id="email"
-            {...register('email', {
+        <InputContainer>
+          <TextField
+            sx={{
+              width: '100%',
+            }}
+            variant="outlined"
+            autoComplete="off"
+            type="text"
+            label="UserName"
+            id="userName"
+            {...register('userName', {
               required: 'This field is required',
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: 'Please provide a valid email address',
-              },
             })}
           />
-          {errors.email && <Error>{errors?.email?.message}</Error>}
-        </div>
-        <div>
-          <Input
+          {errors.userName && <Error>{errors?.userName?.message}</Error>}
+        </InputContainer>
+        <InputContainer>
+          <TextField
+            sx={{
+              width: '100%',
+            }}
+            variant="outlined"
+            autoComplete="off"
+            label="Password"
             type="password"
-            placeholder="Password"
             id="password"
             {...register('password', {
               required: 'This field is required',
@@ -65,7 +71,7 @@ export function SignIn() {
             })}
           />
           {errors.password && <Error>{errors?.password?.message}</Error>}
-        </div>
+        </InputContainer>
         <div>
           <Button type="submit">Sign in</Button>
         </div>
@@ -73,15 +79,62 @@ export function SignIn() {
 
       <StyledSign>
         <AlignCenter>
-          <div>
-            <p>Not a member? </p>
-          </div>
-          <div>
-            &nbsp;
-            <NavLink to="/sign-up"> Sign up now.</NavLink>
-          </div>
+          <p>Create new account? </p>
+          <NavLink to="/sign-up"> Sign Up now.</NavLink>
         </AlignCenter>
       </StyledSign>
     </ModelAuth>
   );
 }
+export const Button = styled.button`
+  font-size: 20px;
+  font-weight: 500;
+  padding: 15px 20px;
+  margin-top: 20px;
+  width: 100%;
+  border: transparent;
+  color: #131313;
+  background-color: #ffca1a;
+  border-radius: 4px;
+  &:hover {
+    background-color: #ffc401;
+    transition: background 0.3s;
+  }
+  @media ${device.laptopL} {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  @media ${device.laptop} {
+    font-size: 14px;
+
+    margin-bottom: 8px;
+  }
+  @media ${device.tablet} {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin-bottom: 3px;
+  }
+  @media ${device.mobileL} {
+    font-size: 12px;
+    padding: 6px 10px;
+    margin-bottom: 3px;
+  }
+  @media ${device.mobileS} {
+    font-size: 12px;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+  }
+`;
+const Img = styled.img`
+  width: 300px;
+`;
+const StyledImage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const InputContainer = styled.div`
+  margin-bottom: 10px;
+`;

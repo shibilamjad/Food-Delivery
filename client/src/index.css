@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.react-tel-input .form-control {
+  @apply !w-full py-7 !text-base;
+}
+
+.opt-container input {
+  @apply !mr-0 flex-1 py-5 outline-none;
+}
 @layer components {
   .input {
     @apply rounded-full border-[0.2rem] border-stone-200  

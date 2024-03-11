@@ -1,15 +1,35 @@
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import Button from '../../ui/Button';
+import { device } from '../../ui/device';
 
 export function EmptyCart() {
   return (
-    <div className="m-2 p-6 text-sm text-stone-600 ">
-      <p className=" mb-6">
-        Your cart is still empty. Start adding some Items :)
+    <Emptys>
+      <p className="mb-6">
+        <img src="../../../shopping2.png" alt="" />
       </p>
       <Button type="small" to="/restaurant">
         Go to Restaurant
       </Button>
-    </div>
+    </Emptys>
   );
 }
+
+const Emptys = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  font-size: 20px;
+  color: red;
+  img {
+    width: 500px;
+    @media ${device.tablet} {
+      width: 400px;
+    }
+    @media ${device.mobileL} {
+      width: 200px;
+    }
+  }
+`;

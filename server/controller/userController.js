@@ -106,8 +106,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await Users.findOne({ email });
+    const { userName, password } = req.body;
+    const user = await Users.findOne({ userName });
 
     if (!user) {
       return res.status(401).json({
@@ -131,7 +131,6 @@ const login = async (req, res) => {
 
     res.json({
       _id: user._id,
-      email: user.email,
       userName: user.userName,
       accessToken,
     });
@@ -141,7 +140,23 @@ const login = async (req, res) => {
     });
   }
 };
+const userDetailsInOrder = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const user = await Users.findById(userId).select("userName mobile");
 
+    if (!user) {
+      return res.status(401).json({
+        message: "User is not valid",
+      });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
 const refreshToken = async (req, res) => {
   const userId = verifyRefreshToken(req.cookies.refreshToken);
 
@@ -454,6 +469,7 @@ module.exports = {
   userCartList,
   register,
   addUserCart,
+  userDetailsInOrder,
   login,
   deleateCart,
   logout,

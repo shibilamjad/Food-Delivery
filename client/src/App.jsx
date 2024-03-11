@@ -8,6 +8,7 @@ import { CreateOrder } from './features/order/CreateOrder';
 import { Order } from './features/order/Order';
 import { Register } from './features/user/Register';
 import { ProtectedRoutesHomePage } from './features/ProtectedRoutes ';
+import { ProtectedRouterAfterLogIn } from './features/ProtectedRouterAfterLogIn ';
 import { Error } from './ui/Error';
 import { Cart } from './features/cart/Cart';
 import { Toaster } from 'react-hot-toast';
@@ -32,9 +33,9 @@ function App() {
           <Routes>
             <Route
               element={
-                // <ProtectedRoutesHomePage>
-                <AppLayout />
-                // </ProtectedRoutesHomePage>
+                <ProtectedRoutesHomePage>
+                  <AppLayout />
+                </ProtectedRoutesHomePage>
               }
             >
               <Route index element={<Navigate replace to="restaurant" />} />
@@ -45,10 +46,24 @@ function App() {
               <Route path="/order/new" element={<CreateOrder />} />
               <Route path="/order" element={<OrderItem />} />
               <Route path="/status/:orderId" element={<Order />} />
-              <Route path="/sign-up" element={<Register />} />
-              <Route path="/sign-in" element={<SignIn />} />
-              <Route path="*" element={<Error />} />
             </Route>
+            <Route
+              path="/sign-up"
+              element={
+                <ProtectedRouterAfterLogIn>
+                  <Register />
+                </ProtectedRouterAfterLogIn>
+              }
+            />
+            <Route
+              path="/sign-in"
+              element={
+                <ProtectedRouterAfterLogIn>
+                  <SignIn />
+                </ProtectedRouterAfterLogIn>
+              }
+            />
+            <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>
         <Toaster

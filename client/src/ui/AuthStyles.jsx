@@ -11,7 +11,7 @@ export const StyledSign = styled.div`
   margin-top: 80px;
   p {
     color: var(--color-textColor);
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
   }
   @media ${device.laptopL} {
     font-size: 17px;
@@ -39,27 +39,18 @@ export const StyledSign = styled.div`
 export const H1 = styled.h1`
   color: #1b1b1b;
   /* color: var(--color-h1); */
-  margin-bottom: 29px;
+  margin-bottom: 10px;
   font-size: 32px;
   @media ${device.laptop} {
     font-size: 28px;
-    margin-bottom: 20px;
   }
   @media ${device.laptopL} {
     font-size: 25px;
-
-    margin-bottom: 20px;
   }
   @media ${device.tablet} {
     font-size: 17px;
-    margin-bottom: 15px;
   }
   @media ${device.mobileL} {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  @media ${device.mobileS} {
-    margin-bottom: 10px;
     font-size: 14px;
   }
 `;
@@ -117,12 +108,11 @@ export const AlignCenter = styled.div`
   display: flex;
   font-size: 12px;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   justify-content: center;
 `;
 export const Error = styled.p`
   font-size: 12px;
-  /* margin-bottom: 10px; */
-  color: var(--color-btnsign);
+  color: red;
   font-weight: 300;
 `;

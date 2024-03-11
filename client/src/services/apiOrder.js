@@ -59,3 +59,18 @@ export async function orderDetailsApi(orderId) {
     throw new Error(`Error fetching order details: ${error.message}`);
   }
 }
+export async function orderUserDetails() {
+  const userId = localStorage.getItem('token');
+  try {
+    const res = await axios.get(`http://localhost:3006/api/users/orderUser`, {
+      headers: {
+        accesstoken: userId,
+      },
+    });
+
+    const { data } = res;
+    return data;
+  } catch (error) {
+    throw new Error(`Error fetching user details: ${error.message}`);
+  }
+}

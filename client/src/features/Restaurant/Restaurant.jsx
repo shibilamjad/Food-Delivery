@@ -14,7 +14,6 @@ import { useAvailable } from './useAvailable';
 export function Restaurant() {
   const { allRestaurant, isLoading, isError } = useRestaurant();
   const { availableRestaurants, isLoading: isAvailable } = useAvailable();
-  console.log(availableRestaurants);
   const { city } = useGeoLocation();
 
   useEffect(() => {
@@ -47,6 +46,7 @@ export function Restaurant() {
 
   if (isLoading || isAvailable) return <LoaderSkelten />;
   if (isError) return <Empty>Something went wrong. Please try again.</Empty>;
+
   return (
     <>
       <StyledContainer>
@@ -55,12 +55,18 @@ export function Restaurant() {
             Restaurants Available in your Location <span>{city}</span>
           </h1>
         </Header>
-        <StyledRestaurant>
-          {availableRestaurants &&
-            availableRestaurants.map((item) => (
-              <AvailableItem items={item} key={item._id} />
-            ))}
-        </StyledRestaurant>
+        {availableRestaurants.length === 0 ? (
+          <Emptys>
+            <img src="../../../public/not-item-available.png" alt="" />
+          </Emptys>
+        ) : (
+          <StyledRestaurant>
+            {availableRestaurants &&
+              availableRestaurants.map((item) => (
+                <AvailableItem items={item} key={item._id} />
+              ))}
+          </StyledRestaurant>
+        )}
         <Header>
           <h1>Our Popular Restaurants</h1>
         </Header>
@@ -107,4 +113,12 @@ const Header = styled.div`
       font-size: 20px;
     }
   }
+`;
+const Emptys = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  font-size: 20px;
+  color: red;
 `;

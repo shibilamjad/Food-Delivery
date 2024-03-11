@@ -10,6 +10,7 @@ import { useCart } from '../cart/useCart';
 import { EmptyCart } from '../cart/EmptyCart';
 import Map from '../../ui/Map';
 import { getDistance } from '../../utils/getDistance';
+import { useUserDetails } from './useUserDetails';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -19,6 +20,7 @@ const isValidPhone = (str) =>
 
 export function CreateOrder() {
   const { createOrder } = useCreateOrder();
+  const { user } = useUserDetails();
   const { cart, isLoading } = useCart();
   const [country, setCountry] = useState('');
   const [error, setError] = useState('');
@@ -134,6 +136,8 @@ export function CreateOrder() {
 
       const formData = {
         ...data,
+        userName,
+        mobile,
         address,
         latitude,
         longitude,
@@ -148,6 +152,8 @@ export function CreateOrder() {
   const onError = (errors) => {
     console.log(errors);
   };
+  const userName = user && user.userName;
+  const mobile = user && user.mobile;
 
   if (isLoading) return <Loader />;
   if (cart.length === 0) return <EmptyCart />;
@@ -157,39 +163,27 @@ export function CreateOrder() {
         <h2 className="mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
 
         <form>
-          <h2 className="pb-3 text-xl font-semibold">Step1</h2>
-          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label className="sm:basis-40">First Name</label>
-            <div className="grow">
-              <input
-                className="input w-full"
-                type="text"
-                id="userName"
-                {...register('userName', {
-                  required: 'This field is required',
-                })}
-              />
-            </div>
+          <h2 className="border-b-2 pb-3 text-xl font-semibold ">
+            Step1
+            {user ? (
+              <span> ✅</span>
+            ) : (
+              <span className="text-red-500">
+                (You can not access to order, something went wrong)
+              </span>
+            )}
+          </h2>
+          <div className=" mb-5 mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="sm:basis-40">First Name :</label>
+            <div className="grow font-semibold ">{userName}</div>
           </div>
-          <ErrorMessage>{errors?.userName?.message}</ErrorMessage>
           <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label className="sm:basis-40">Phone number</label>
-            <div className="grow">
-              <input
-                className="input w-full"
-                type="tel"
-                name="mobile"
-                {...register('mobile', {
-                  required: 'This field is required',
-                  validate: (value) =>
-                    isValidPhone(value) || 'Invalid phone number',
-                })}
-              />
-            </div>
+            <label className="sm:basis-40">Phone number :</label>
+            <div className="grow font-semibold ">{mobile}</div>
           </div>
-          <ErrorMessage>{errors?.mobile?.message}</ErrorMessage>
-          <h2 className="pb-3 text-xl font-semibold ">Step2</h2>
-
+          <h2 className="border-b-2 pb-3 text-xl font-semibold ">
+            Step2 <span>{distance && distance < 30 ? '✅' : '❌'}</span>
+          </h2>
           <Map
             setAddress={setAddress}
             setLattitude={setLatitude}

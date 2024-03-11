@@ -1,12 +1,12 @@
 import { axiosInstance } from '../utils/interceptors';
 
-export async function login({ email, password }) {
+export async function login({ userName, password }) {
   try {
     const res = await axiosInstance('/login', {
       method: 'POST',
       withCredentials: true,
       data: {
-        email,
+        userName,
         password,
       },
     });
@@ -30,13 +30,13 @@ export async function logout() {
   }
 }
 
-export async function createUserApi({ email, password, userName }) {
+export async function createUserApi({ mobile, password, userName }) {
   try {
     const res = await axiosInstance('/signup', {
       method: 'POST',
       withCredentials: true,
       data: {
-        email,
+        mobile,
         password,
         userName,
       },

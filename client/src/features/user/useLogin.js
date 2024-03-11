@@ -1,11 +1,9 @@
-import { login as loginApi } from '../services/apiAuthentication';
+import { login as loginApi } from '../../services/apiAuthentication';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-// import { useAuth } from '../../context/AuthContext';
 
 export function useLogin() {
-  // const { setIsAuthenticated } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -14,11 +12,10 @@ export function useLogin() {
     onSuccess: (data) => {
       queryClient.setQueryData(['user'], data.user);
       toast.success('Succesfully login');
-      // setIsAuthenticated(true);
       navigate('/restaurant');
     },
     onError: (err) => {
-      toast.error('Provided email or password are incorrect');
+      toast.error('Provided UserName or password are incorrect');
     },
   });
 
