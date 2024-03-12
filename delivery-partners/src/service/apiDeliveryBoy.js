@@ -80,23 +80,6 @@ export async function completedDetails() {
   }
 }
 
-export async function deliveryBoyOrderConfirmApi(orderId) {
-  try {
-    const token = localStorage.getItem("token");
-
-    const res = await axios.post(`${API_URL}/confirm`, {
-      orderId,
-      token,
-    });
-    const { data } = res;
-
-    return data;
-  } catch (error) {
-    console.error("Error confirming order:", error);
-    throw error;
-  }
-}
-
 export async function getOrderDetailsApi(orderId) {
   try {
     const res = await axios(`${API_URL}/details/${orderId}`);

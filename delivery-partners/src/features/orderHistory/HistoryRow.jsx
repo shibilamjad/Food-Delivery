@@ -1,19 +1,17 @@
 import { FaRegEye } from "react-icons/fa6";
 
 import {
-  Address,
   Charge,
   EditSection,
   Stacked,
   StyledButton,
   StyledIcon,
-  Title,
 } from "../../ui/TableRowUi";
 import styled from "styled-components";
 import { device } from "../../ui/device";
 import { useNavigate } from "react-router-dom";
 
-export function HistoryRow({ cart, delivery, orderId }) {
+export function HistoryRow({ cart, delivery, orderId, deliveryCharge }) {
   const navigate = useNavigate();
 
   const restaurantImageSet = new Set(cart.map((item) => item.restaurant.image));
@@ -39,7 +37,7 @@ export function HistoryRow({ cart, delivery, orderId }) {
       </Stacked>
 
       <Tag type={statusToTagName[delivery]}>{delivery}</Tag>
-      <Charge>20rs</Charge>
+      <Charge>₹{deliveryCharge}</Charge>
       <StyledIcon>
         <StyledButton>
           <EditSection onClick={() => handleMenu(orderId)}>

@@ -1,9 +1,14 @@
 import axios from "axios";
 const API_URL = "http://localhost:3006/api/dashboard";
 
-export async function getTotalSats() {
+export async function getTotalOrderDeliveryBoy() {
   try {
-    const res = await axios(API_URL);
+    const token = localStorage.getItem("token");
+    const res = await axios(`${API_URL}/totalorders`, {
+      headers: {
+        token: token,
+      },
+    });
     const { data } = res;
 
     return data;

@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTotalSats } from "../../service/apiDashboard";
+import { getTotalOrderDeliveryBoy } from "../../service/apiDashboard";
 
 export function useDashboard() {
   const { data: orderStats, isLoading } = useQuery({
     queryKey: ["dashboard"],
-    queryFn: getTotalSats,
+    queryFn: getTotalOrderDeliveryBoy,
   });
   return { orderStats, isLoading };
 }

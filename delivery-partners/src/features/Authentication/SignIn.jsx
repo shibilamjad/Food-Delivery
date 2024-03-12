@@ -73,13 +73,8 @@ export function SignIn() {
 
       <StyledSign>
         <AlignCenter>
-          <div>
-            <p>Not a member? </p>
-          </div>
-          <div>
-            &nbsp;
-            <NavLink to="/sign-up"> Sign up now.</NavLink>
-          </div>
+          <p>Already have an Account? </p>
+          <NavLink to="/sign-up"> Sign In now.</NavLink>
         </AlignCenter>
       </StyledSign>
     </ModelAuth>

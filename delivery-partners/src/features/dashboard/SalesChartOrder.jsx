@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 
-function SalesChart({ orderStats, currentFilter }) {
+function SalesChartOrder({ orderStats, currentFilter }) {
   const allDates = eachDayOfInterval({
     start: subDays(new Date(), currentFilter - 1),
     end: new Date(),
@@ -22,17 +22,12 @@ function SalesChart({ orderStats, currentFilter }) {
     const dailyOrders = orderStats.filter((order) =>
       isSameDay(new Date(order.createdAt), date)
     );
-    // Calculate total delivery charges for the day
-    const totalDeliveryCharges = dailyOrders.reduce((total, order) => {
-      if (order && typeof order === "object" && "deliveryCharge" in order) {
-        return total + order.deliveryCharge;
-      }
-      return total;
-    }, 0);
+    // Count the number of orders for the day
+    const orderPerDay = dailyOrders.length;
 
     return {
       label: format(date, "MMM dd"),
-      totalDeliveryCharges,
+      orderPerDay,
     };
   });
 
@@ -51,20 +46,20 @@ function SalesChart({ orderStats, currentFilter }) {
             tickLine={{ stroke: "var(--color-grey-400)" }}
           />
           <YAxis
-            unit="₹"
             tick={{ fill: "var(--color-grey-400)" }}
             tickLine={{ stroke: "var(--color-grey-400)" }}
           />
           <CartesianGrid strokeDasharray="4" />
           <Tooltip contentStyle={{ backgroundColor: "var(--color-grey-0)" }} />
+
           <Area
-            dataKey="totalDeliveryCharges"
+            dataKey="orderPerDay"
             type="monotone"
-            stroke="#4f46e5"
-            fill="#4f46e5"
+            stroke="#22c55e"
+            fill="#22c55e"
             strokeWidth={2}
-            name="Total sales"
-            unit="₹"
+            name="Daily Order"
+            // unit="₹"
           />
         </AreaChart>
       </ResponsiveContainer>
@@ -72,7 +67,7 @@ function SalesChart({ orderStats, currentFilter }) {
   );
 }
 
-export default SalesChart;
+export default SalesChartOrder;
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;

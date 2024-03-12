@@ -14,18 +14,20 @@ const LoginContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 5%;
-  margin-bottom: 5%;
+  margin-top: 100px;
+  margin-bottom: 100px;
 `;
 
 const StyledLogin = styled.div`
-  background: var(--color-brand-500);
-  width: 457px;
-  height: 547px;
+  border: 1px solid var(--color-grey-200);
+  box-shadow: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);
+  width: 600px;
+  height: auto;
+  background-color: var(--color-grey-0);
   border-radius: 4px;
 
   @media ${device.laptopL} {
-    width: 457px;
+    width: 600px;
     height: auto;
   }
   @media ${device.laptop} {

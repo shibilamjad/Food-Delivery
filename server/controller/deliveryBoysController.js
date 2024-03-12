@@ -165,42 +165,6 @@ const orderdetailsDeliveryBoy = async (req, res) => {
   }
 };
 
-const confirmOrderDeliveryBoy = async (req, res) => {
-  try {
-    const { token, orderId } = req.body;
-    const deliveryBoyId = extractDeliveryBoyId(token);
-
-    const deliveryBoy = await DeliveryBoy.findById(deliveryBoyId);
-
-    if (!deliveryBoy) {
-      return res.status(404).json({
-        message: "Delivery boy not found",
-      });
-    }
-    const index = deliveryBoy.inprogress.indexOf(orderId);
-    if (index === -1) {
-      return res.status(404).json({
-        message: "Order not found in the delivery boy's inprogress list",
-      });
-    }
-    deliveryBoy.ordersCompleted.push(orderId);
-    deliveryBoy.inprogress.splice(index, 1);
-
-    // Update both deliveryBoy and Order
-    await Promise.all([
-      deliveryBoy.save(),
-      Order.findByIdAndUpdate(orderId, { delivery: "success" }),
-    ]);
-    res.status(200).json({
-      message: "Order successfully confirmed",
-    });
-  } catch (error) {
-    res.status(400).json({
-      message: error.message,
-    });
-  }
-};
-
 const completedOrdersDetails = async (req, res) => {
   try {
     const token = req.headers.token;
@@ -210,7 +174,7 @@ const completedOrdersDetails = async (req, res) => {
       .select("ordersCompleted")
       .populate({
         path: "ordersCompleted",
-        select: "cart delivery createdAt",
+        select: "cart delivery createdAt deliveryCharge ",
         populate: [
           { path: "cart", populate: { path: "menuItem", model: "Menu" } },
           {
@@ -294,6 +258,5 @@ module.exports = {
   updateDeliveryBoyLocation,
   takeOrderDeliveryBoy,
   orderdetailsDeliveryBoy,
-  confirmOrderDeliveryBoy,
   completedOrdersDetails,
 };

@@ -1,7 +1,10 @@
 const router = require("express").Router();
-const { totolOrders } = require("../controller/dashboardController");
+const {
+  totolOrdersAdmin,
+  completedOrdersDeliveryBoy,
+} = require("../controller/dashboardController");
 
-// get all menu with genre *(all)
-router.get("/", totolOrders);
+router.get("/", totolOrdersAdmin);
+router.get("/totalorders", completedOrdersDeliveryBoy);
 
 module.exports = router;

@@ -1,16 +1,12 @@
 import {
   HiOutlineBanknotes,
   HiOutlineBriefcase,
-  HiOutlineCalendarDays,
   HiOutlineChartBar,
 } from "react-icons/hi2";
 import Stat from "./Stat";
 
 function Stats({ orderStats }) {
-  const { delivery } = orderStats;
-
   // 1 today orders
-
   const today = new Date();
   const todayDate = today.toISOString().slice(0, 10);
 
@@ -23,22 +19,18 @@ function Stats({ orderStats }) {
   // 2 total order
   const numOrder = orderStats.length;
 
-  // 3. all pending items
-  const totalPending = orderStats.filter(
-    (order) => order.delivery === "pending"
-  ).length;
-
-  // 4 get total price
-  const totalPrices = orderStats.map((order) =>
-    order.cart.reduce((acc, cartItem) => acc + cartItem.totalPrice, 0)
-  );
-  const totalPrice = totalPrices.reduce((acc, price) => acc + price, 0);
+  // 3 get total price
+  const ordersArray = Object.values(orderStats);
+  // Calculate total delivery charges
+  const totalDeliveryCharges = ordersArray.reduce((total, order) => {
+    return total + order.deliveryCharge;
+  }, 0);
 
   const formatter = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
   });
-  const formattedNumber = formatter.format(totalPrice);
+  const formattedNumber = formatter.format(totalDeliveryCharges);
 
   return (
     <>
@@ -53,12 +45,6 @@ function Stats({ orderStats }) {
         color="green"
         icon={<HiOutlineChartBar />}
         value={numOrder}
-      />
-      <Stat
-        title="Pending Orders"
-        color="indigo"
-        icon={<HiOutlineCalendarDays />}
-        value={totalPending}
       />
       <Stat
         title="Total Revenew"

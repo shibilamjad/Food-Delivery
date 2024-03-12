@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {
   FaCartArrowDown,
   FaCity,
+  FaLocationArrow,
   FaLocationDot,
   FaMobileScreenButton,
   FaRegUser,
@@ -14,6 +15,8 @@ import { getTimeDifference } from "../../utils/getTimeDifference";
 import ModalConfirm from "../../ui/ModalConfirm";
 import { useState } from "react";
 import { ConfirmOrder } from "./ConfirmOrder";
+import { getCurrentPosition } from "../../utils/getCurrentPostion";
+import Buttons from "../../ui/Buttons";
 
 export function OrderData({ details }) {
   const {
@@ -25,15 +28,18 @@ export function OrderData({ details }) {
     cart,
     _id: orderId,
     deliveryCharge,
+    latitude,
+    longitude,
   } = details;
-  console.log(details);
   const [modalOpen, setModalOpen] = useState(false);
+  const [otpOpen, setOtpOpen] = useState(false);
 
   const openModal = () => {
     setModalOpen(true);
   };
   const closeModal = () => {
     setModalOpen(false);
+    setOtpOpen(false);
   };
   // 1) restaurant name
   const restaurantNames = [
@@ -71,6 +77,21 @@ export function OrderData({ details }) {
     inprogress: "blue",
     success: "green",
   };
+
+  const handleDirections = async () => {
+    try {
+      const position = await getCurrentPosition();
+
+      const deliveryBoyLat = position.coords.latitude; //  delivery boy's latitude
+      const deliveryBoyLng = position.coords.longitude; //  delivery boy's longitude
+      const userLat = latitude; // user's latitude
+      const userLng = longitude; // user's longitude
+      const googleMapsUrl = `https://www.google.com/maps/dir/${deliveryBoyLat},${deliveryBoyLng}/${userLat},${userLng}`;
+      window.open(googleMapsUrl, "_blank");
+    } catch (error) {
+      console.error("Error getting current position:", error.message);
+    }
+  };
   return (
     <StyledBookingDataBox>
       <Header>
@@ -102,6 +123,9 @@ export function OrderData({ details }) {
         <DataItem icon={<FaLocationDot />} label="Address">
           {address.villageName}-{address.cityName} {address.disrictName}-
           {address.stateName}
+        </DataItem>
+        <DataItem icon={<FaLocationArrow />} label="Direction">
+          <Buttons onClick={handleDirections}>Direction</Buttons>
         </DataItem>
 
         <Guest>
@@ -136,7 +160,13 @@ export function OrderData({ details }) {
         </Button>
         {modalOpen && (
           <ModalConfirm onClose={closeModal}>
-            <ConfirmOrder onClose={closeModal} orderId={orderId} />
+            <ConfirmOrder
+              onClose={closeModal}
+              orderId={orderId}
+              mobile={mobile}
+              otpOpen={otpOpen}
+              setOtpOpen={setOtpOpen}
+            />
           </ModalConfirm>
         )}
       </Footer>

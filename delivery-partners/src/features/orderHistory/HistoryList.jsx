@@ -8,6 +8,7 @@ export function HistoryList({ order }) {
         <TableRowRestaurant key={item._id}>
           <HistoryRow
             cart={item.cart}
+            deliveryCharge={item.deliveryCharge}
             delivery={item.delivery}
             orderId={item._id}
           />

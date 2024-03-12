@@ -141,7 +141,7 @@ export const Address = styled.h1`
 
 export const Charge = styled.h1`
   font-weight: 600;
-  color: var(--color-grey-400);
+  color: var(--color-grey-500);
 `;
 
 export const Menu = styled.div`

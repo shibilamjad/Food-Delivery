@@ -31,15 +31,6 @@ export async function adminLogoutApi() {
     throw new Error(`Error fetching logout: ${error.message}`);
   }
 }
-export async function getUsers() {
-  try {
-    const res = await axios(API_URL);
-
-    return res.data;
-  } catch (error) {
-    throw new Error(`Error fetching user: ${error.message}`);
-  }
-}
 export async function createDeliveryBoy({ mobile, password, name }) {
   try {
     const res = await axiosInstance("/signup", {

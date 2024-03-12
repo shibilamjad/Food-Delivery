@@ -10,8 +10,8 @@ export const StyledSign = styled.div`
   font-size: 17px;
   margin-top: 80px;
   p {
-    color: var(--color-grey-700);
-    margin-top: 1rem;
+    color: var(--color-textColor);
+    /* margin-top: 1rem; */
   }
   @media ${device.laptopL} {
     font-size: 17px;
@@ -59,16 +59,16 @@ export const H1 = styled.h1`
 
 export const Button = styled.button`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
   padding: 10px 15px;
   margin-top: 20px;
   width: 100%;
   border: transparent;
-  color: #fff;
-  background-color: #292929;
+  color: var(--color-brand-100);
+  background-color: var(--color-brand-500);
   border-radius: 4px;
   &:hover {
-    background-color: #121212;
+    background-color: var(--color-brand-600);
     transition: background 0.3s;
   }
   @media ${device.laptopL} {
@@ -98,24 +98,23 @@ export const Button = styled.button`
     margin-bottom: 4px;
   }
 `;
+
 export const NavLink = styled(Link)`
   display: flex;
   cursor: pointer;
-  color: #1e1e1e;
-  font-weight: 700;
-  font-size: 17px;
+  color: var(--color-brand-200);
+  font-weight: 600;
 `;
 
 export const AlignCenter = styled.div`
   display: flex;
   font-size: 12px;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   justify-content: center;
 `;
 export const Error = styled.p`
   font-size: 12px;
-  /* margin-bottom: 10px; */
-  color: var(--color-grey-700);
+  color: red;
   font-weight: 300;
 `;
