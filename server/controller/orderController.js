@@ -109,11 +109,11 @@ const userOrderList = async (req, res) => {
 const ordersAdmin = async (req, res) => {
   try {
     const orderList = await Order.find()
-      .select("userName delivery createdAt cart")
+      .select("userName delivery createdAt cart deliveryCharge")
       .populate({
         path: "cart.menuItem",
         model: "Menu",
-        select: "name unitPrice",
+        select: "name unitPrice discount ",
       })
       .populate({
         path: "cart.restaurant",

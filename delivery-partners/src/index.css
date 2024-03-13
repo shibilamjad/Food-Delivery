@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 .opt-container input {
-  @apply !mr-0 flex-1 py-5 outline-none;
+  @apply !mr-0 flex-1  py-5 outline-none;
 }
 
 .react-tel-input .form-control {
-  @apply !w-full py-5 !text-base;
+  @apply !w-full border-[#4b5563]  py-6 !text-base text-[#e5e7eb] bg-[#111827];
 }

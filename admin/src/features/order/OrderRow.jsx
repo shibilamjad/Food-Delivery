@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import {
   Dates,
   EditSection,
-  Menu,
   Stacked,
   StyledButton,
   StyledIcon,
@@ -14,12 +13,11 @@ import {
 import { device } from "../../ui/device";
 
 export function OrderRow({ order }) {
-  const { delivery, createdAt, cart, _id } = order;
+  const { delivery, createdAt, cart, _id, deliveryCharge } = order;
   const navigate = useNavigate();
   function handleClick(orderId) {
     navigate(`/order/${orderId}`);
   }
-
   const restaurantImageSet = new Set(cart.map((item) => item.restaurant.image));
   const restaurantImages = [...restaurantImageSet];
 
@@ -46,7 +44,12 @@ export function OrderRow({ order }) {
           <Stacked>
             {cart.map((items) => (
               <StyledCart key={items._id}>
-                <div>{items.quantity}</div>
+                <div>
+                  ₹
+                  {items.menuItem.unitPrice +
+                    deliveryCharge -
+                    items.menuItem.discount}
+                </div>
               </StyledCart>
             ))}
           </Stacked>

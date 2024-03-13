@@ -5,24 +5,24 @@ import { BsBoxArrowLeft } from "react-icons/bs";
 
 // import { useLogout } from "../features/Authentication/useLogout";
 import { device } from "./device";
-import {
-  FaBabyCarriage,
-  FaIdCard,
-  FaKitchenSet,
-  FaRegSquarePlus,
-} from "react-icons/fa6";
-import { BiHistory, BiRestaurant } from "react-icons/bi";
+import { FaBabyCarriage, FaIdCard } from "react-icons/fa6";
+import { BiHistory } from "react-icons/bi";
+import { useState } from "react";
+import ModalConfirm from "./ModalConfirm";
+import Logout from "../features/Authentication/Logout";
 
 function MainNav() {
-  // const { logout } = useLogout();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [otpOpen, setOtpOpen] = useState(false);
 
-  function handleLogout() {
-    try {
-      // logout();
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const closeModal = () => {
+    setModalOpen(false);
+    setOtpOpen(false);
+  };
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
   return (
     <NavList>
       <Logo>🍔Go..To Order</Logo>
@@ -43,10 +43,15 @@ function MainNav() {
         <BiHistory />
         <span>Order History</span>
       </NavItem>
-      <Btn onClick={handleLogout}>
+      <Btn onClick={openModal}>
         <BsBoxArrowLeft />
-        <span> Logout</span>
+        <span>Logout</span>
       </Btn>
+      {modalOpen && (
+        <ModalConfirm onClose={closeModal}>
+          <Logout onClose={closeModal} />
+        </ModalConfirm>
+      )}
     </NavList>
   );
 }

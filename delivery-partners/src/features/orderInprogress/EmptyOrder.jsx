@@ -1,6 +1,6 @@
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Buttons";
-import styled from "styled-components";
 
 export function EmptyOrder() {
   const navigate = useNavigate();

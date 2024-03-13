@@ -1,3 +1,13 @@
+import toast from "react-hot-toast";
+import { auth } from "./firebase";
+import { useState } from "react";
+import PhoneInput from "react-phone-input-2";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import OtpInput from "react-otp-input";
+import "react-phone-input-2/lib/style.css";
+
 import { ModelAuth } from "../../ui/ModelAuth";
 import {
   AlignCenter,
@@ -7,17 +17,10 @@ import {
   StyledSign,
 } from "../../ui/AuthStyles";
 import { Input } from "../../ui/Input";
-import styled from "styled-components";
 import { device } from "../../ui/device";
-import { useForm } from "react-hook-form";
 import { useDeliveyBoyRegister } from "./useDeliveyBoyRegister ";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import { useState } from "react";
-import OtpInput from "react-otp-input";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { auth } from "./firebase";
-import toast from "react-hot-toast";
+import otpImage from "../../assets/otp.png";
+import signUpImage from "../../assets/sign-up.png";
 
 export function Register() {
   const { register, handleSubmit, formState } = useForm();
@@ -89,7 +92,7 @@ export function Register() {
       {!otpShow ? (
         <ModelAuth>
           <StyledImage>
-            <Img src="../../../sign-up.png" alt="image" />
+            <Img src={signUpImage} alt="image" />
             <H1>Sign up</H1>
           </StyledImage>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -141,7 +144,7 @@ export function Register() {
       ) : (
         <ModelAuth>
           <StyledImage>
-            <Img src="../../../otp.png" alt="image" />
+            <Img src={otpImage} alt="image" />
             <H1>Otp Verification</H1>
           </StyledImage>
           <form onSubmit={handleSubmit(verifyOtp)}>

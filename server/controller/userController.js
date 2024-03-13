@@ -106,8 +106,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { userName, password } = req.body;
-    const user = await Users.findOne({ userName });
+    const { mobile, password } = req.body;
+    const user = await Users.findOne({ mobile });
 
     if (!user) {
       return res.status(401).json({
@@ -131,7 +131,7 @@ const login = async (req, res) => {
 
     res.json({
       _id: user._id,
-      userName: user.userName,
+      mobile: user.mobile,
       accessToken,
     });
   } catch (error) {

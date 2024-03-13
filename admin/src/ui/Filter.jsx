@@ -34,17 +34,22 @@ const FilterButton = styled.button`
     color: var(--color-brand-50);
   }
 `;
-
 function Filter({ filterField, options }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentFilter = searchParams.get(filterField) || options.at(0).value;
+  const currentFilter = searchParams.get(filterField) || options[0].value;
 
   function handleClick(value) {
-    searchParams.set(filterField, value);
-    if (searchParams.get("page")) searchParams.set("page", 1);
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set(filterField, value);
+    if (newSearchParams.get("page")) newSearchParams.set("page", 1);
 
-    setSearchParams(searchParams);
+    setSearchParams(newSearchParams);
   }
+  // In the Filter component
+  console.log("Filter field:", filterField);
+  console.log("Filter value:", currentFilter);
+
+  // In the getOrder function
 
   return (
     <StyledFilter>

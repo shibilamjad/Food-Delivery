@@ -7,15 +7,19 @@ import Stat from "./Stat";
 
 function Stats({ orderStats }) {
   // 1 today orders
+  console.log(orderStats);
   const today = new Date();
   const todayDate = today.toISOString().slice(0, 10);
-
   // filter orders for today
   const todayOrder = orderStats.filter((order) => {
     const orderDate = new Date(order.createdAt).toISOString().slice(0, 10);
     return orderDate === todayDate;
   });
 
+  // Calculate total delivery charges for today
+  const todayDeliveryCharges = todayOrder.reduce((total, order) => {
+    return total + order.deliveryCharge;
+  }, 0);
   // 2 total order
   const numOrder = orderStats.length;
 
@@ -30,7 +34,8 @@ function Stats({ orderStats }) {
     style: "currency",
     currency: "INR",
   });
-  const formattedNumber = formatter.format(totalDeliveryCharges);
+  const formattedSalary = formatter.format(todayDeliveryCharges);
+  const formattedRevenue = formatter.format(totalDeliveryCharges);
 
   return (
     <>
@@ -41,8 +46,14 @@ function Stats({ orderStats }) {
         value={todayOrder.length}
       />
       <Stat
-        title="Total Order"
+        title="Today Salary"
         color="green"
+        icon={<HiOutlineBanknotes />}
+        value={formattedSalary}
+      />
+      <Stat
+        title="Total Order"
+        color="red"
         icon={<HiOutlineChartBar />}
         value={numOrder}
       />
@@ -50,7 +61,7 @@ function Stats({ orderStats }) {
         title="Total Revenew"
         color="yellow"
         icon={<HiOutlineBanknotes />}
-        value={formattedNumber}
+        value={formattedRevenue}
       />
     </>
   );

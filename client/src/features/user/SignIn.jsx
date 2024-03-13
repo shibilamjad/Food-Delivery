@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { TextField } from '@mui/material';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { useState } from 'react';
 
 import { useLogin } from './useLogin';
 import { useForm } from 'react-hook-form';
 import { ModelAuth } from '../../ui/ModelAuth';
-import { Input } from '../../ui/Input';
 import {
   AlignCenter,
   Error,
@@ -16,12 +18,14 @@ import { device } from '../../ui/device';
 
 export function SignIn() {
   const { login, isLoading } = useLogin();
-
   const { register, handleSubmit, formState } = useForm();
+  const [ph, setPh] = useState('');
+
   const { errors } = formState;
-  async function onSubmit(data) {
+  async function onSubmit({ password }) {
+    const mobile = '+' + ph;
     try {
-      await login(data);
+      await login({ mobile, password });
     } catch (error) {
       console.error('Login Error:', error);
     }
@@ -37,20 +41,12 @@ export function SignIn() {
       </StyledImage>
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputContainer>
-          <TextField
-            sx={{
-              width: '100%',
-            }}
-            variant="outlined"
-            autoComplete="off"
-            type="text"
-            label="UserName"
-            id="userName"
-            {...register('userName', {
-              required: 'This field is required',
-            })}
+          <PhoneInput
+            country={'in'}
+            name="mobile"
+            value={ph}
+            onChange={setPh}
           />
-          {errors.userName && <Error>{errors?.userName?.message}</Error>}
         </InputContainer>
         <InputContainer>
           <TextField

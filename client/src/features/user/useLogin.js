@@ -15,7 +15,7 @@ export function useLogin() {
       navigate('/restaurant');
     },
     onError: (err) => {
-      toast.error('Provided UserName or password are incorrect');
+      toast.error('Provided Mobile Number or password are incorrect');
     },
   });
 

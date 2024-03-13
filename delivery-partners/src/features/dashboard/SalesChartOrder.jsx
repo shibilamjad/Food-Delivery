@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 import DashboardBox from "./DashboardBox";
 import Heading from "../../ui/Heading";
 import {
@@ -10,7 +11,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 
 function SalesChartOrder({ orderStats, currentFilter }) {
   const allDates = eachDayOfInterval({

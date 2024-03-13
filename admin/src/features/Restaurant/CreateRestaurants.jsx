@@ -167,8 +167,6 @@ export const CreateRestaurants = () => {
             <Textarea
               type="text"
               id="address"
-              // value={}
-              // disabled={isWorking}
               {...register("address", {
                 required: "This field is required",
               })}

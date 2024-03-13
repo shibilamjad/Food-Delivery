@@ -19,7 +19,7 @@ function Dashboard() {
   return (
     <StledDashboard>
       <StyledContainer>
-        <Heading as="h1">Dashboard</Heading>
+        <Heading as="h1">Dashboard Delivery Boy</Heading>
         <DashboardFilter filterField={filterField} options={options} />
       </StyledContainer>
       <DashboardLayout currentFilter={currentFilter} />

@@ -1,6 +1,9 @@
 const Order = require("../models/orderModel");
 const DeliveryBoy = require("../models/deliveyBoyModel");
-const { generatePasswordHash } = require("../utils/bcrypt ");
+const {
+  generatePasswordHash,
+  checkePasswordHash,
+} = require("../utils/bcrypt ");
 
 const {
   generateAccessToken,
@@ -252,6 +255,55 @@ const deliveyBoyRegister = async (req, res) => {
   }
 };
 
+const loginDeliveryboy = async (req, res) => {
+  try {
+    const { mobile, password } = req.body;
+    const user = await DeliveryBoy.findOne({ mobile });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "User is not valid",
+      });
+    }
+    const validPassword = await checkePasswordHash(password, user.password);
+    if (!validPassword) {
+      return res.status(401).json({
+        message: "Mobile/Password is not valid",
+      });
+    }
+    // generates access token
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+    });
+
+    res.json({
+      _id: user._id,
+      userName: user.userName,
+      accessToken,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+const logout = async (req, res) => {
+  try {
+    res.clearCookie("refreshToken");
+    res.json({
+      message: "Logged out  ",
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getDeliveryBoyOrder,
   deliveyBoyRegister,
@@ -259,4 +311,6 @@ module.exports = {
   takeOrderDeliveryBoy,
   orderdetailsDeliveryBoy,
   completedOrdersDetails,
+  loginDeliveryboy,
+  logout,
 };

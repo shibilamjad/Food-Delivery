@@ -51,7 +51,7 @@ export function MenuRow() {
           <Menu>{menuItem.name}</Menu>
           <Price>₹{menuItem.unitPrice}</Price>
           {menuItem.discount ? (
-            <Discount>{formatCurrency(menuItem.discount)}</Discount>
+            <Discount>₹{menuItem.discount}</Discount>
           ) : (
             <span>&mdash;</span>
           )}

@@ -2,8 +2,22 @@ import CartOverview from '../features/cart/CartOverview';
 import styled from 'styled-components';
 import { OrderOverview } from '../features/order/orderOverview';
 import { RestaurantOverview } from '../features/Restaurant/RestaurantOverview';
+import { useState } from 'react';
+import Logout from '../features/user/Logout';
+import ModalConfirm from './ModalConfirm';
+import { LogoutOverView } from '../features/user/LogoutOverView';
 
 function Header() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [otpOpen, setOtpOpen] = useState(false);
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setOtpOpen(false);
+  };
+  const openModal = () => {
+    setModalOpen(true);
+  };
   return (
     <header
       className=" flex  flex-col items-center justify-between 
@@ -19,6 +33,12 @@ function Header() {
         <RestaurantOverview />
         <CartOverview />
         <OrderOverview />
+        <LogoutOverView openModal={openModal} />
+        {modalOpen && (
+          <ModalConfirm onClose={closeModal}>
+            <Logout onClose={closeModal} />
+          </ModalConfirm>
+        )}
       </StyledNav>
     </header>
   );

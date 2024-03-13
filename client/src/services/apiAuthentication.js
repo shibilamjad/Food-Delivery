@@ -1,12 +1,13 @@
 import { axiosInstance } from '../utils/interceptors';
+import axios from 'axios';
 
-export async function login({ userName, password }) {
+export async function login({ mobile, password }) {
   try {
     const res = await axiosInstance('/login', {
       method: 'POST',
       withCredentials: true,
       data: {
-        userName,
+        mobile,
         password,
       },
     });
@@ -45,5 +46,17 @@ export async function createUserApi({ mobile, password, userName }) {
     return res.data;
   } catch (error) {
     throw new Error(`Error fetching createUser: ${error.message}`);
+  }
+}
+
+export async function logoutApi() {
+  try {
+    const res = await axios.post(`http://localhost:3006/api/users/logout`);
+
+    localStorage.clear();
+
+    return res.data;
+  } catch (error) {
+    throw new Error(`Error fetching logout: ${error.message}`);
   }
 }

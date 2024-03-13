@@ -1,10 +1,12 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import OtpInput from "react-otp-input";
+
 import Buttons from "../../ui/Buttons";
 import { device } from "../../ui/device";
 import { useOtp } from "./useOtp";
 import { useOtpVerify } from "./useOtpVerify";
-import OtpInput from "react-otp-input";
-import { useEffect, useState } from "react";
+
 export function ConfirmOrder({
   onClose,
   orderId,
@@ -36,7 +38,7 @@ export function ConfirmOrder({
   }
 
   return (
-    <StyledConfirmDelete>
+    <StyledConfirm>
       <H1>{!otpOpen ? "Order Confirm?" : "Confirm OTP"}</H1>
       {!otpOpen ? (
         <p>
@@ -80,11 +82,11 @@ export function ConfirmOrder({
           </Buttons>
         )}
       </StlyedButton>
-    </StyledConfirmDelete>
+    </StyledConfirm>
   );
 }
 
-const StyledConfirmDelete = styled.div`
+const StyledConfirm = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;

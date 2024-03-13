@@ -7,7 +7,6 @@ export function Order() {
     <>
       <Row>
         <Heading as="h1">Available Orders</Heading>
-        {/* <BookingTable /> */}
         <OrderTable />
       </Row>
     </>

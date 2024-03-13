@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa6";
+import styled from "styled-components";
 
 import {
   Charge,
@@ -7,9 +9,7 @@ import {
   StyledButton,
   StyledIcon,
 } from "../../ui/TableRowUi";
-import styled from "styled-components";
 import { device } from "../../ui/device";
-import { useNavigate } from "react-router-dom";
 
 export function HistoryRow({ cart, delivery, orderId, deliveryCharge }) {
   const navigate = useNavigate();

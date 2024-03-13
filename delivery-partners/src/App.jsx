@@ -1,17 +1,17 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import GlobalStyles from "./style/GlobelCol";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { Login } from "./pages/Login";
 import { AppLayout } from "./ui/AppLayout";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProtectedRoutesHomePage } from "./features/ProtectedRoutes ";
 import ProtectedRouterAfterLogIn from "./features/ProtectedRouterAfterLogIn ";
 import { Order } from "./pages/Order";
 import { OrderInprogress } from "./pages/OrderInprogress";
 import Dashboard from "./pages/Dashboard";
 import { OrderCompleted } from "./pages/OrderCompleted";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Register } from "./features/Authentication/Register";
 import CheckDetails from "./pages/CheckDetails";
 
@@ -25,10 +25,8 @@ const queryCLient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryCLient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <GlobalStyles />
-
       <BrowserRouter>
         <Routes>
           <Route

@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import { useEffect } from "react";
 import io from "socket.io-client";
+
 import { Table, TableHeaderOrder } from "../../ui/Row";
 import { useDeliveryBoyOrder } from "./useOrder";
 import { Loader } from "../../ui/Loader";
 import { OrderRow } from "./OrderRow";
-import { useEffect } from "react";
 
 export function OrderTable() {
   const { order, isLoading } = useDeliveryBoyOrder();

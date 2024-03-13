@@ -1,3 +1,4 @@
+import { BiRestaurant } from "react-icons/bi";
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
 import {
@@ -9,7 +10,6 @@ import {
 } from "react-icons/fa6";
 import { DataItem } from "../../ui/DataItem";
 import { device } from "../../ui/device";
-import { BiRestaurant } from "react-icons/bi";
 
 export function OrderData({ details }) {
   const {

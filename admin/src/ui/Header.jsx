@@ -5,7 +5,6 @@ import { useState } from "react";
 
 export function Header({ handleIsOpen, isOpen }) {
   const [isNotify, setIsNotify] = useState(false);
-  console.log(isNotify);
   function handleIsNotify() {
     setIsNotify(!isNotify);
   }

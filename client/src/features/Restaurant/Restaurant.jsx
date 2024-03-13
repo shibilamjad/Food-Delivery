@@ -84,7 +84,7 @@ const StyledContainer = styled.div`
   width: 100%;
   max-width: 1840px;
   margin: 0 auto;
-  padding: 70px;
+  padding: 50px;
 `;
 
 const StyledRestaurant = styled.div`
@@ -92,6 +92,7 @@ const StyledRestaurant = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 `;
 
 const Header = styled.div`

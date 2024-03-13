@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import {
   FaCartArrowDown,
@@ -7,13 +8,12 @@ import {
   FaMobileScreenButton,
   FaRegUser,
 } from "react-icons/fa6";
+import { BiRestaurant } from "react-icons/bi";
 
 import { DataItem } from "../../ui/DataItem";
 import { device } from "../../ui/device";
-import { BiRestaurant } from "react-icons/bi";
 import { getTimeDifference } from "../../utils/getTimeDifference";
 import ModalConfirm from "../../ui/ModalConfirm";
-import { useState } from "react";
 import { ConfirmOrder } from "./ConfirmOrder";
 import { getCurrentPosition } from "../../utils/getCurrentPostion";
 import Buttons from "../../ui/Buttons";

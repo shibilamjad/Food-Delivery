@@ -36,9 +36,9 @@ export function AvailableItem({ items }) {
     <>
       <a
         onClick={() => handleMenuItems(restaurantId)}
-        className="m-10 h-[400px] w-[200px] scale-100 cursor-pointer sm:w-[300px]"
+        className=" m-5 mt-1 w-[250px] scale-100 cursor-pointer p-1  sm:w-[300px]"
       >
-        <div className="flex h-[330px] flex-col justify-between transition-all duration-300 sm:h-[380px] sm:hover:scale-[0.9]">
+        <div className="flex h-[290px] flex-col justify-between transition-all duration-300 sm:h-[380px] sm:hover:scale-[0.9]">
           <div>
             <img
               src={image}
