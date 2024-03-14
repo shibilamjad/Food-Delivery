@@ -1,21 +1,22 @@
 import styled from "styled-components";
-import { OrderTable } from "../features/order/OrderTable";
-import Heading from "../ui/Heading";
-import { Row } from "../ui/Row";
-import OrderFilter from "../features/order/OrderFilter";
 import { device } from "../ui/device";
 
-export function Order() {
+import Heading from "../ui/Heading";
+import { Row } from "../ui/Row";
+import { DeliveryBoyTable } from "../features/DeliveryBoys/DeliveryBoyTable";
+
+function DeliveryBoy() {
   return (
     <Row type="vertical">
       <StyledContainer>
-        <Heading as="h1">All Orders</Heading>
-        <OrderFilter />
+        <Heading as="h1">DeliveryBoys Details</Heading>
       </StyledContainer>
-      <OrderTable />
+      <DeliveryBoyTable />
     </Row>
   );
 }
+
+export default DeliveryBoy;
 
 const StyledContainer = styled.div`
   display: flex;

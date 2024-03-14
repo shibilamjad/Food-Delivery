@@ -8,17 +8,18 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
+import { device } from "../../ui/device";
 
 const ChartBox = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
-
   padding: 2.4rem 3.2rem;
   grid-column: 3 / span 2;
-
+  @media ${device.tablet} {
+    grid-column: 1 / -1;
+  }
   & > *:first-child {
     margin-bottom: 1.6rem;
   }
@@ -27,13 +28,11 @@ const ChartBox = styled.div`
     font-weight: 600;
   }
 `;
-
 function generateRandomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
 
 function DurationChart({ orderStats }) {
-  // Count occurrences of each item name
   const name = orderStats.map((item) =>
     item.cart.map((cartItem) => cartItem.menuItem.name)
   );
@@ -44,11 +43,9 @@ function DurationChart({ orderStats }) {
     });
   });
 
-  // Convert itemCounts object to data array for PieChart
   const data = Object.entries(itemCounts).map(([name, value]) => ({
     name,
     value,
-    // Assign a random color to each item
     color: generateRandomColor(),
   }));
 

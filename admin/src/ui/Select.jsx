@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "./device";
 
 function Select({ options, value, onChage, type }) {
   return (
@@ -26,4 +27,13 @@ const StyledSelect = styled.select`
   background-color: var(--color-grey-0);
   font-weight: 500;
   box-shadow: var(--shadow-sm);
+  @media ${device.tablet} {
+    font-size: 15px;
+    padding: 0.4rem 0.8rem;
+  }
+
+  @media ${device.mobileS} {
+    font-size: 12px;
+    padding: 0.2rem 0.3rem;
+  }
 `;

@@ -11,7 +11,9 @@ function Dashboard() {
         <Heading as="h1">Dashboard</Heading>
         <DashboardFilter />
       </StyledContainer>
-      <DashboardLayout />
+      <StyledContainer>
+        <DashboardLayout />
+      </StyledContainer>
     </StledDashboard>
   );
 }
@@ -26,8 +28,9 @@ const StledDashboard = styled.div`
 `;
 const StyledContainer = styled.div`
   display: flex;
-  align-items: center;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
   justify-content: space-between;
+  gap: 20px;
   width: 100%;
-  /* height: 100%; */
 `;

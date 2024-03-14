@@ -1,4 +1,4 @@
-import { HiPencil, HiTrash } from "react-icons/hi2";
+import { HiEllipsisVertical, HiPencil, HiTrash } from "react-icons/hi2";
 import { FaRegEye } from "react-icons/fa6";
 
 import {
@@ -6,65 +6,90 @@ import {
   EditSection,
   StyledButton,
   StyledIcon,
+  StyledIcons,
   TableRowRestaurant,
   Title,
 } from "../../ui/TableRowUi";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useRestaurantDelete } from "./useRestaurantDelete";
 import styled from "styled-components";
 import { device } from "../../ui/device";
+import ModalOption from "../../ui/ModalOption";
+import ModalConfirm from "../../ui/ModalConfirm";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
-export function RestaurantList({ restaurants }) {
+export function RestaurantList({ restaurants, curOpen, onOpen }) {
+  const [restaurantDelete, setRestaurantDelete] = useState(false);
   const { restaurant: name, image, _id, location } = restaurants;
-  console.log(restaurants);
-  const { deleteRestaurant } = useRestaurantDelete();
+  const isOpen = _id === curOpen;
 
-  const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
-
+  function handleToggle() {
+    onOpen(isOpen ? null : _id);
+  }
   const navigate = useNavigate();
-
   function handleMenu(restaurantId) {
-    setSelectedRestaurantId(restaurantId);
     navigate(`/restaurants/${restaurantId}`);
   }
-
   function handleEdit(restaurantId) {
-    setSelectedRestaurantId(restaurantId);
     navigate(`/new-restaurants/${restaurantId}`);
   }
-
-  function handleDelete(restaurantId) {
-    setSelectedRestaurantId(restaurantId);
-    deleteRestaurant(restaurantId);
-  }
-
   return (
-    <TableRowRestaurant>
-      <Img src={image} />
-      <Title>{name}</Title>
-      <Address>{location}</Address>
-      <Address>Open</Address>
-      <StyledIcon>
-        <StyledButton>
-          <EditSection>
-            <FaRegEye onClick={() => handleMenu(_id)} />
-          </EditSection>
-        </StyledButton>
-        <StyledButton>
-          <EditSection>
-            <HiPencil onClick={() => handleEdit(_id)} />
-          </EditSection>
-        </StyledButton>
-
-        <StyledButton>
-          <EditSection>
-            <HiTrash onClick={() => handleDelete(_id)} />
-          </EditSection>
-        </StyledButton>
-      </StyledIcon>
-    </TableRowRestaurant>
+    <>
+      <TableRowRestaurant>
+        <Img src={image} />
+        <Title>{name}</Title>
+        <Address>{location}</Address>
+        <Address>Open</Address>
+        <StyledIcon>
+          <StyledButton onClick={handleToggle}>
+            <EditSection>
+              <HiEllipsisVertical />
+            </EditSection>
+          </StyledButton>
+        </StyledIcon>
+      </TableRowRestaurant>
+      {isOpen && (
+        <ModalOption onClose={() => onOpen((show) => !show)}>
+          <StyledIcons>
+            <StyledButton onClick={() => handleMenu(_id)}>
+              <EditSection>
+                <FaRegEye />
+                <h1>Details</h1>
+              </EditSection>
+            </StyledButton>
+            <StyledButton onClick={() => handleEdit(_id)}>
+              <EditSection>
+                <HiPencil />
+                <h1>Edit</h1>
+              </EditSection>
+            </StyledButton>
+            <StyledButton
+              onClick={() => setRestaurantDelete(!restaurantDelete)}
+            >
+              <EditSection>
+                <HiTrash />
+                <h1>Delete</h1>
+              </EditSection>
+            </StyledButton>
+            <div>
+              {restaurantDelete && (
+                <ModalConfirm
+                  onClose={() => setRestaurantDelete(!restaurantDelete)}
+                >
+                  <ConfirmDelete
+                    closeOption={onOpen}
+                    name={name}
+                    restaurantId={_id}
+                    onClose={() => setRestaurantDelete(!restaurantDelete)}
+                  />
+                </ModalConfirm>
+              )}
+            </div>
+          </StyledIcons>
+        </ModalOption>
+      )}
+    </>
   );
 }
 

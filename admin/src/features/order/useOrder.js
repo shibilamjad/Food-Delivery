@@ -4,23 +4,12 @@ import { useSearchParams } from "react-router-dom";
 
 export function useOrders() {
   const [searchParams] = useSearchParams();
-  const queryClient = useQueryClient();
-
-  // filter
-  const filterValue = searchParams.get("status");
-  const filter =
-    filterValue && filterValue !== "all"
-      ? { field: "status", value: filterValue }
-      : null;
-  // sortBy
-  const sortByRaw = searchParams.get("sortBy") || "createdAt-desc";
-  const [field, direction] = sortByRaw.split("-");
-  const sortBy = { field, direction };
+  const deliveryStatus = searchParams.get("delivery") || "all";
+  const sortBy = searchParams.get("sortBy") || "startDate-desc";
 
   const { data: order, isLoading } = useQuery({
-    queryKey: ["order", filter, sortBy],
-    queryFn: getOrder,
+    queryKey: ["order", { deliveryStatus, sortBy }],
+    queryFn: () => getOrder(deliveryStatus, sortBy),
   });
-
   return { order, isLoading };
 }

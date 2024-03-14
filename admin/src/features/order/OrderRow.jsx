@@ -11,6 +11,7 @@ import {
   TableRowOrder,
 } from "../../ui/TableRowUi";
 import { device } from "../../ui/device";
+import { useTimeDifference } from "../../hooks/useTimeDifference";
 
 export function OrderRow({ order }) {
   const { delivery, createdAt, cart, _id, deliveryCharge } = order;
@@ -18,6 +19,9 @@ export function OrderRow({ order }) {
   function handleClick(orderId) {
     navigate(`/order/${orderId}`);
   }
+  // time line
+  const timeDifference = useTimeDifference(createdAt);
+
   const restaurantImageSet = new Set(cart.map((item) => item.restaurant.image));
   const restaurantImages = [...restaurantImageSet];
 
@@ -53,7 +57,7 @@ export function OrderRow({ order }) {
               </StyledCart>
             ))}
           </Stacked>
-          <Dates>{new Date(createdAt).toLocaleString()}</Dates>
+          <Dates>{timeDifference}</Dates>
           <Tag type={statusToTagName[delivery]}>
             {delivery.replace("-", " ")}
           </Tag>
@@ -87,7 +91,6 @@ export const Img = styled.img`
     height: 50px;
     object-fit: cover;
     object-position: center;
-    /* transform: scale(1.5) translateX(-7px); */
   }
   @media ${device.mobileL} {
     object-fit: cover;
@@ -96,7 +99,6 @@ export const Img = styled.img`
     height: 28px;
     object-fit: cover;
     object-position: center;
-    /* transform: scale(1.5) translateX(-7px); */
   }
 `;
 

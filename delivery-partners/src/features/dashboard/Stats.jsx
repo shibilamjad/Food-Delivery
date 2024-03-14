@@ -7,7 +7,6 @@ import Stat from "./Stat";
 
 function Stats({ orderStats }) {
   // 1 today orders
-  console.log(orderStats);
   const today = new Date();
   const todayDate = today.toISOString().slice(0, 10);
   // filter orders for today

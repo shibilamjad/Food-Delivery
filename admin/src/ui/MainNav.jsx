@@ -7,10 +7,12 @@ import { useLogout } from "../features/Authentication/useLogout";
 import { device } from "./device";
 import {
   FaBabyCarriage,
+  FaBitbucket,
   FaBowlRice,
   FaFolderPlus,
   FaIdCard,
   FaKitchenSet,
+  FaPersonBiking,
   FaRegSquarePlus,
 } from "react-icons/fa6";
 import { BiRestaurant } from "react-icons/bi";
@@ -43,6 +45,10 @@ function MainNav() {
       <NavItem to="/restaurants">
         <BiRestaurant />
         <span>Restuarants List</span>
+      </NavItem>
+      <NavItem to="/deliveryBoys">
+        <FaPersonBiking />
+        <span>DeliveryBoy List</span>
       </NavItem>
       <NavItem to="/new-restaurants">
         <FaKitchenSet />

@@ -29,16 +29,6 @@ const deliveryBoySchema = new mongoose.Schema({
       default: [0, 0],
     },
   },
-  online: {
-    type: Boolean,
-    default: false,
-  },
-  // orders: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Orders",
-  //   },
-  // ],
   inprogress: [
     {
       type: mongoose.Schema.Types.ObjectId,

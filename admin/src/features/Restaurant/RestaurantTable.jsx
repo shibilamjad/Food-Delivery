@@ -5,23 +5,30 @@ import { Table } from "../../ui/Row";
 import { RestaurantList } from "./RestaurantList";
 import { useRestaurant } from "./useRestaurant";
 import { device } from "../../ui/device";
+import { useState } from "react";
 
 export const RestaurantTable = () => {
+  const [showOptionsId, setShowOptionsId] = useState(null);
   const { restaurants, isLoading } = useRestaurant();
   if (isLoading) return <Loader />;
 
   return (
     <Table role="table">
       <TableHeaderOrder>
-        <div>Image</div>
+        <div>IMG</div>
         <div>Restaurant</div>
         <div>Location</div>
         <div>Active</div>
-        <div>More</div>
+        <div></div>
         <div></div>
       </TableHeaderOrder>
       {restaurants.map((items) => (
-        <RestaurantList restaurants={items} key={items._id} />
+        <RestaurantList
+          restaurants={items}
+          key={items._id}
+          curOpen={showOptionsId}
+          onOpen={setShowOptionsId}
+        />
       ))}
     </Table>
   );
@@ -41,17 +48,17 @@ const TableHeaderOrder = styled.header`
   color: var(--color-grey-400);
   padding: 1rem 1rem;
   @media ${device.tablet} {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     column-gap: 0.5rem;
     padding: 1rem 2rem;
   }
   @media ${device.mobileL} {
     column-gap: 0.6rem;
     padding: 1rem 1rem;
-    font-size: 0.5rem;
+    font-size: 0.6rem;
   }
   @media ${device.mobileS} {
-    column-gap: 0.1rem;
+    column-gap: 0.3rem;
     padding: 1rem 1rem;
     font-size: 0.6rem;
   }

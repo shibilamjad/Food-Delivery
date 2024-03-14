@@ -44,14 +44,14 @@ export const TableRowOrder = styled.div`
   box-shadow: var(--shadow-sm);
   position: relative;
   @media ${device.tablet} {
-    font-size: 0.7rem;
+    font-size: 1rem;
     column-gap: 0.5rem;
     padding: 2rem 2rem;
   }
   @media ${device.mobileL} {
-    column-gap: 0.6rem;
+    column-gap: 0.8rem;
     padding: 1rem 1rem;
-    font-size: 0.5rem;
+    font-size: 0.8rem;
   }
   @media ${device.mobileS} {
     column-gap: 0.1rem;
@@ -76,14 +76,14 @@ export const TableRowRestaurant = styled.div`
   box-shadow: var(--shadow-sm);
   position: relative;
   @media ${device.tablet} {
-    font-size: 0.7rem;
+    font-size: 1rem;
     column-gap: 0.5rem;
     padding: 2rem 2rem;
   }
   @media ${device.mobileL} {
     column-gap: 0.6rem;
     padding: 1rem 1rem;
-    font-size: 0.5rem;
+    font-size: 0.7rem;
   }
   @media ${device.mobileS} {
     column-gap: 0.1rem;
@@ -166,13 +166,13 @@ export const Discount = styled.div`
 export const StyledButton = styled.button`
   background: none;
   border: none;
-  padding: 0.4rem;
   border-radius: 5px;
-  /* transform: translateX(0.8rem); */
+  color: var(--color-grey-300);
   transition: all 0.2s;
 
   &:hover {
     background-color: var(--color-grey-100);
+    color: var(--color-brand-500);
   }
   &:active {
     border: var(--color-grey-500);
@@ -181,11 +181,10 @@ export const StyledButton = styled.button`
 
 export const StyledIcon = styled.div`
   display: flex;
-  flex-wrap: wrap;
   & svg {
     width: 2rem;
     height: 2rem;
-    color: var(--color-grey-300);
+    color: var(--color-grey-500);
     transition: all 0.3s;
     &:hover {
       color: var(--color-brand-500);
@@ -205,11 +204,45 @@ export const StyledIcon = styled.div`
   }
 `;
 
+export const StyledIcons = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+  @media ${device.tablet} {
+    padding: 4px;
+    gap: 4px;
+  }
+  @media ${device.mobileL} {
+    padding: 0px;
+    gap: 0px;
+  }
+`;
 export const EditSection = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 10px;
+  h1 {
+    padding-left: 10px;
+    font-weight: 600;
+  }
+  & svg {
+    width: 2rem;
+    height: 2rem;
+    transition: all 0.3s;
+    @media ${device.tablet} {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    @media ${device.mobileL} {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
+    @media ${device.mobileL} {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
+  }
 `;
 
 export const Tag = styled.span`

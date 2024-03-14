@@ -10,15 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  eachDayOfInterval,
-  eachHourOfInterval,
-  eachQuarterOfInterval,
-  eachWeekendOfMonth,
-  format,
-  isSameDay,
-  subDays,
-} from "date-fns";
+import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
@@ -37,7 +29,6 @@ function SalesChart({ orderStats }) {
     end: new Date(),
   });
   // total sale per day
-
   const data = allDates.map((date) => {
     const dailyOrders = orderStats.filter((order) =>
       isSameDay(new Date(order.createdAt), date)
@@ -49,7 +40,6 @@ function SalesChart({ orderStats }) {
       0
     );
     // per day cash
-
     const orderPerDay = dailyOrders.length;
     return {
       label: format(date, "MMM dd"),

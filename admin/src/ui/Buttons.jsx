@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { device } from "./device";
 
 const sizes = {
   small: css`
@@ -12,6 +13,14 @@ const sizes = {
     font-size: 1.4rem;
     padding: 1.2rem 1.6rem;
     font-weight: 500;
+    @media ${device.tablet} {
+      font-size: 1rem;
+      padding: 0.8rem 1rem;
+    }
+    @media ${device.mobileL} {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.8rem;
+    }
   `,
   large: css`
     font-size: 1.6rem;
@@ -58,7 +67,7 @@ const variations = {
 export const Button = styled.button`
   border: none;
   border-radius: var(--border-radius-sm);
-
+  cursor: pointer;
   box-shadow: var(--shadow-sm);
   ${(props) => sizes[props.size]}
   ${(props) => variations[props.variation]}

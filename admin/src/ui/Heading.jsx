@@ -8,11 +8,12 @@ const Heading = styled.h1`
       font-size: 3rem;
       font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
       font-weight: 700px;
+
       @media ${device.tabletS} {
         font-size: 2rem;
       }
       @media ${device.mobileL} {
-        font-size: 2rem;
+        font-size: 1.6rem;
       }
     `}
 
@@ -28,6 +29,9 @@ const Heading = styled.h1`
     css`
       font-size: 2rem;
       font-weight: 500px;
+      @media ${device.mobileL} {
+        font-size: 1rem;
+      }
     `}
 `;
 

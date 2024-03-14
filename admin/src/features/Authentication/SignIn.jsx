@@ -76,7 +76,8 @@ const LoginContainer = styled.div`
 `;
 
 const StyledLogin = styled.div`
-  background-color: #4823d8;
+  background-color: var(--color-grey-0);
+  border-color: 1px solid var(--color-grey-400);
   width: 457px;
   height: 547px;
   border-radius: 4px;
@@ -163,12 +164,13 @@ const Input = styled.input`
   border: transparent;
   color: #383838;
   font-weight: 200;
-  background-color: #fff;
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-700);
   border-radius: 4px;
   margin-bottom: 16px;
   &::placeholder {
     font-size: 15px;
-    color: #383838;
+    color: var(--color-grey-700);
   }
   &:focus {
     outline: none;
@@ -200,7 +202,7 @@ const Input = styled.input`
 
 const Error = styled.p`
   font-size: 12px;
-  color: var(--color-btnsign);
+  color: var(--color-red-700);
   font-weight: 300;
   margin-bottom: 10px;
 `;
@@ -211,11 +213,11 @@ const Button = styled.button`
   margin-top: 20px;
   width: 100%;
   border: transparent;
-  color: #4823d8;
-  background-color: #ffffff;
+  color: var(--color-grey-700);
+  background-color: var(--color-brand-500);
   border-radius: 4px;
   &:hover {
-    background-color: #d6d6d6;
+    background-color: var(--color-brand-700);
     transition: background 0.3s;
   }
   @media ${device.laptopL} {

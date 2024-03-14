@@ -198,6 +198,22 @@ const completedOrdersDetails = async (req, res) => {
     throw error;
   }
 };
+const deliveyBoyDetailsAdmin = async (req, res) => {
+  try {
+    const delivery = await DeliveryBoy.find().select("name mobile").populate({
+      path: "ordersCompleted",
+      select: "cart delivery createdAt deliveryCharge",
+    });
+    if (!delivery) {
+      return res.status(400).json({ message: "Delivery boy not found" });
+    }
+    res.status(200).json(delivery);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
 
 // authentication delivery boy
 const deliveyBoyRegister = async (req, res) => {
@@ -309,6 +325,7 @@ module.exports = {
   deliveyBoyRegister,
   updateDeliveryBoyLocation,
   takeOrderDeliveryBoy,
+  deliveyBoyDetailsAdmin,
   orderdetailsDeliveryBoy,
   completedOrdersDetails,
   loginDeliveryboy,

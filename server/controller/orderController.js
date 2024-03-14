@@ -108,7 +108,15 @@ const userOrderList = async (req, res) => {
 
 const ordersAdmin = async (req, res) => {
   try {
-    const orderList = await Order.find()
+    const deliveryStatus = req.query.delivery;
+    const sortBy = req.query.sortBy;
+
+    let filter = {};
+    if (deliveryStatus && deliveryStatus !== "all") {
+      filter.delivery = deliveryStatus;
+    }
+
+    let orderList = Order.find(filter)
       .select("userName delivery createdAt cart deliveryCharge")
       .populate({
         path: "cart.menuItem",
@@ -120,7 +128,16 @@ const ordersAdmin = async (req, res) => {
         model: "Restaurant",
         select: "restaurant image location",
       });
-    res.status(200).json(orderList);
+    if (sortBy) {
+      const [field, order] = sortBy.split("-");
+      const sortOption = {};
+      sortOption[field === "startDate" ? "createdAt" : field] =
+        order === "desc" ? -1 : 1;
+      orderList = orderList.sort(sortOption);
+    }
+    const orders = await orderList.exec();
+
+    res.status(200).json(orders);
   } catch (error) {
     res.status(400).json({
       message: error.message,

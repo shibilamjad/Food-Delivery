@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 import { useClickOption } from "../hooks/useClickOutSide";
+import { device } from "./device";
 
 function ModalConfirm({ children, onClose }) {
   const ref = useClickOption(onClose);
@@ -22,6 +23,7 @@ function ModalConfirm({ children, onClose }) {
 export default ModalConfirm;
 
 const StyledModal = styled.div`
+  width: 50%;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -31,6 +33,15 @@ const StyledModal = styled.div`
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
   transition: all 0.5s;
+
+  @media ${device.tablet} {
+    width: 80%;
+    padding: 2rem 2rem;
+  }
+  @media ${device.mobileL} {
+    width: 80%;
+    padding: 2rem 2rem;
+  }
 `;
 
 const Overlay = styled.div`
@@ -63,9 +74,6 @@ const Button = styled.button`
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    /* Sometimes we need both */
-    /* fill: var(--color-grey-500);
-    stroke: var(--color-grey-500); */
     color: var(--color-grey-500);
   }
 `;

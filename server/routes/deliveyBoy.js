@@ -7,14 +7,17 @@ const {
   completedOrdersDetails,
   loginDeliveryboy,
   logout,
+  deliveyBoyDetailsAdmin,
 } = require("../controller/deliveryBoysController");
+
+router.get("/", getDeliveryBoyOrder);
+router.get("/complete", completedOrdersDetails);
+router.get("/details/admin", deliveyBoyDetailsAdmin);
+router.get("/details/order", orderdetailsDeliveryBoy);
 
 router.post("/signUp", deliveyBoyRegister);
 router.post("/signIn", loginDeliveryboy);
 router.post("/logout", logout);
-router.get("/", getDeliveryBoyOrder);
 router.post("/takeorder", takeOrderDeliveryBoy);
-router.get("/details/order", orderdetailsDeliveryBoy);
-router.get("/complete", completedOrdersDetails);
 
 module.exports = router;

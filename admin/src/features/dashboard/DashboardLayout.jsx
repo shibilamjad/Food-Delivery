@@ -6,6 +6,7 @@ import SalesChart from "./SalesChart";
 import DurationChart from "./DurationChart";
 import TodayActivity from "./TodayActivity";
 import { useUserList } from "./useUser";
+import { device } from "../../ui/device";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -23,7 +24,6 @@ function DashboardLayout() {
       <Stats orderStats={orderStats} />
       <TodayActivity orderStats={orderStats} users={users} />
       <DurationChart orderStats={orderStats} />
-
       <SalesChart orderStats={orderStats} />
     </StyledDashboardLayout>
   );

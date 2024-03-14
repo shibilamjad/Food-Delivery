@@ -1,10 +1,9 @@
 import { useSearchParams } from "react-router-dom";
 import Select from "./Select";
 
-function SortBy({ options, onChage }) {
+function SortBy({ options }) {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const currentSortBy = searchParams.get("sortBy") || "";
+  const currentSortBy = searchParams.get("sortBy") || "startDate-desc";
 
   function handleChange(e) {
     searchParams.set("sortBy", e.target.value);

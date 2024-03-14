@@ -14,8 +14,8 @@ export const Row = styled.div`
     css`
       flex-direction: column;
       gap: 1.6rem;
-      margin: 10px;
-      padding: 10px;
+      margin: 3px;
+      padding: 3px;
     `}
 `;
 
@@ -58,15 +58,17 @@ export const TableHeaderOrder = styled.header`
   text-transform: uppercase;
   color: var(--color-grey-400);
   padding: 1rem 1rem;
+  width: 100%;
+
   @media ${device.tablet} {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     column-gap: 0.5rem;
     padding: 1rem 2rem;
   }
   @media ${device.mobileL} {
     column-gap: 0.6rem;
     padding: 1rem 1rem;
-    font-size: 0.5rem;
+    font-size: 0.6rem;
   }
   @media ${device.mobileS} {
     column-gap: 0.1rem;
@@ -82,13 +84,13 @@ export const Table = styled.div`
   box-shadow: var(--shadow-md);
   background-color: var(--color-grey-0);
   border-radius: 7px;
-
+  width: 100%;
   &::-webkit-scrollbar {
     display: none;
   }
 
   @media ${device.tablet} {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
   @media ${device.mobileL} {
     font-size: 0.8rem;
