@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { device } from "./device";
 
-function Select({ options, value, onChage, type }) {
+function Select({ options, value, onChange, type }) {
   return (
-    <StyledSelect value={value} type={type} onChange={onChage}>
+    <StyledSelect value={value} type={type} onChange={onChange}>
       {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}

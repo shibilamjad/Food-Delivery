@@ -1,15 +1,15 @@
 import styled from "styled-components";
-import { getRestaurants } from "../../service/apiRestaurants";
 import { Loader } from "../../ui/Loader";
 import { Table } from "../../ui/Row";
 import { RestaurantList } from "./RestaurantList";
 import { useRestaurant } from "./useRestaurant";
 import { device } from "../../ui/device";
 import { useState } from "react";
+import empty from "../../assets/empty.png";
 
-export const RestaurantTable = () => {
+export const RestaurantTable = ({ search }) => {
   const [showOptionsId, setShowOptionsId] = useState(null);
-  const { restaurants, isLoading } = useRestaurant();
+  const { restaurants, isLoading } = useRestaurant(search);
   if (isLoading) return <Loader />;
 
   return (
@@ -22,14 +22,20 @@ export const RestaurantTable = () => {
         <div></div>
         <div></div>
       </TableHeaderOrder>
-      {restaurants.map((items) => (
-        <RestaurantList
-          restaurants={items}
-          key={items._id}
-          curOpen={showOptionsId}
-          onOpen={setShowOptionsId}
-        />
-      ))}
+      {restaurants.length === 0 ? (
+        <Empty>
+          <img src={empty} alt="image" />
+        </Empty>
+      ) : (
+        restaurants.map((items) => (
+          <RestaurantList
+            restaurants={items}
+            key={items._id}
+            curOpen={showOptionsId}
+            onOpen={setShowOptionsId}
+          />
+        ))
+      )}
     </Table>
   );
 };
@@ -62,4 +68,11 @@ const TableHeaderOrder = styled.header`
     padding: 1rem 1rem;
     font-size: 0.6rem;
   }
+`;
+
+const Empty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 50px;
 `;

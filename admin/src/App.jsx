@@ -16,6 +16,7 @@ import { Restaurant } from "./pages/Restaurant";
 import { NewRestaurants } from "./pages/NewRestaurants";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import DeliveryBoy from "./pages/DeliveryBoy";
+import PageNotFound from "./pages/PageNotFound";
 
 const queryCLient = new QueryClient({
   defaultOptions: {
@@ -63,6 +64,7 @@ function App() {
               // </ProtectedRouterAfterLogIn>
             }
           />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
       <Toaster

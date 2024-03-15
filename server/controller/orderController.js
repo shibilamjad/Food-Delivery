@@ -108,12 +108,15 @@ const userOrderList = async (req, res) => {
 
 const ordersAdmin = async (req, res) => {
   try {
-    const deliveryStatus = req.query.delivery;
-    const sortBy = req.query.sortBy;
+    const { page = 1, limit = 8, delivery, sortBy } = req.query;
+    let skip = 0;
+    if (page > 1) {
+      skip = +limit * (page - 1);
+    }
 
     let filter = {};
-    if (deliveryStatus && deliveryStatus !== "all") {
-      filter.delivery = deliveryStatus;
+    if (delivery && delivery !== "all") {
+      filter.delivery = delivery;
     }
 
     let orderList = Order.find(filter)
@@ -127,7 +130,9 @@ const ordersAdmin = async (req, res) => {
         path: "cart.restaurant",
         model: "Restaurant",
         select: "restaurant image location",
-      });
+      })
+      .skip(skip)
+      .limit(+limit);
     if (sortBy) {
       const [field, order] = sortBy.split("-");
       const sortOption = {};
@@ -135,9 +140,12 @@ const ordersAdmin = async (req, res) => {
         order === "desc" ? -1 : 1;
       orderList = orderList.sort(sortOption);
     }
-    const orders = await orderList.exec();
 
-    res.status(200).json(orders);
+    const orders = await orderList.exec();
+    const totalOrdersCount = await Order.countDocuments(filter);
+    const pageCount = Math.ceil(totalOrdersCount / +limit) || 1;
+
+    res.status(200).json({ orders, pageCount });
   } catch (error) {
     res.status(400).json({
       message: error.message,

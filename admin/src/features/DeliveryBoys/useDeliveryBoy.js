@@ -6,5 +6,6 @@ export function useDeliveryBoy() {
     queryKey: ["deliveryBoys"],
     queryFn: getDeliveryBoysApi,
   });
+
   return { deliveryBoys, isLoading };
 }

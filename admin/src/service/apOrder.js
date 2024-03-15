@@ -1,15 +1,22 @@
 import axios from "axios";
+import { PAGE_SIZE } from "../utils/PAGE_SIZE";
 
 const API_URL = "http://localhost:3006/api/order";
 
-export async function getOrder(deliveryStatus, sortBy) {
+export async function getOrder(
+  deliveryStatus,
+  sortBy,
+  page = 1,
+  limit = PAGE_SIZE
+) {
   try {
     let res = await axios.get(`${API_URL}/lists`, {
-      params: { delivery: deliveryStatus, sortBy },
+      params: { delivery: deliveryStatus, sortBy, page, limit },
     });
     let { data } = res;
-
-    return data;
+    // console.log(res);
+    // let count = res.data.pageCount;
+    return data.orders;
   } catch (error) {
     console.error(error.message);
     throw new Error("Order could not be retrieved");

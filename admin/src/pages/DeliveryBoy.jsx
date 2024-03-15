@@ -4,12 +4,14 @@ import { device } from "../ui/device";
 import Heading from "../ui/Heading";
 import { Row } from "../ui/Row";
 import { DeliveryBoyTable } from "../features/DeliveryBoys/DeliveryBoyTable";
+import DeliveryFilter from "../features/DeliveryBoys/DeliveryFilter";
 
 function DeliveryBoy() {
   return (
     <Row type="vertical">
       <StyledContainer>
         <Heading as="h1">DeliveryBoys Details</Heading>
+        <DeliveryFilter />
       </StyledContainer>
       <DeliveryBoyTable />
     </Row>

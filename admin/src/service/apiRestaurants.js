@@ -2,9 +2,11 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3006/api/restaurants";
 
-export async function getRestaurants() {
+export async function getRestaurants(search) {
   try {
-    const res = await axios(API_URL);
+    const res = await axios(API_URL, {
+      params: { search },
+    });
     const { data } = res;
     return data;
   } catch (error) {

@@ -6,6 +6,7 @@ import { device } from "../../ui/device";
 export function DeliveryBoyTable() {
   const { deliveryBoys, isLoading } = useDeliveryBoy();
   if (isLoading) return <Loader />;
+
   return (
     <>
       <Table role="table">

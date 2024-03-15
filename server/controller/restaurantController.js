@@ -8,7 +8,10 @@ const { compareDistance } = require("../utils/compareDistance");
 
 const getRestaurantList = async (req, res) => {
   try {
-    const restaurant = await Restaurant.find();
+    const searchQuery = req.query.search;
+    const regexPattern = new RegExp(searchQuery, "i");
+
+    const restaurant = await Restaurant.find({ restaurant: regexPattern });
     res.status(200).json(restaurant);
   } catch (error) {
     res.status(400).json({
