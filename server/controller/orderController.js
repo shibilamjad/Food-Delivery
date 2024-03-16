@@ -108,7 +108,7 @@ const userOrderList = async (req, res) => {
 
 const ordersAdmin = async (req, res) => {
   try {
-    const { page = 1, limit = 8, delivery, sortBy } = req.query;
+    const { page, limit, delivery, sortBy } = req.query;
     let skip = 0;
     if (page > 1) {
       skip = +limit * (page - 1);
@@ -140,12 +140,8 @@ const ordersAdmin = async (req, res) => {
         order === "desc" ? -1 : 1;
       orderList = orderList.sort(sortOption);
     }
-
     const orders = await orderList.exec();
-    const totalOrdersCount = await Order.countDocuments(filter);
-    const pageCount = Math.ceil(totalOrdersCount / +limit) || 1;
-
-    res.status(200).json({ orders, pageCount });
+    res.status(200).json(orders);
   } catch (error) {
     res.status(400).json({
       message: error.message,

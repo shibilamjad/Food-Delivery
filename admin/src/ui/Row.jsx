@@ -85,6 +85,7 @@ export const Table = styled.div`
   background-color: var(--color-grey-0);
   border-radius: 7px;
   width: 100%;
+  /* margin-bottom: 50px; */
   &::-webkit-scrollbar {
     display: none;
   }

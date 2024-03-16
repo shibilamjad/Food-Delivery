@@ -1,12 +1,24 @@
 import axios from "axios";
+import { PAGE_SIZE } from "../utils/PAGE_SIZE";
 
 const API_URL = "http://localhost:3006/api/restaurants";
 
-export async function getRestaurants(search) {
+export async function getRestaurants({ search, limit = PAGE_SIZE, page = 1 }) {
   try {
     const res = await axios(API_URL, {
-      params: { search },
+      params: { search, page, limit },
     });
+    const { data } = res;
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error("restaurants could not be retrieved");
+  }
+}
+
+export async function getRestaurantsMenuCreation() {
+  try {
+    const res = await axios(`${API_URL}/menu`);
     const { data } = res;
     return data;
   } catch (error) {

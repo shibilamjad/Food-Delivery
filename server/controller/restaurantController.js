@@ -8,10 +8,27 @@ const { compareDistance } = require("../utils/compareDistance");
 
 const getRestaurantList = async (req, res) => {
   try {
-    const searchQuery = req.query.search;
-    const regexPattern = new RegExp(searchQuery, "i");
+    const { search, page, limit } = req.query;
+    const regexPattern = new RegExp(search, "i");
+    let skip = 0;
+    if (page > 1) {
+      skip = +limit * (page - 1);
+    }
 
-    const restaurant = await Restaurant.find({ restaurant: regexPattern });
+    const restaurant = await Restaurant.find({ restaurant: regexPattern })
+      .skip(skip)
+      .limit(+limit);
+    res.status(200).json(restaurant);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
+const getRestaurantMenucreation = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.find();
     res.status(200).json(restaurant);
   } catch (error) {
     res.status(400).json({
@@ -292,6 +309,7 @@ module.exports = {
   getRestaurantAvailable,
   getRestaurantList,
   addNewRestaurants,
+  getRestaurantMenucreation,
   updateRestaurants,
   deleteRestaurants,
   getRestaurantMenusDeliveryBoy,

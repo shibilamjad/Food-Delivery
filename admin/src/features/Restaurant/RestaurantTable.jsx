@@ -4,12 +4,31 @@ import { Table } from "../../ui/Row";
 import { RestaurantList } from "./RestaurantList";
 import { useRestaurant } from "./useRestaurant";
 import { device } from "../../ui/device";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import empty from "../../assets/empty.png";
+import { useInView } from "react-intersection-observer";
+import { SpinnerMini } from "../../ui/SpinnerMini";
 
 export const RestaurantTable = ({ search }) => {
   const [showOptionsId, setShowOptionsId] = useState(null);
-  const { restaurants, isLoading } = useRestaurant(search);
+  const {
+    restaurants,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useRestaurant(search);
+  const { ref, inView } = useInView({ threshold: 0.5 });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  const allPagesEmpty =
+    restaurants && restaurants.pages.every((page) => page.length === 0);
+
   if (isLoading) return <Loader />;
 
   return (
@@ -22,19 +41,33 @@ export const RestaurantTable = ({ search }) => {
         <div></div>
         <div></div>
       </TableHeaderOrder>
-      {restaurants.length === 0 ? (
+      {allPagesEmpty ? (
         <Empty>
-          <img src={empty} alt="image" />
+          <img src={empty} alt="No orders" />
         </Empty>
       ) : (
-        restaurants.map((items) => (
-          <RestaurantList
-            restaurants={items}
-            key={items._id}
-            curOpen={showOptionsId}
-            onOpen={setShowOptionsId}
-          />
-        ))
+        restaurants &&
+        restaurants.pages.map((page, pageIndex) =>
+          page.map((order, orderIndex) => {
+            const isLastOrder =
+              pageIndex === restaurants.pages.length - 1 &&
+              orderIndex === page.length - 1;
+            return (
+              <div key={order._id} ref={isLastOrder ? ref : null}>
+                <RestaurantList
+                  restaurants={order}
+                  curOpen={showOptionsId}
+                  onOpen={setShowOptionsId}
+                />
+              </div>
+            );
+          })
+        )
+      )}
+      {isFetchingNextPage && (
+        <StyledSpinn>
+          <SpinnerMini />
+        </StyledSpinn>
       )}
     </Table>
   );
@@ -75,4 +108,12 @@ const Empty = styled.div`
   align-items: center;
   justify-content: center;
   margin: 50px;
+`;
+
+const StyledSpinn = styled.div`
+  display: flex;
+  padding-bottom: 50px;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
 `;

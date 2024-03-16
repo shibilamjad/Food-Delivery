@@ -14,16 +14,18 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { Button } from "../../ui/Buttons";
 import { Loader } from "../../ui/Loader";
-import { useRestaurant } from "../Restaurant/useRestaurant";
+import { useRestuarantsMenu } from "./useRestuarantsMenu";
 import { device } from "../../ui/device";
+import { useMoveBack } from "../../hooks/useMoveBack";
 
 export function CreateMenu() {
   const { menuId } = useParams();
   const { menuEdit, isLoading } = useMenuEdit(menuId);
   const { updateMenu } = useMenuUpdate();
   const { createMenu, isCreate } = useMenuCreate();
-  const { restaurants } = useRestaurant();
-  console.log(createMenu === "true");
+  const { restaurantsMenu } = useRestuarantsMenu();
+  const moveBack = useMoveBack();
+
   const {
     register,
     handleSubmit,
@@ -46,13 +48,14 @@ export function CreateMenu() {
 
   async function onSubmit(data) {
     if (menuEdit) {
-      updateMenu({
+      await updateMenu({
         menuId,
         updateMenu: { ...data },
         onSuccess: (data) => {
           reset();
         },
       });
+      moveBack(-1);
     } else {
       await createMenu(data, {
         onSuccess: (data) => {
@@ -87,8 +90,8 @@ export function CreateMenu() {
                     placeholder="Select Restaurant"
                     id="restaurant"
                     options={
-                      restaurants &&
-                      restaurants.map((item) => ({
+                      restaurantsMenu &&
+                      restaurantsMenu.map((item) => ({
                         value: item._id,
                         label: item.restaurant,
                       }))
@@ -193,7 +196,7 @@ export function CreateMenu() {
         </FormRow>
         <FormRow>
           <Button type="reset">Cancel</Button>
-          <Button>{menuEdit ? "Edit cabin" : "Create new cabin"}</Button>
+          <Button>{menuEdit ? "Edit Menu" : "Create new Menu"}</Button>
         </FormRow>
       </Form>
     </StyledForm>

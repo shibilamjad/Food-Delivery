@@ -10,9 +10,11 @@ const {
   getRestaurantId,
   getRestaurantAvailable,
   getRestaurantMenusAdmin,
+  getRestaurantMenucreation,
 } = require("../controller/restaurantController");
 
 router.get("/", getRestaurantList);
+router.get("/menu", getRestaurantMenucreation);
 router.get("/available", getRestaurantAvailable);
 router.get("/edit/:restaurantId", getRestaurantId);
 router.get("/:restaurantId", getRestaurantMenusDeliveryBoy);

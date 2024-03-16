@@ -5,6 +5,26 @@ import Heading from "../ui/Heading";
 import Buttons from "../ui/Buttons";
 import Notfound from "../assets/404.png";
 
+function PageNotFound() {
+  const moveBack = useMoveBack();
+
+  return (
+    <StyledPageNotFound>
+      <Box>
+        <img src={Notfound} alt="" />
+        <Heading as="h3">
+          The page you are looking for could not be found 😢
+        </Heading>
+        <Buttons onClick={moveBack} size="medium">
+          &larr; Go back
+        </Buttons>
+      </Box>
+    </StyledPageNotFound>
+  );
+}
+
+export default PageNotFound;
+
 const StyledPageNotFound = styled.main`
   height: 100vh;
   background-color: var(--color-grey-50);
@@ -32,23 +52,3 @@ const Box = styled.div`
     margin-bottom: 3.2rem;
   }
 `;
-
-function PageNotFound() {
-  const moveBack = useMoveBack();
-
-  return (
-    <StyledPageNotFound>
-      <Box>
-        <img src={Notfound} alt="" />
-        <Heading as="h3">
-          The page you are looking for could not be found 😢
-        </Heading>
-        <Buttons onClick={moveBack} size="medium">
-          &larr; Go back
-        </Buttons>
-      </Box>
-    </StyledPageNotFound>
-  );
-}
-
-export default PageNotFound;

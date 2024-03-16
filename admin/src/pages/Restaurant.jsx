@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RestaurantTable } from "../features/Restaurant/RestaurantTable";
 import Heading from "../ui/Heading";
 import { Row } from "../ui/Row";
@@ -43,8 +43,9 @@ const StyledContainer = styled.div`
 
 const Input = styled.input`
   padding: 10px 15px;
-  background-color: var(--color-grey-200);
+  background-color: var(--color-grey-100);
   margin-right: 20px;
   border-radius: 4px;
   width: 300px;
+  border: 1px solid var(--color-grey-200);
 `;
