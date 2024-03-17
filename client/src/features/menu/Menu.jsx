@@ -4,11 +4,21 @@ import { MenuItem } from './MenuItem';
 import { useRestaurantsMenu } from '../Restaurant/useRestaurantsMenu';
 import { useParams } from 'react-router-dom';
 import { WiTime8 } from 'react-icons/wi';
+import { useState } from 'react';
+import ReviewsContent from './ReviewsContent';
+
 export function Menu() {
   const { restaurantId } = useParams();
   const { isLoading, restaurantMenu } = useRestaurantsMenu(restaurantId);
+  const [isOpen, setIsOpen] = useState(false);
 
-  if (isLoading) return <Loader />;
+  const handleMenu = () => {
+    setIsOpen(false);
+  };
+
+  const handleReview = () => {
+    setIsOpen(true);
+  };
 
   let estimatedTimeRange = '';
 
@@ -27,6 +37,7 @@ export function Menu() {
       estimatedTimeRange = '60+';
     }
 
+    if (isLoading) return <Loader />;
     return (
       <>
         <StyledContainer>
@@ -48,17 +59,33 @@ export function Menu() {
                 </h3>
               )}
             </li>
+            <StyledNav>
+              <Button $active={!isOpen} onClick={handleMenu}>
+                Menus
+              </Button>
+              <Button $active={isOpen} onClick={handleReview}>
+                Reviews
+              </Button>
+            </StyledNav>
           </StyledConent>
-          <ul className="divide-y divide-stone-200 px-2">
-            {restaurantMenu.menu.map((items) => (
-              <MenuItem
-                items={items}
-                restaurantId={restaurantId}
-                distance={distance}
-                key={items._id}
-              />
-            ))}
-          </ul>
+          {!isOpen ? (
+            <ul className="divide-y divide-stone-200 px-2">
+              {restaurantMenu.menu.map((items) => (
+                <MenuItem
+                  items={items}
+                  restaurantId={restaurantId}
+                  distance={distance}
+                  key={items._id}
+                />
+              ))}
+            </ul>
+          ) : (
+            <ul className="divide-y divide-stone-200 px-2">
+              {restaurantMenu.reviews.map((items) => (
+                <ReviewsContent review={items} key={items._id} />
+              ))}
+            </ul>
+          )}
         </StyledContainer>
       </>
     );
@@ -72,14 +99,14 @@ const StyledContainer = styled.div`
   padding: 70px;
 `;
 const StyledConent = styled.ul`
-  margin-bottom: 30px;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 30px;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #ababab;
+  padding-bottom: 20px;
   h1 {
     font-size: 28px;
     font-weight: 700;
     padding-bottom: 10px;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px dashed #ababab;
   }
   h2 {
     padding-top: 20px;
@@ -94,5 +121,25 @@ const StyledConent = styled.ul`
     display: flex;
     align-items: center;
     font-weight: 500;
+  }
+`;
+
+const StyledNav = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 100px;
+  padding-top: 40px;
+`;
+
+const Button = styled.button`
+  border-bottom: 2px solid ${(props) => (props.$active ? '#436fff' : 'white')};
+  color: ${(props) => (props.$active ? '#436fff' : '#2a2a2a')};
+  font-weight: 500;
+  font-size: 1.4rem;
+  padding: 0.44rem 0.8rem;
+  transition: all 0.5s;
+  &:hover:not(:disabled) {
+    color: ${(props) => (props.$active ? '#809dfb' : '#4f4f4f')};
   }
 `;

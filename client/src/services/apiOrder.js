@@ -1,4 +1,3 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3006/api/order';
@@ -52,6 +51,17 @@ export async function orderListApi() {
 export async function orderDetailsApi(orderId) {
   try {
     const res = await axios.get(`${API_URL}/orderdetails/${orderId}`);
+
+    const { data } = res;
+    return data;
+  } catch (error) {
+    throw new Error(`Error fetching order details: ${error.message}`);
+  }
+}
+
+export async function orderDetailsReviewApi(orderId) {
+  try {
+    const res = await axios.get(`${API_URL}/orderReview/${orderId}`);
 
     const { data } = res;
     return data;

@@ -6,7 +6,7 @@ const {
   addNewRestaurants,
   updateRestaurants,
   deleteRestaurants,
-  getRestaurantMenusDeliveryBoy,
+  getRestaurantMenus,
   getRestaurantId,
   getRestaurantAvailable,
   getRestaurantMenusAdmin,
@@ -17,7 +17,7 @@ router.get("/", getRestaurantList);
 router.get("/menu", getRestaurantMenucreation);
 router.get("/available", getRestaurantAvailable);
 router.get("/edit/:restaurantId", getRestaurantId);
-router.get("/:restaurantId", getRestaurantMenusDeliveryBoy);
+router.get("/:restaurantId", getRestaurantMenus);
 router.get("/admin/:restaurantId", getRestaurantMenusAdmin);
 router.post("/createRestaurant", addNewRestaurants);
 router.put("/update/:restaurantId", updateRestaurants);

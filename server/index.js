@@ -8,6 +8,7 @@ const orderRoute = require("./routes/order");
 const restaurantRoute = require("./routes/restaurant");
 const dashBoardRoute = require("./routes/dashboard");
 const deliveryBoyRoute = require("./routes/deliveyBoy");
+const reviewRoute = require("./routes/review");
 const otpRountes = require("./routes/otp");
 const { extractDeliveryBoyId } = require("./utils/jwt");
 const {
@@ -61,6 +62,7 @@ app.use("/api/menu", menuRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/restaurants", restaurantRoute);
 app.use("/api/delivery", deliveryBoyRoute);
+app.use("/api/review", reviewRoute);
 app.use("/api/otp", otpRountes);
 
 // Handle all other routes

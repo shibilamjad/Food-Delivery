@@ -42,6 +42,10 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    reviews: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
     cart: [
       {
         _id: {

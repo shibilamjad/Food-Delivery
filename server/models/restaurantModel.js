@@ -38,6 +38,12 @@ const restaurantSchema = new mongoose.Schema({
     type: Number,
     required: [true, "closeTime field cannot be empty"],
   },
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
   menu: [
     {
       type: mongoose.Schema.Types.ObjectId,

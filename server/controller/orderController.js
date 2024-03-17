@@ -80,6 +80,36 @@ const userOrderDetails = async (req, res) => {
   }
 };
 
+const userOrderDetailsReview = async (req, res) => {
+  const { orderId } = req.params;
+  try {
+    const order = await Order.findById(orderId)
+      .select("userId")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "userId",
+          model: "Users",
+          select: "_id userName",
+        },
+      })
+      .populate({
+        path: "cart.restaurant",
+        model: "Restaurant",
+        select: "_id",
+      });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
 const userOrderList = async (req, res) => {
   const { userId } = req.body;
   try {
@@ -292,4 +322,5 @@ module.exports = {
   ordersDetailsAdmin,
   ordersNotification,
   getRestaurantIdFromOrder,
+  userOrderDetailsReview,
 };

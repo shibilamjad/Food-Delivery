@@ -16,6 +16,7 @@ import { SignIn } from './features/user/SignIn';
 import { OrderItem } from './features/order/OrderItem';
 import { OrderStatusProvider } from './context/OrderStatusContext';
 import { Restaurant } from './features/Restaurant/Restaurant';
+import Review from './features/order/Review';
 
 function App() {
   const queryClient = new QueryClient({
@@ -46,6 +47,7 @@ function App() {
               <Route path="/order/new" element={<CreateOrder />} />
               <Route path="/order" element={<OrderItem />} />
               <Route path="/status/:orderId" element={<Order />} />
+              <Route path="/review/:orderId" element={<Review />} />
             </Route>
             <Route
               path="/sign-up"

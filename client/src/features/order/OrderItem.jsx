@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FcKindle } from 'react-icons/fc';
 import styled from 'styled-components';
 
@@ -6,14 +6,18 @@ import LinkButton from '../../ui/LinkButton';
 import { Loader } from '../../ui/Loader';
 import { EmptyOrder } from './EmptyOrder';
 import { useOrder } from './useOrder';
+import Review from './Review';
 
 export function OrderItem() {
   const { isLoading, order } = useOrder();
   const orderItems = order && order.filter((items) => items.cart.length > 0);
   const navigate = useNavigate();
-
+  console.log(order);
   function handleDetails(orderId) {
     navigate(`/status/${orderId}`);
+  }
+  function handleReview(orderId) {
+    navigate(`/review/${orderId}`);
   }
   if (isLoading) return <Loader />;
   if (order.length === 0) return <EmptyOrder />;
@@ -28,7 +32,7 @@ export function OrderItem() {
   return (
     <StyledContainer>
       <div className="px-3 py-3">
-        <LinkButton to="/menu">&larr; Back to menu</LinkButton>
+        <LinkButton to="/restaurant">&larr; Back to restaurant</LinkButton>
         <ul className=" list-none divide-y divide-stone-200">
           {orderItems.map((item) => (
             <li className="gap-2 px-6 py-4" key={item._id}>
@@ -42,7 +46,7 @@ export function OrderItem() {
                       <img
                         src={cart.menuItem.imageUrl}
                         alt={cart.menuItem.name}
-                        className="h-24 w-24 sm:h-36 sm:w-36"
+                        className="h-24 w-24 object-cover sm:h-36 sm:w-36 "
                       />
                     )}
                     <div className="flex flex-col gap-2">
@@ -60,6 +64,15 @@ export function OrderItem() {
                   </div>
                 ))}
               <div className="flex items-center justify-end">
+                {item.delivery === 'success' && (
+                  <button
+                    onClick={() => handleReview(item._id)}
+                    className="text-black-50 mx-4 flex items-center rounded-sm bg-orange-400 p-1 font-normal hover:bg-orange-300 sm:p-2 sm:font-semibold"
+                  >
+                    <span className="h-30 w-30">⭐</span>
+                    Review
+                  </button>
+                )}
                 <button
                   onClick={() => handleDetails(item._id)}
                   className="text-black-50 mx-4 flex items-center rounded-sm bg-yellow-400 p-1 font-normal hover:bg-yellow-300 sm:p-2 sm:font-semibold"

@@ -101,7 +101,7 @@ const getRestaurantId = async (req, res) => {
     });
   }
 };
-const getRestaurantMenusDeliveryBoy = async (req, res) => {
+const getRestaurantMenus = async (req, res) => {
   try {
     const { restaurantId } = req.params;
     const { token } = req.headers;
@@ -113,12 +113,22 @@ const getRestaurantMenusDeliveryBoy = async (req, res) => {
       });
     }
     const restaurant = await Restaurant.findById(restaurantId)
-      .select("restaurant address lat long location openTime closeTime")
+      .select(
+        "restaurant address lat long reviews location openTime closeTime menu"
+      )
       .populate({
         path: "menu",
         select: "name unitPrice ingredients isAvailable discount imageUrl",
       })
-      .select("restaurant");
+      .populate({
+        path: "reviews",
+        select: "content ratings userId imageUrl createdAt",
+        populate: {
+          path: "userId",
+          select: "userName",
+        },
+      });
+
     // Calculate distance and estimated time between user and restaurant
     const userCoordinates = user.location.coordinates;
     const userLatitude = userCoordinates[1];
@@ -312,7 +322,7 @@ module.exports = {
   getRestaurantMenucreation,
   updateRestaurants,
   deleteRestaurants,
-  getRestaurantMenusDeliveryBoy,
+  getRestaurantMenus,
   getRestaurantId,
   getRestaurantMenusAdmin,
 };
