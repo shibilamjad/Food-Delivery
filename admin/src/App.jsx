@@ -17,6 +17,7 @@ import { NewRestaurants } from "./pages/NewRestaurants";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import DeliveryBoy from "./pages/DeliveryBoy";
 import PageNotFound from "./pages/PageNotFound";
+import City from "./pages/City";
 
 const queryCLient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ function App() {
             <Route path="restaurants" element={<Restaurant />} />
             <Route path="restaurants/:restaurantId" element={<Menus />} />
             <Route path="deliveryBoys" element={<DeliveryBoy />} />
+            <Route path="city" element={<City />} />
             <Route path="new-restaurants" element={<NewRestaurants />} />
             <Route
               path="new-restaurants/:restaurantId"

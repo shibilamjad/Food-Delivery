@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { WiTime8 } from 'react-icons/wi';
 import { HiMiniStar } from 'react-icons/hi2';
-
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 
-export function AvailableItem({ items }) {
+export const AvailableItem = forwardRef(({ items }, ref) => {
   const navigate = useNavigate();
   const {
     _id: restaurantId,
@@ -35,6 +35,9 @@ export function AvailableItem({ items }) {
   return (
     <>
       <a
+        role="button"
+        ref={ref}
+        tabIndex="0"
         onClick={() => handleMenuItems(restaurantId)}
         className=" m-5 mt-1 w-[250px] scale-100 cursor-pointer p-1  sm:w-[300px]"
       >
@@ -66,7 +69,8 @@ export function AvailableItem({ items }) {
       </a>
     </>
   );
-}
+});
+AvailableItem.displayName = 'AvailableItem';
 
 const StyledMenu = styled.div`
   height: 100%;

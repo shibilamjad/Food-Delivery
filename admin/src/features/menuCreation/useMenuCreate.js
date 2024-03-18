@@ -4,7 +4,11 @@ import { uploadMenuApi } from "../../service/apiMenu";
 
 export function useMenuCreate() {
   const queryClient = useQueryClient();
-  const { mutate: createMenu, isLoading: isCreate } = useMutation({
+  const {
+    mutate: createMenu,
+    isLoading: isCreate,
+    status,
+  } = useMutation({
     mutationFn: uploadMenuApi,
     onSuccess: () => {
       toast.success("Menu successfully created");
@@ -12,5 +16,5 @@ export function useMenuCreate() {
     },
     onError: (err) => toast.error(err.message),
   });
-  return { createMenu, isCreate };
+  return { createMenu, isCreate, status };
 }

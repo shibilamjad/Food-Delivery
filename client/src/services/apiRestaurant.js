@@ -1,10 +1,16 @@
 import axios from 'axios';
+import { PAGE_SIZE } from '../utils/PAGE_SIZE';
 
 const API_URL = 'http://localhost:3006/api';
 
-export async function getRestaurants() {
+export async function getRestaurants({ limit = PAGE_SIZE, page = 1 }) {
   try {
-    const res = await axios(`${API_URL}/restaurants`);
+    const res = await axios(`${API_URL}/restaurants`, {
+      params: {
+        page,
+        limit,
+      },
+    });
     const { data } = res;
     return data;
   } catch (error) {
@@ -13,11 +19,15 @@ export async function getRestaurants() {
   }
 }
 
-export async function getAvailableRestaurnat() {
+export async function getAvailableRestaurnat({ limit = PAGE_SIZE, page = 1 }) {
   try {
     const token = localStorage.getItem('token');
 
     const res = await axios.get(`${API_URL}/restaurants/available`, {
+      params: {
+        page,
+        limit,
+      },
       headers: {
         token: token,
       },

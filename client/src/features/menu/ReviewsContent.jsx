@@ -4,7 +4,6 @@ import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 
 function ReviewsContent({ review }) {
-  console.log(review);
   const { content, createdAt, ratings, userId, imageUrl } = review;
   return (
     <StyledConatainer>

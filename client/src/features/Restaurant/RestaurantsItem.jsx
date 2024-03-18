@@ -2,8 +2,14 @@ import { useNavigate } from 'react-router-dom';
 import { WiTime8 } from 'react-icons/wi';
 import { HiMiniStar } from 'react-icons/hi2';
 import styled from 'styled-components';
+import { forwardRef, useEffect, useState } from 'react';
+import { getCurrentPosition } from '../../utils/getCurrentPostion';
+import haversine from 'haversine-distance';
+import { useCity } from './useCity';
 
-export function RestaurantsItem({ items }) {
+export const RestaurantsItem = forwardRef(({ items }, ref) => {
+  const locations = localStorage.getItem('location');
+  const [distnaces, setDistance] = useState([]);
   const navigate = useNavigate();
   const {
     _id: restaurantId,
@@ -14,8 +20,67 @@ export function RestaurantsItem({ items }) {
     closeTime,
     restaurant,
     menu,
-    distance,
+    lat,
+    long,
   } = items;
+  const { distance } = distnaces && distnaces;
+  const { getCity } = useCity();
+  const cityCurrent =
+    getCity &&
+    getCity.reduce((acc, city) => {
+      acc[city.cityName] = {
+        latitude: city.latitude,
+        longitude: city.longitude,
+      };
+      return acc;
+    }, {});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Get the user's current position
+        const position = await getCurrentPosition();
+
+        if (locations === 'current') {
+          const distance = haversine(
+            {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            },
+            { latitude: lat, longitude: long },
+          );
+          const restaurantWithDistance = {
+            ...items,
+            distance: Math.round(distance / 1000),
+          };
+          setDistance(restaurantWithDistance);
+        } else {
+          const cityCoordinated = cityCurrent && cityCurrent[locations];
+
+          if (cityCoordinated) {
+            const { latitude, longitude } = cityCoordinated;
+
+            const distance = haversine(
+              {
+                latitude: latitude,
+                longitude: longitude,
+              },
+              { latitude: lat, longitude: long },
+            );
+            const restaurantWithDistance = {
+              ...items,
+              distance: Math.round(distance / 1000),
+            };
+            setDistance(restaurantWithDistance);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleMenuItems = (restaurantId) => {
     navigate(`/restaurant/${restaurantId}`);
@@ -24,6 +89,9 @@ export function RestaurantsItem({ items }) {
     <>
       {menu.length > 0 && (
         <a
+          role="button"
+          ref={ref}
+          tabIndex="0"
           onClick={() => handleMenuItems(restaurantId)}
           className="m-5 w-[250px] scale-100 cursor-pointer sm:w-[300px]"
         >
@@ -62,7 +130,8 @@ export function RestaurantsItem({ items }) {
       )}
     </>
   );
-}
+});
+RestaurantsItem.displayName = 'RestaurantsItem';
 
 const StyledMenu = styled.div`
   height: 100%;

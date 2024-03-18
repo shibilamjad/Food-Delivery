@@ -22,7 +22,7 @@ export function CreateMenu() {
   const { menuId } = useParams();
   const { menuEdit, isLoading } = useMenuEdit(menuId);
   const { updateMenu } = useMenuUpdate();
-  const { createMenu, isCreate } = useMenuCreate();
+  const { createMenu, isCreate, status } = useMenuCreate();
   const { restaurantsMenu } = useRestuarantsMenu();
   const moveBack = useMoveBack();
 
@@ -109,7 +109,7 @@ export function CreateMenu() {
             type="text"
             id="name"
             defaultValue={menuEdit ? menuEdit.name : ""}
-            //
+            disabled={status === "pending"}
             {...register("name", {
               required: "This field is required",
             })}
@@ -121,6 +121,7 @@ export function CreateMenu() {
             type="number"
             id="unitPrice"
             defaultValue={menuEdit ? menuEdit.unitPrice : ""}
+            disabled={status === "pending"}
             {...register("unitPrice", {
               required: "This field is required",
             })}
@@ -131,6 +132,7 @@ export function CreateMenu() {
           <Input
             type="number"
             id="discount"
+            disabled={status === "pending"}
             defaultValue={menuEdit ? menuEdit.discount : 0}
             {...register("discount", {
               required: "This field is required",
@@ -145,6 +147,7 @@ export function CreateMenu() {
           <Textarea
             type="number"
             id="ingredients"
+            disabled={status === "pending"}
             defaultValue={menuEdit ? menuEdit.ingredients : ""}
             {...register("ingredients", {
               required: "This field is required",
@@ -188,6 +191,7 @@ export function CreateMenu() {
           <FileInput
             type="file"
             id="imageUrl"
+            disabled={status === "pending"}
             accept="image/*"
             {...register("imageUrl", {
               required: menuEdit ? false : "This field is required",
@@ -195,8 +199,12 @@ export function CreateMenu() {
           />
         </FormRow>
         <FormRow>
-          <Button type="reset">Cancel</Button>
-          <Button>{menuEdit ? "Edit Menu" : "Create new Menu"}</Button>
+          <Button disabled={status === "pending"} type="reset">
+            Cancel
+          </Button>
+          <Button disabled={status === "pending"}>
+            {menuEdit ? "Edit Menu" : "Create new Menu"}
+          </Button>
         </FormRow>
       </Form>
     </StyledForm>

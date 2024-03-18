@@ -12,7 +12,6 @@ export function OrderTable() {
   const { orders, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
     useOrders();
   const { ref, inView } = useInView({ threshold: 0.5 });
-
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();

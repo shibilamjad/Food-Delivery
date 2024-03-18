@@ -4,7 +4,7 @@ import { createRestaurantsApi } from "../../service/apiRestaurants";
 
 export function useCreateRestaurants() {
   const queryClient = useQueryClient();
-  const { mutate: createRestaurant } = useMutation({
+  const { mutate: createRestaurant, status: isCreating } = useMutation({
     mutationFn: createRestaurantsApi,
     onSuccess: () => {
       queryClient.invalidateQueries(["restaurants"]);
@@ -14,5 +14,5 @@ export function useCreateRestaurants() {
     onError: () => toast.error("restaurants not placed"),
   });
 
-  return { createRestaurant };
+  return { createRestaurant, isCreating };
 }

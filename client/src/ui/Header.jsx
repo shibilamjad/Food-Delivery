@@ -6,6 +6,8 @@ import { useState } from 'react';
 import Logout from '../features/user/Logout';
 import ModalConfirm from './ModalConfirm';
 import { LogoutOverView } from '../features/user/LogoutOverView';
+import UserLocation from './UserLocation';
+import { device } from './device';
 
 function Header() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,16 +21,16 @@ function Header() {
     setModalOpen(true);
   };
   return (
-    <header
-      className=" flex  flex-col items-center justify-between 
-    border-b border-stone-200 bg-yellow-400
-     px-4 py-3 uppercase shadow-lg sm:flex sm:flex-row sm:px-6"
+    <Headers
+      className=" bg-yellow-400
+      uppercase shadow-lg"
     >
-      <div>
+      <Div>
         <h1 className=" py-2 text-[20px] font-semibold tracking-widest text-stone-800">
           Fast And Go .
         </h1>
-      </div>
+        <UserLocation />
+      </Div>
       <StyledNav>
         <RestaurantOverview />
         <CartOverview />
@@ -40,14 +42,32 @@ function Header() {
           </ModalConfirm>
         )}
       </StyledNav>
-    </header>
+    </Headers>
   );
 }
 
 export default Header;
 
+const Headers = styled.header`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  @media ${device.tablet} {
+    justify-content: center;
+  }
+`;
+
+const Div = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
 const StyledNav = styled.div`
   display: flex;
   gap: 8px;
-  margin-top: 10px;
+  @media ${device.tablet} {
+  }
 `;

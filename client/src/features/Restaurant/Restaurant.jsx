@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import io from 'socket.io-client';
 import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { Empty } from '../../ui/Empty';
 import { useRestaurant } from './useRestaurant';
@@ -8,73 +9,171 @@ import { RestaurantsItem } from './RestaurantsItem';
 import { useGeoLocation } from '../../utils/useGeoLocation';
 import { AvailableItem } from './AvailableItem';
 import { device } from '../../ui/device';
-import { LoaderSkelten } from '../../ui/LoaderSkelten';
+import { Loader } from '../../ui/Loader';
 import { useAvailable } from './useAvailable';
+import { useCity } from './useCity';
+import UserLocation from '../../ui/UserLocation';
+import { SpinnerMini } from '../../ui/SpinnerMini';
 
 export function Restaurant() {
-  const { allRestaurant, isLoading, isError } = useRestaurant();
-  const { availableRestaurants, isLoading: isAvailable } = useAvailable();
+  const location = localStorage.getItem('location');
+  const {
+    isLoading,
+    isError,
+    hasNextPage: resturantNextPage,
+    fetchNextPage: resturantFetchNextPage,
+    isFetchingNextPage: restaurantIsFetchNextPage,
+    restaurants,
+  } = useRestaurant();
+  const {
+    availableRestaurants,
+    isLoading: isAvailable,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useAvailable();
   const { city } = useGeoLocation();
-
+  const { getCity } = useCity();
+  const { ref, inView } = useInView({ threshold: 0.5 });
+  // extract the city
+  const cityCurrent =
+    getCity &&
+    getCity.reduce((acc, city) => {
+      acc[city.cityName] = {
+        latitude: city.latitude,
+        longitude: city.longitude,
+      };
+      return acc;
+    }, {});
+  // socket io and the current location change
   useEffect(() => {
     const socket = io('http://localhost:3006');
     const token = localStorage.getItem('token');
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
+    const handleLocationUpdate = (position) => {
+      const { latitude, longitude } = position.coords;
 
-          socket.emit('userLocationUpdate', {
-            token: token,
-            latitude,
-            longitude,
-          });
-        },
-        (error) => {
-          console.error('Error getting location', error);
-        },
+      socket.emit('userLocationUpdate', {
+        token: token,
+        latitude,
+        longitude,
+      });
+    };
+
+    const handleLocationError = (error) => {
+      console.error('Error getting location', error);
+    };
+
+    if (location === 'current') {
+      navigator.geolocation.getCurrentPosition(
+        handleLocationUpdate,
+        handleLocationError,
       );
     } else {
-      console.error('Geolocation is not supported by this browser.');
+      const cityCoordinated = cityCurrent && cityCurrent[location];
+      if (cityCoordinated) {
+        const { latitude, longitude } = cityCoordinated;
+        socket.emit('userLocationUpdate', {
+          token: token,
+          latitude,
+          longitude,
+        });
+      }
     }
-
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [getCity, location]);
 
-  if (isLoading || isAvailable) return <LoaderSkelten />;
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    if (inView && resturantNextPage) {
+      resturantFetchNextPage();
+    }
+  }, [inView, resturantNextPage, resturantFetchNextPage]);
+
+  // check if empty array
+  const allPagesEmpty =
+    availableRestaurants &&
+    availableRestaurants.pages.every((page) => page.length === 0);
+
+  if (isLoading || isAvailable) return <Loader />;
   if (isError) return <Empty>Something went wrong. Please try again.</Empty>;
 
   return (
     <>
       <StyledContainer>
         <Header>
-          <h1>
-            Restaurants Available in your Location <span>{city}</span>
-          </h1>
+          {location === 'current' ? (
+            <h1>
+              Restaurants Available in your Location <span>{city}</span>
+            </h1>
+          ) : (
+            <h1>
+              Restaurants Available in <span>{location}</span>
+            </h1>
+          )}
         </Header>
-        {availableRestaurants.length === 0 ? (
+        {allPagesEmpty ? (
           <Emptys>
-            <img src="../../../public/not-item-available.png" alt="" />
+            <img src="/not-item-available.png" alt="" />
+            <p>You can change your location to view available restaurants:</p>
+            <UserLocation />
           </Emptys>
         ) : (
           <StyledRestaurant>
             {availableRestaurants &&
-              availableRestaurants.map((item) => (
-                <AvailableItem items={item} key={item._id} />
-              ))}
+              availableRestaurants.pages.map((page, pageIndex) =>
+                page.map((item, itemIndex) => {
+                  const isLastAvailableRes =
+                    pageIndex === availableRestaurants.pages.length - 1 &&
+                    itemIndex === page.length - 1;
+                  return (
+                    <AvailableItem
+                      items={item}
+                      key={item._id}
+                      ref={isLastAvailableRes ? ref : null}
+                    />
+                  );
+                }),
+              )}
           </StyledRestaurant>
         )}
-        <Header>
+        {isFetchingNextPage && (
+          <StyledSpinn>
+            <SpinnerMini />
+          </StyledSpinn>
+        )}
+        <Header className="mt-[50px]">
           <h1>Our Popular Restaurants</h1>
         </Header>
         <StyledRestaurant>
-          {allRestaurant.map((item) => (
-            <RestaurantsItem items={item} key={item._id} />
-          ))}
+          {restaurants &&
+            restaurants.pages.map((page, pageIndex) =>
+              page.map((item, itemIndex) => {
+                const isLastRestaurant =
+                  pageIndex === restaurants.pages.length - 1 &&
+                  itemIndex === page.length - 1;
+                return (
+                  <RestaurantsItem
+                    items={item}
+                    key={item._id}
+                    ref={isLastRestaurant ? ref : null}
+                  />
+                );
+              }),
+            )}
         </StyledRestaurant>
+        {restaurantIsFetchNextPage && (
+          <StyledSpinn>
+            <SpinnerMini />
+          </StyledSpinn>
+        )}
       </StyledContainer>
     </>
   );
@@ -95,6 +194,13 @@ const StyledRestaurant = styled.div`
   margin-top: 10px;
 `;
 
+const StyledSpinn = styled.div`
+  display: flex;
+  /* padding-bottom: 50px; */
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+`;
 const Header = styled.div`
   display: flex;
   align-items: start;
@@ -117,9 +223,14 @@ const Header = styled.div`
 `;
 const Emptys = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 50px;
   font-size: 20px;
   color: red;
+  p {
+    padding-bottom: 10px;
+    font-size: 14px;
+  }
 `;

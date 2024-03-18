@@ -10,6 +10,7 @@ const dashBoardRoute = require("./routes/dashboard");
 const deliveryBoyRoute = require("./routes/deliveyBoy");
 const reviewRoute = require("./routes/review");
 const otpRountes = require("./routes/otp");
+const cityRountes = require("./routes/city");
 const { extractDeliveryBoyId } = require("./utils/jwt");
 const {
   updateDeliveryBoyLocation,
@@ -64,6 +65,7 @@ app.use("/api/restaurants", restaurantRoute);
 app.use("/api/delivery", deliveryBoyRoute);
 app.use("/api/review", reviewRoute);
 app.use("/api/otp", otpRountes);
+app.use("/api/city", cityRountes);
 
 // Handle all other routes
 app.all("*", (req, res) => {

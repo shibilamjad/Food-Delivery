@@ -6,10 +6,11 @@ export function useRestaurantsMenu(restaurantId) {
     data: restaurantMenu,
     isLoading,
     isError,
+    status,
   } = useQuery({
     queryKey: ['restaurants', restaurantId],
     queryFn: () => getRestaurantsMenu(restaurantId),
     enabled: Boolean(restaurantId),
   });
-  return { isLoading, restaurantMenu, isError };
+  return { isLoading, restaurantMenu, isError, status };
 }

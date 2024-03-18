@@ -39,6 +39,7 @@ const getRestaurantMenucreation = async (req, res) => {
 const getRestaurantAvailable = async (req, res) => {
   try {
     const { token } = req.headers;
+    const { page, limit } = req.query;
     const userId = extractUserId(token);
     const user = await User.findById(userId);
     if (!user) {
@@ -46,11 +47,15 @@ const getRestaurantAvailable = async (req, res) => {
         message: "User not found",
       });
     }
+    let skip = 0;
+    if (page > 1) {
+      skip = +limit * (page - 1);
+    }
     const userCoordinates = user.location.coordinates;
     const userLatitude = userCoordinates[1];
     const userLongitude = userCoordinates[0];
 
-    const restaurants = await Restaurant.find();
+    const restaurants = await Restaurant.find().skip(skip).limit(+limit);
     // Map each restaurant to include distance and estimated time
     const restaurantsWithDistanceAndTime = restaurants.map((restaurant) => {
       const restaurantLatitude = restaurant.lat;

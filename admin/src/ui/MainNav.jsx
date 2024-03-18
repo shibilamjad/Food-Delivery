@@ -58,6 +58,10 @@ function MainNav() {
         <FaRegSquarePlus />
         <span>Add Menu</span>
       </NavItem>
+      <NavItem to="/city">
+        <FaRegSquarePlus />
+        <span>Add City</span>
+      </NavItem>
       <Btn onClick={handleLogout}>
         <BsBoxArrowLeft />
         <span> Logout</span>
