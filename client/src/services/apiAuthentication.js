@@ -60,3 +60,16 @@ export async function logoutApi() {
     throw new Error(`Error fetching logout: ${error.message}`);
   }
 }
+
+export async function forgetPasswordApi({ mobile, password }) {
+  try {
+    const data = {
+      mobile,
+      password,
+    };
+    const res = await axios.put(`http://localhost:3006/api/users/forget`, data);
+    return res.data;
+  } catch (error) {
+    throw new Error(`Error fetching logout: ${error.message}`);
+  }
+}

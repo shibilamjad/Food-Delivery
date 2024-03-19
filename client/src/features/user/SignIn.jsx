@@ -15,6 +15,7 @@ import {
   StyledSign,
 } from '../../ui/AuthStyles';
 import { device } from '../../ui/device';
+import { Link } from 'react-router-dom';
 
 export function SignIn() {
   const { login, isLoading } = useLogin();
@@ -36,7 +37,7 @@ export function SignIn() {
   return (
     <ModelAuth>
       <StyledImage>
-        <Img src="../../../sign-up.png" alt="image" />
+        <Img src="/sign-up.png" alt="image" />
         <H1>Sign in</H1>
       </StyledImage>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,7 +73,7 @@ export function SignIn() {
           <Button type="submit">Sign in</Button>
         </div>
       </form>
-
+      <StyledLink to="/forgetpassword">ForgetPassword</StyledLink>
       <StyledSign>
         <AlignCenter>
           <p>Create new account? </p>
@@ -92,33 +93,33 @@ export const Button = styled.button`
   color: #131313;
   background-color: #ffca1a;
   border-radius: 4px;
+
+  &:disabled {
+    cursor: not-allowed;
+    border: 1px solid #999999;
+    color: #666666;
+  }
   &:hover {
     background-color: #ffc401;
     transition: background 0.3s;
   }
   @media ${device.laptopL} {
     font-size: 15px;
-    margin-bottom: 8px;
   }
   @media ${device.laptop} {
     font-size: 14px;
-
-    margin-bottom: 8px;
   }
   @media ${device.tablet} {
     font-size: 14px;
     padding: 8px 12px;
-    margin-bottom: 3px;
   }
   @media ${device.mobileL} {
     font-size: 12px;
     padding: 6px 10px;
-    margin-bottom: 3px;
   }
   @media ${device.mobileS} {
     font-size: 12px;
-    padding: 6px 10px;
-    margin-bottom: 4px;
+    padding: 6px 10psx;
   }
 `;
 const Img = styled.img`
@@ -133,4 +134,22 @@ const StyledImage = styled.div`
 
 const InputContainer = styled.div`
   margin-bottom: 10px;
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  justify-content: end;
+  margin-top: 5px;
+  font-weight: 400;
+  color: #0d5ec1;
+  @media ${device.laptopL} {
+    font-size: 15px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 14px;
+  }
+  @media ${device.mobileL} {
+    font-size: 10px;
+  }
 `;

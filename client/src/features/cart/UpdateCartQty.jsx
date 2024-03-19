@@ -12,7 +12,6 @@ function UpdateCartQty({ quantity, id, onUpdateQty }) {
         </div>
       ) : (
         <div className=" flex items-center gap-1 md:gap-2 ">
-          {' '}
           <Button disabled="disabled" type="disable">
             -
           </Button>

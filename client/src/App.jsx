@@ -17,6 +17,7 @@ import { OrderItem } from './features/order/OrderItem';
 import { OrderStatusProvider } from './context/OrderStatusContext';
 import { Restaurant } from './features/Restaurant/Restaurant';
 import Review from './features/order/Review';
+import ForgetPassword from './pages/ForgetPassword';
 
 function App() {
   const queryClient = new QueryClient({
@@ -62,6 +63,14 @@ function App() {
               element={
                 <ProtectedRouterAfterLogIn>
                   <SignIn />
+                </ProtectedRouterAfterLogIn>
+              }
+            />
+            <Route
+              path="/forgetpassword"
+              element={
+                <ProtectedRouterAfterLogIn>
+                  <ForgetPassword />
                 </ProtectedRouterAfterLogIn>
               }
             />

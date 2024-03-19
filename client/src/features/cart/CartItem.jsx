@@ -2,7 +2,7 @@ import DeleteItem from './DeleteItem';
 import UpdateCartQty from './UpdateCartQty';
 import { useUpdateQuantity } from './useCartUpdate';
 
-function CartItem({ menuItem, quantity, id, totalPrice, imageUrl }) {
+function CartItem({ menuItem, quantity, id, totalPrice }) {
   const { updateCart } = useUpdateQuantity();
   function handleUpdateQty(_id, action) {
     try {

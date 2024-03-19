@@ -27,7 +27,7 @@ export function MenuItem({ items, distance, restaurantId }) {
   };
   if (isLoading) return <Loader />;
   return (
-    <li className="flex gap-4 py-2">
+    <li className="flex gap-5 py-2 sm:gap-4">
       <img
         src={imageUrl}
         alt={name}
@@ -56,7 +56,7 @@ export function MenuItem({ items, distance, restaurantId }) {
               Sold out
             </p>
           )}
-          <div className="flex items-center gap-4">
+          <div className="items-centr flex gap-4">
             {isAvailable ? (
               cart.some((item) => item.menuItem._id === _id) ? (
                 <Button

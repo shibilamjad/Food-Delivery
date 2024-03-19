@@ -184,6 +184,9 @@ const StyledContainer = styled.div`
   max-width: 1840px;
   margin: 0 auto;
   padding: 50px;
+  @media ${device.tablet} {
+    padding: 30px;
+  }
 `;
 
 const StyledRestaurant = styled.div`

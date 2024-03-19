@@ -12,7 +12,7 @@ function Button({ children, disabled, to, type, onClick }) {
       ' px-4 py-2 md:px-5 md:py-2.5 bg-yellow-400 focus:bg-yellow-300  hover:bg-yellow-300 focus:ring-yellow-300',
     small:
       base +
-      ' px-4 py-2 md:px-5 md:py-2.5 bg-yellow-400 focus:bg-yellow-300  hover:bg-yellow-300 focus:ring-yellow-300',
+      ' px-3 py-2 md:px-5 md:py-2.5 bg-yellow-400 focus:bg-yellow-300  hover:bg-yellow-300 focus:ring-yellow-300',
     round:
       '  focus:ring-stone-200 focus:ring text-sm inline-block rounded-full bg-yellow-400  px-2 py-1 md:px-3 md:py-2',
     disable:

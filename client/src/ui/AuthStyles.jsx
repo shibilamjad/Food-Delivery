@@ -106,10 +106,16 @@ export const NavLink = styled(Link)`
 
 export const AlignCenter = styled.div`
   display: flex;
-  font-size: 12px;
+  font-size: 13px;
   align-items: center;
   gap: 4px;
   justify-content: center;
+  @media ${device.mobileL} {
+    font-size: 11px;
+  }
+  @media ${device.mobileS} {
+    font-size: 9px;
+  }
 `;
 export const Error = styled.p`
   font-size: 12px;

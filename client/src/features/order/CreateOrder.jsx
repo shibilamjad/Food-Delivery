@@ -163,7 +163,7 @@ export function CreateOrder() {
         <h2 className="mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
 
         <form>
-          <h2 className="border-b-2 pb-3 text-xl font-semibold ">
+          <h2 className=" border-b-2  border-dashed border-[#787878] pb-3 text-xl font-semibold ">
             Step1
             {user ? (
               <span> ✅</span>
@@ -181,7 +181,7 @@ export function CreateOrder() {
             <label className="sm:basis-40">Phone number :</label>
             <div className="grow font-semibold ">{mobile}</div>
           </div>
-          <h2 className="border-b-2 pb-3 text-xl font-semibold ">
+          <h2 className=" border-b-2  border-dashed border-[#787878] pb-3 text-xl font-semibold">
             Step2 <span>{distance && distance < 30 ? '✅' : '❌'}</span>
           </h2>
           <Map
@@ -233,7 +233,7 @@ export function CreateOrder() {
               )}
             </p>
           </div>
-          <div className="mt-2 border-t-2  border-black pt-1 text-[20px] font-semibold ">
+          <div className="mt-2 border-t-2   border-dashed border-[#787878] pt-1 text-[20px] font-semibold ">
             <p>Total Amount: ₹{totalAmt + discount}</p>
             <p className="text-green-700 ">
               DeliveryCharge:
@@ -246,7 +246,7 @@ export function CreateOrder() {
               )}
             </p>
             <p className="text-red-500 ">Discount: ₹{discount}</p>
-            <p className="mt-4 border-t-2  text-green-700">
+            <p className="mt-4  border-t-2  border-dashed border-[#787878]  text-green-700">
               Total Payable Amount:
               {distance && distance <= 30 ? (
                 <span>₹{deliveryCharges}</span>
@@ -281,19 +281,6 @@ const StyledContainer = styled.div`
   max-width: 940px;
   margin: 0 auto;
   padding: 20px;
-`;
-const ErrorMessage = styled.p`
-  display: flex;
-  align-items: start;
-  margin-left: 170px;
-  justify-content: start;
-  color: red;
-  @media ${device.tablet} {
-    margin-left: 0px;
-  }
-  @media ${device.mobileL} {
-    margin-left: 0px;
-  }
 `;
 
 const Button = styled.button`

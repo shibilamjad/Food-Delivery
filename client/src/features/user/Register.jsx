@@ -88,7 +88,7 @@ export function Register() {
       {!otpShow ? (
         <ModelAuth>
           <StyledImage>
-            <Img src="../../../sign-up.png" alt="image" />
+            <Img src="/sign-up.png" alt="image" />
             <H1>Sign up</H1>
           </StyledImage>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -145,7 +145,7 @@ export function Register() {
       ) : (
         <ModelAuth>
           <StyledImage>
-            <Img src="../../../otp.png" alt="image" />
+            <Img src="/otp.png" alt="image" />
             <H1>Otp Verification</H1>
           </StyledImage>
           <form onSubmit={handleSubmit(verifyOtp)}>

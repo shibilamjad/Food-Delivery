@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { WiTime8 } from 'react-icons/wi';
 import { useState } from 'react';
 import ReviewsContent from './ReviewsContent';
+import { device } from '../../ui/device';
 
 export function Menu() {
   const { restaurantId } = useParams();
@@ -97,6 +98,12 @@ const StyledContainer = styled.div`
   max-width: 940px;
   margin: 0 auto;
   padding: 70px;
+  @media ${device.tablet} {
+    padding: 50px;
+  }
+  @media ${device.mobileL} {
+    padding: 30px;
+  }
 `;
 const StyledConent = styled.ul`
   margin-bottom: 20px;
@@ -130,16 +137,22 @@ const StyledNav = styled.div`
   justify-content: start;
   gap: 100px;
   padding-top: 40px;
+  @media ${device.tablet} {
+    gap: 2px;
+  }
 `;
 
 const Button = styled.button`
   border-bottom: 2px solid ${(props) => (props.$active ? '#436fff' : 'white')};
   color: ${(props) => (props.$active ? '#436fff' : '#2a2a2a')};
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.4rem;
   padding: 0.44rem 0.8rem;
   transition: all 0.5s;
   &:hover:not(:disabled) {
-    color: ${(props) => (props.$active ? '#809dfb' : '#4f4f4f')};
+    color: ${(props) => (props.$active ? '#436fff' : '#4f4f4f')};
+  }
+  @media ${device.tablet} {
+    font-size: 1.2rem;
   }
 `;

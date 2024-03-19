@@ -33,7 +33,7 @@ export function OrderItem() {
     <StyledContainer>
       <div className="px-3 py-3">
         <LinkButton to="/restaurant">&larr; Back to restaurant</LinkButton>
-        <ul className=" list-none divide-y divide-stone-200">
+        <ul className=" list-none divide-y divide-stone-300">
           {orderItems.map((item) => (
             <li className="gap-2 px-6 py-4" key={item._id}>
               {item.cart &&
@@ -63,11 +63,11 @@ export function OrderItem() {
                     </div>
                   </div>
                 ))}
-              <div className="flex items-center justify-end">
+              <div className="flex items-center pt-2 sm:justify-end">
                 {item.delivery === 'success' && (
                   <button
                     onClick={() => handleReview(item._id)}
-                    className="text-black-50 mx-4 flex items-center rounded-sm bg-orange-400 p-1 font-normal hover:bg-orange-300 sm:p-2 sm:font-semibold"
+                    className="text-black-50 mx-2 flex items-center rounded-sm bg-orange-400 p-1 text-[14px] hover:bg-orange-300 sm:p-2 sm:text-[16px] sm:font-semibold"
                   >
                     <span className="h-30 w-30">⭐</span>
                     Review
@@ -75,7 +75,7 @@ export function OrderItem() {
                 )}
                 <button
                   onClick={() => handleDetails(item._id)}
-                  className="text-black-50 mx-4 flex items-center rounded-sm bg-yellow-400 p-1 font-normal hover:bg-yellow-300 sm:p-2 sm:font-semibold"
+                  className="text-black-50 mx-2  flex items-center rounded-sm bg-yellow-400 p-1 text-[14px] font-normal hover:bg-yellow-300 sm:p-2  sm:font-semibold"
                 >
                   <span className="h-30 w-30">
                     <FcKindle />
@@ -84,11 +84,12 @@ export function OrderItem() {
                 </button>
 
                 <p
-                  className={`rounded-sm p-1 font-normal text-white ${getStatusClasses(
+                  className={`  mx-2 rounded-sm p-1  text-white ${getStatusClasses(
                     item.delivery,
-                  )} sm:p-2 sm:font-semibold`}
+                  )} text-[14px] sm:p-2 sm:text-[16px] sm:font-semibold`}
                 >
-                  Status: {item.delivery}
+                  <span>Status:</span>
+                  {item.delivery}
                 </p>
               </div>
             </li>
