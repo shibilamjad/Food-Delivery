@@ -12,7 +12,10 @@ function DashboardLayout({ currentFilter }) {
   return (
     <StyledDashboardLayout>
       <StyledStats>
-        <Stats orderStats={orderStats.ordersCompleted} />
+        <Stats
+          currentFilter={currentFilter}
+          orderStats={orderStats.ordersCompleted}
+        />
       </StyledStats>
       <SalesChart
         currentFilter={currentFilter}

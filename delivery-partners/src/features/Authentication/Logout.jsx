@@ -55,7 +55,7 @@ const StyledContainer = styled.div`
   }
 `;
 
-const StlyedButton = styled.button`
+const StlyedButton = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 0.8rem;

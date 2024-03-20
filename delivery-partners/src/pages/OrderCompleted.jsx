@@ -2,7 +2,7 @@ import { HistoryTable } from "../features/orderHistory/HistoryTable";
 import Heading from "../ui/Heading";
 import { Row } from "../ui/Row";
 
-export function OrderCompleted() {
+function OrderCompleted() {
   return (
     <>
       <Row>
@@ -12,3 +12,4 @@ export function OrderCompleted() {
     </>
   );
 }
+export default OrderCompleted;

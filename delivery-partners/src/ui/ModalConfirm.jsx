@@ -1,15 +1,15 @@
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
-import { useClickOption } from "../hooks/useClickOutSide";
+// import { useClickOption } from "../hooks/useClickOutSide";
 import { device } from "./device";
 
 function ModalConfirm({ children, onClose }) {
-  const ref = useClickOption(onClose);
+  // const ref = useClickOption(onClose);
 
   return createPortal(
     <Overlay>
-      <StyledModal ref={ref}>
+      <StyledModal>
         <Button onClick={onClose}>
           <HiXMark />
         </Button>

@@ -2,7 +2,7 @@ import { OrderTable } from "../features/order/OrderTable";
 import Heading from "../ui/Heading";
 import { Row } from "../ui/Row";
 
-export function Order() {
+function Order() {
   return (
     <>
       <Row>
@@ -12,3 +12,4 @@ export function Order() {
     </>
   );
 }
+export default Order;

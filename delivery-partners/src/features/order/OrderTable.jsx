@@ -9,7 +9,6 @@ import { OrderRow } from "./OrderRow";
 
 export function OrderTable() {
   const { order, isLoading } = useDeliveryBoyOrder();
-  console.log(order);
   useEffect(() => {
     const socket = io("http://localhost:3006");
     const token = localStorage.getItem("token");

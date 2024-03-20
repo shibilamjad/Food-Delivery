@@ -3,20 +3,28 @@ import { Header } from "./Header";
 import styled, { keyframes } from "styled-components";
 import { SideBar } from "./SideBar";
 import { device } from "./device";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function AppLayout() {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const navIsOpen = localStorage.getItem("isOpen");
+    setIsOpen(navIsOpen === "true");
+  }, []);
+
   function handleIsOpen() {
-    setIsOpen((prev) => !prev);
+    const newIsOpen = !isOpen;
+    setIsOpen(newIsOpen);
+    localStorage.setItem("isOpen", newIsOpen.toString());
   }
   return (
     <>
       <SyledBg>
         {isOpen ? (
-          <StyledIsCloseApp isOpen={isOpen}>
+          <StyledIsCloseApp>
             <Header isOpen={isOpen} handleIsOpen={handleIsOpen} />
-            {!isOpen && <SideBar isOpen={isOpen} />}
+            {!isOpen && <SideBar />}
             <Main>
               <Outlet />
             </Main>
@@ -34,23 +42,6 @@ export function AppLayout() {
     </>
   );
 }
-const slideIn = keyframes`
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-`;
-
-const slideOut = keyframes`
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-`;
 
 const SyledBg = styled.div`
   height: 100vh;
@@ -62,7 +53,6 @@ const StyledIsCloseApp = styled.div`
   flex-direction: column;
   width: 100vw;
   height: 100%;
-  animation: ${({ isOpen }) => (isOpen ? slideIn : slideOut)} 0.5s ease-in-out;
 `;
 
 const StyledeApp = styled.div`
@@ -95,13 +85,8 @@ const StyledeApp = styled.div`
 `;
 
 const Main = styled.main`
-  /* display: flex; */
   color: #ffffff;
-  /* align-items: center; */
-  /* justify-content: space-around; */
   padding: 20px;
   width: auto;
-  /* min-height: auto; */
-  /* background-color: var(--color-grey-50); */
   flex-grow: 1;
 `;

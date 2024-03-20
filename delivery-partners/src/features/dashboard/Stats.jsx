@@ -4,8 +4,11 @@ import {
   HiOutlineChartBar,
 } from "react-icons/hi2";
 import Stat from "./Stat";
+import { subDays } from "date-fns";
 
-function Stats({ orderStats }) {
+function Stats({ orderStats, currentFilter }) {
+  const startDate = subDays(new Date(), currentFilter);
+
   // 1 today orders
   const today = new Date();
   const todayDate = today.toISOString().slice(0, 10);
@@ -20,12 +23,17 @@ function Stats({ orderStats }) {
     return total + order.deliveryCharge;
   }, 0);
   // 2 total order
-  const numOrder = orderStats.length;
-
+  const ordersDays = orderStats.filter(
+    (item) => new Date(item.createdAt) >= startDate
+  );
+  const numOrder = ordersDays.length;
   // 3 get total price
-  const ordersArray = Object.values(orderStats);
+
+  const ordersWithinRange = orderStats.filter(
+    (order) => new Date(order.createdAt) >= startDate
+  );
   // Calculate total delivery charges
-  const totalDeliveryCharges = ordersArray.reduce((total, order) => {
+  const totalDeliveryCharges = ordersWithinRange.reduce((total, order) => {
     return total + order.deliveryCharge;
   }, 0);
 

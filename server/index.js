@@ -107,9 +107,7 @@ io.on("connection", async (socket) => {
       );
     }
     // Socket event for disconnection
-    socket.on("disconnect", () => {
-      console.log("A user disconnect");
-    });
+    socket.on("disconnect", () => {});
   } catch (error) {
     socket.emit("error", "An error occurred while handling the connection");
   }
