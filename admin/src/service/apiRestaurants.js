@@ -115,10 +115,15 @@ export async function updateRestaurantsApi(data, restaurantId) {
 
 export async function deleteRestaurantApi(_id) {
   try {
+    const userId = localStorage.getItem("token");
+
     const res = await axios(`${API_URL}/deleteRestaurant`, {
       method: "DELETE",
       data: {
         _id,
+      },
+      headers: {
+        accesstoken: userId,
       },
     });
     const { data } = res;

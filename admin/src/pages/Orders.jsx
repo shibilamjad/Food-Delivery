@@ -1,5 +1,6 @@
 import { OrderDetails } from "../features/order/OrderDetails";
 
-export function Orders() {
+function Orders() {
   return <OrderDetails />;
 }
+export default Orders;

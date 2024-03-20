@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { auth } from "./firebase";
+import { auth } from "../../service/firebase";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import { useForm } from "react-hook-form";

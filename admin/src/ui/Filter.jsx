@@ -2,15 +2,14 @@ import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { device } from "./device";
 
-function Filter({ options }) {
+function Filter({ filterField, options }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentFilter = searchParams.get("delivery") || "all";
-  function handleClick(value) {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("delivery", value);
-    if (newSearchParams.get("page")) newSearchParams.set("page", 1);
+  const currentFilter = searchParams.get(filterField) || options.at(0).value;
 
-    setSearchParams(newSearchParams);
+  function handleClick(value) {
+    searchParams.set(filterField, value);
+    if (searchParams.get("page")) searchParams.set("page", 1);
+    setSearchParams(searchParams);
   }
   return (
     <StyledFilter>

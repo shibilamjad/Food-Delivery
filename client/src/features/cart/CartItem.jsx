@@ -18,13 +18,13 @@ function CartItem({ menuItem, quantity, id, totalPrice }) {
         <img
           src={menuItem.imageUrl}
           alt={menuItem.name}
-          className="h-16 w-16"
+          className="h-16 w-16 object-cover"
         />
         <p className="mb-1 sm:mb-0">
           {quantity}&times; {menuItem.name}
         </p>
       </div>
-      <div className="flex items-center justify-between sm:gap-6">
+      <div className="flex items-center justify-end gap-2 sm:justify-between sm:gap-6">
         <p className=" text-sm font-bold">₹{totalPrice}</p>
         <div className="flex flex-wrap items-center gap-2 ">
           <UpdateCartQty

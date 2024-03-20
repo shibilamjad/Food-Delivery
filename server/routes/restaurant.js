@@ -12,6 +12,7 @@ const {
   getRestaurantMenusAdmin,
   getRestaurantMenucreation,
 } = require("../controller/restaurantController");
+const { checkAuth } = require("../middleware/checkAuth ");
 
 router.get("/", getRestaurantList);
 router.get("/menu", getRestaurantMenucreation);
@@ -21,6 +22,6 @@ router.get("/:restaurantId", getRestaurantMenus);
 router.get("/admin/:restaurantId", getRestaurantMenusAdmin);
 router.post("/createRestaurant", addNewRestaurants);
 router.put("/update/:restaurantId", updateRestaurants);
-router.delete("/deleteRestaurant", deleteRestaurants);
+router.delete("/deleteRestaurant", checkAuth, deleteRestaurants);
 
 module.exports = router;

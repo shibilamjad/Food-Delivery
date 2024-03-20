@@ -10,6 +10,11 @@ const generateRefreshToken = (userId) => {
     expiresIn: "1y",
   });
 };
+const generateResetToken = (userId) => {
+  return jwt.sign({ _id: userId }, process.env.RESET_TOKEN_SECRET, {
+    expiresIn: "1h",
+  });
+};
 
 const verifyRefreshToken = (refreshToken) => {
   if (!refreshToken) return false;
@@ -65,4 +70,5 @@ module.exports = {
   generateTokensAndSetCookies,
   extractDeliveryBoyId,
   extractUserId,
+  generateResetToken,
 };

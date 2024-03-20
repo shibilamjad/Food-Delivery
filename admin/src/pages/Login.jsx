@@ -1,5 +1,6 @@
 import { SignIn } from "../features/Authentication/SignIn";
 
-export function Login() {
+function Login() {
   return <SignIn />;
 }
+export default Login;

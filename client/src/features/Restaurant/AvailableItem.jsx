@@ -61,8 +61,6 @@ export const AvailableItem = forwardRef(({ items }, ref) => {
               <WiTime8 /> :{estimatedTimeRange} mins ({Math.round(distance)}
               km)
             </div>
-
-            <p>Open</p>
             <p>&bull;{address}</p>
           </StyledMenu>
         </div>

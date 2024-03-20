@@ -3,34 +3,37 @@ import styled from "styled-components";
 import { HiHome } from "react-icons/hi2";
 import { BsBoxArrowLeft } from "react-icons/bs";
 
-import { useLogout } from "../features/Authentication/useLogout";
+import LogoVechle from "../assets/deliverylogo.png";
 import { device } from "./device";
 import {
   FaBabyCarriage,
-  FaBitbucket,
-  FaBowlRice,
-  FaFolderPlus,
-  FaIdCard,
   FaKitchenSet,
   FaPersonBiking,
   FaRegSquarePlus,
 } from "react-icons/fa6";
 import { BiRestaurant } from "react-icons/bi";
+import { useState } from "react";
+import ModalConfirm from "./ModalConfirm";
+import Logout from "../features/Authentication/Logout";
 
 function MainNav() {
-  const { logout } = useLogout();
+  const [modalOpen, setModalOpen] = useState(false);
 
-  function handleLogout() {
-    try {
-      logout();
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  const openModal = () => {
+    setModalOpen(true);
+  };
   return (
     <NavList>
-      <Logo>🍔Go..To Order</Logo>
-      <HiddenText>🍔</HiddenText>
+      <Logo>
+        <Img src={LogoVechle} alt="img" />
+        <h1>DOOR DASH DINE</h1>
+      </Logo>
+      <HiddenText>
+        <img src={LogoVechle} alt="" />
+      </HiddenText>
       <NavItem to="/dashboard">
         <HiHome />
 
@@ -62,36 +65,54 @@ function MainNav() {
         <FaRegSquarePlus />
         <span>Add City</span>
       </NavItem>
-      <Btn onClick={handleLogout}>
+      <Btn onClick={openModal}>
         <BsBoxArrowLeft />
-        <span> Logout</span>
+        <span>Logout</span>
       </Btn>
+      {modalOpen && (
+        <ModalConfirm handleClose={closeModal}>
+          <Logout onClose={closeModal} />
+        </ModalConfirm>
+      )}
     </NavList>
   );
 }
 export default MainNav;
 
 const HiddenText = styled.h1`
-  font-size: 0px;
+  width: 0px;
   transition: all 0.5s;
   @media ${device.tablet} {
     padding-left: 16px;
-    font-size: 30px;
+    width: 60px;
     transition: all 0.5;
   }
 
   @media ${device.mobileL} {
     padding-left: 10px;
-    font-size: 30px;
+    width: 60px;
     transition: all 0.5;
   }
   @media ${device.mobileS} {
     padding-left: 0px;
-    font-size: 30px;
+    width: 30px;
     transition: all 0.5;
   }
 `;
-const Logo = styled.h1`
+const Img = styled.img`
+  width: 80px;
+  transition: all 0.5;
+  @media ${device.tablet} {
+    width: 0px;
+
+    transition: all 0.5;
+  }
+`;
+
+const Logo = styled.div`
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
   font-size: 40px;
   font-weight: 700;
   margin-top: 80px;

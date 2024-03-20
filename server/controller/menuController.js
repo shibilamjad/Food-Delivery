@@ -3,6 +3,7 @@ const cloudinaryImg = require("../config/cloudinery");
 const Menu = require("../models/menuModel");
 const Users = require("../models/userModel");
 const Restaurant = require("../models/restaurantModel");
+const Admin = require("../models/adminModel");
 const Orders = require("../models/orderModel");
 const util = require("util");
 
@@ -150,8 +151,14 @@ const updateMenu = async (req, res) => {
 
 const deleteMenu = async (req, res) => {
   try {
-    const { _id } = req.body;
+    const { _id, userId } = req.body;
+    const isAdmin = await Admin.findById(userId);
 
+    if (isAdmin && isAdmin.email === "test@gmail.com") {
+      return res.status(404).json({
+        message: "Test account can not deleted",
+      });
+    }
     if (!_id) {
       return res.status(400).json({
         message: "Missing menu ID",

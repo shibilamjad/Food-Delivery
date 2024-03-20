@@ -1,12 +1,6 @@
 const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema({
-  userName: {
-    type: String,
-    required: [true, "Username field cannot be empty"],
-    trim: true,
-    index: true,
-  },
   email: {
     type: String,
     trim: true,

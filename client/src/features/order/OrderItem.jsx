@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FcKindle } from 'react-icons/fc';
 import styled from 'styled-components';
 
@@ -6,13 +6,11 @@ import LinkButton from '../../ui/LinkButton';
 import { Loader } from '../../ui/Loader';
 import { EmptyOrder } from './EmptyOrder';
 import { useOrder } from './useOrder';
-import Review from './Review';
 
 export function OrderItem() {
   const { isLoading, order } = useOrder();
   const orderItems = order && order.filter((items) => items.cart.length > 0);
   const navigate = useNavigate();
-  console.log(order);
   function handleDetails(orderId) {
     navigate(`/status/${orderId}`);
   }

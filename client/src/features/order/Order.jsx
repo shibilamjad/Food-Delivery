@@ -1,19 +1,20 @@
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
 import LinkButton from '../../ui/LinkButton';
 import { Loader } from '../../ui/Loader';
 import { OrderBill } from './OrdeBill';
 import { useDetails } from './useOrderDetails';
-import styled from 'styled-components';
 
 export function Order() {
   const { orderId } = useParams();
   const { details, isLoading } = useDetails(orderId);
-  if (isLoading) return <Loader />;
   const statusToTagName = {
     pending: 'bg-red-700',
     inprogress: 'bg-blue-700',
     success: 'bg-green-700',
   };
+  if (isLoading) return <Loader />;
   return (
     <StyledContainer>
       <div className="mx-2 mt-3">

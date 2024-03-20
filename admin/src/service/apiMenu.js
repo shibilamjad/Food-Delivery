@@ -69,16 +69,21 @@ export async function updateMenuApi(menuId, data) {
       throw new Error("Menu title already exists");
     }
 
-    throw new Error("Menu could not be created");
+    throw new Error("Menu could not be updated");
   }
 }
 
 export async function deleteMenuApi(_id) {
   try {
+    const userId = localStorage.getItem("token");
+
     const res = await axios(API_URL, {
       method: "DELETE",
       data: {
         _id,
+      },
+      headers: {
+        accesstoken: userId,
       },
     });
     const { data } = res;

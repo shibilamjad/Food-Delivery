@@ -14,12 +14,10 @@ export const TableRow = styled.div`
     font-size: 1rem;
     column-gap: 1rem;
     padding: 1.4rem 2.4rem;
-    /* grid-template-columns: 1fr 1fr 0.2fr 0.2fr 0.2fr 0.6fr; */
   }
   @media ${device.mobileL} {
     column-gap: 0.6rem;
     padding: 0.4rem 1rem;
-    /* grid-template-columns: 0.5fr 0.5fr 0.2fr 0.2fr 0.2fr 0.4fr; */
     font-size: 0.8rem;
   }
   @media ${device.mobileS} {

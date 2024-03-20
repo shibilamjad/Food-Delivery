@@ -1,37 +1,39 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { lazy, Suspense } from 'react';
 
 import { AppLayout } from './ui/AppLayout';
-import { Menu } from './features/menu/Menu';
-import { CreateOrder } from './features/order/CreateOrder';
-import { Order } from './features/order/Order';
-import { Register } from './features/user/Register';
 import { ProtectedRoutesHomePage } from './features/ProtectedRoutes ';
 import { ProtectedRouterAfterLogIn } from './features/ProtectedRouterAfterLogIn ';
-import { Error } from './ui/Error';
-import { Cart } from './features/cart/Cart';
 import { Toaster } from 'react-hot-toast';
-import { SignIn } from './features/user/SignIn';
-import { OrderItem } from './features/order/OrderItem';
-import { OrderStatusProvider } from './context/OrderStatusContext';
-import { Restaurant } from './features/Restaurant/Restaurant';
-import Review from './features/order/Review';
-import ForgetPassword from './pages/ForgetPassword';
+import { Loader } from './ui/Loader';
+
+const Restaurants = lazy(() => import('./pages/Restaurants'));
+const Menus = lazy(() => import('./pages/Menus'));
+const NewOrder = lazy(() => import('./pages/NewOrder'));
+const Orders = lazy(() => import('./pages/Orders'));
+const Carts = lazy(() => import('./pages/Carts'));
+const StatusOrder = lazy(() => import('./pages/StatusOrder'));
+const Reviews = lazy(() => import('./pages/Reviews'));
+const SignUp = lazy(() => import('./pages/SignUp'));
+const SignIn = lazy(() => import('./pages/SignIn'));
+const Error = lazy(() => import('./pages/Error'));
+const ForgetPassword = lazy(() => import('./pages/ForgetPassword'));
 
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000,
+        staleTime: 0,
       },
     },
   });
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <OrderStatusProvider>
-        <BrowserRouter>
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <BrowserRouter>
+        <Suspense fallback={<Loader />}>
           <Routes>
             <Route
               element={
@@ -41,20 +43,20 @@ function App() {
               }
             >
               <Route index element={<Navigate replace to="restaurant" />} />
-              <Route path="/restaurant" element={<Restaurant />} />
-              <Route path="/restaurant/:restaurantId" element={<Menu />} />
-              <Route path="/menu" element={<Menu />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/order/new" element={<CreateOrder />} />
-              <Route path="/order" element={<OrderItem />} />
-              <Route path="/status/:orderId" element={<Order />} />
-              <Route path="/review/:orderId" element={<Review />} />
+              <Route path="/restaurant" element={<Restaurants />} />
+              <Route path="/restaurant/:restaurantId" element={<Menus />} />
+              <Route path="/menu" element={<Menus />} />
+              <Route path="/cart" element={<Carts />} />
+              <Route path="/new/order" element={<NewOrder />} />
+              <Route path="/order" element={<Orders />} />
+              <Route path="/status/:orderId" element={<StatusOrder />} />
+              <Route path="/review/:orderId" element={<Reviews />} />
             </Route>
             <Route
               path="/sign-up"
               element={
                 <ProtectedRouterAfterLogIn>
-                  <Register />
+                  <SignUp />
                 </ProtectedRouterAfterLogIn>
               }
             />
@@ -76,28 +78,28 @@ function App() {
             />
             <Route path="*" element={<Error />} />
           </Routes>
-        </BrowserRouter>
-        <Toaster
-          position="top-center"
-          gutter={12}
-          containerStyle={{ margin: '8px' }}
-          toastOptions={{
-            success: {
-              duration: 3000,
-            },
-            error: {
-              duration: 3000,
-            },
-            style: {
-              fontSize: '16px',
-              maxWidth: '500px',
-              padding: '16px 24px',
-              backgroundColor: '#fff',
-              color: '#272727',
-            },
-          }}
-        />
-      </OrderStatusProvider>
+        </Suspense>
+      </BrowserRouter>
+      <Toaster
+        position="top-center"
+        gutter={12}
+        containerStyle={{ margin: '8px' }}
+        toastOptions={{
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 3000,
+          },
+          style: {
+            fontSize: '16px',
+            maxWidth: '500px',
+            padding: '16px 24px',
+            backgroundColor: '#fff',
+            color: '#272727',
+          },
+        }}
+      />
     </QueryClientProvider>
   );
 }

@@ -10,7 +10,7 @@ export function useRestaurantDelete() {
       toast.success("restaurants succesfully deleted");
       queryClient.invalidateQueries({ queryKey: ["restaurants"] });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error("Test account cannot delete restaurants"),
   });
   return { deleteRestaurant };
 }

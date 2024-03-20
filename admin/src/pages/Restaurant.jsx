@@ -5,7 +5,7 @@ import Heading from "../ui/Heading";
 import { Row } from "../ui/Row";
 import { device } from "../ui/device";
 
-export function Restaurant() {
+function Restaurant() {
   const [search, setSearch] = useState("");
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -28,6 +28,7 @@ export function Restaurant() {
     </>
   );
 }
+export default Restaurant;
 
 const StyledContainer = styled.div`
   display: flex;

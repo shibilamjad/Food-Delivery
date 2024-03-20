@@ -1,4 +1,6 @@
+import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
+
 import { Loader } from "../../ui/Loader";
 import { Table } from "../../ui/Row";
 import { RestaurantList } from "./RestaurantList";
@@ -6,7 +8,6 @@ import { useRestaurant } from "./useRestaurant";
 import { device } from "../../ui/device";
 import { useEffect, useState } from "react";
 import empty from "../../assets/empty.png";
-import { useInView } from "react-intersection-observer";
 import { SpinnerMini } from "../../ui/SpinnerMini";
 
 export const RestaurantTable = ({ search }) => {

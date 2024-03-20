@@ -27,10 +27,9 @@ const StyledToday = styled.div`
   }
 `;
 
-function TodayActivity({ orderStats, users }) {
-  const numDays = 7;
+function TodayActivity({ orderStats, users, currentFilter }) {
   const allDates = eachDayOfInterval({
-    start: subDays(new Date(), numDays - 1),
+    start: subDays(new Date(), currentFilter - 1),
     end: new Date(),
   });
   const data = allDates.map((date) => {

@@ -1,4 +1,5 @@
 const Restaurant = require("../models/restaurantModel");
+const Admin = require("../models/adminModel");
 const cloudinaryImg = require("../config/cloudinery");
 const util = require("util");
 const upload = require("../middleware/multer");
@@ -303,12 +304,19 @@ const updateRestaurants = async (req, res) => {
 };
 
 const deleteRestaurants = async (req, res) => {
-  const { _id } = req.body;
+  const { _id, userId } = req.body;
   try {
     const isExist = await Restaurant.findById(_id);
+    const isAdmin = await Admin.findById(userId);
+
     if (!isExist) {
       return res.status(404).json({
         message: "Restaurants not found",
+      });
+    }
+    if (isAdmin && isAdmin.email === "test@gmail.com") {
+      return res.status(404).json({
+        message: "Test account can not deleted",
       });
     }
     const deleteRestaurant = await Restaurant.findByIdAndDelete(_id);

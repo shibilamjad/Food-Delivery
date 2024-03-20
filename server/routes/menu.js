@@ -7,6 +7,7 @@ const {
   updateMenu,
   deleteMenu,
 } = require("../controller/menuController");
+const { checkAuth } = require("../middleware/checkAuth ");
 
 const upload = multer({ dest: "uploads/" });
 
@@ -20,6 +21,6 @@ router.post("/add-menu", addMenu);
 // movie create (dashboard)
 router.put("/updateMenu/:menuId", updateMenu);
 
-router.delete("/", deleteMenu);
+router.delete("/", checkAuth, deleteMenu);
 
 module.exports = router;

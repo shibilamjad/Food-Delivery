@@ -1,7 +1,6 @@
 import { HiPencil, HiTrash } from "react-icons/hi2";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useMenuDelete } from "./useMenuDelete";
 import {
   Discount,
   EditSection,
@@ -17,22 +16,18 @@ import { useState } from "react";
 import { useRestaurantsMenu } from "./useRestaurantsMenu";
 import { Loader } from "../../ui/Loader";
 import { Empty } from "../../ui/Empty";
+import ModalConfirm from "../../ui/ModalConfirm";
+import ConfirmMenuDelete from "./ConfirmMenuDelete";
 
 export function MenuRow() {
   const { restaurantId } = useParams();
   const { restaurantMenu, isLoading, isError } =
     useRestaurantsMenu(restaurantId);
-  const { deleteMenu } = useMenuDelete();
-  const [selectedMenuId, setSelectedMenuId] = useState(null);
+  const [restaurantDelete, setRestaurantDelete] = useState(false);
 
-  const formatCurrency = (value) =>
-    new Intl.NumberFormat("en", { style: "currency", currency: "USD" }).format(
-      value
-    );
   const navigate = useNavigate();
 
   function onEditMenu(menuId) {
-    setSelectedMenuId(menuId);
     navigate(`/menu/${menuId}`);
   }
 
@@ -64,12 +59,27 @@ export function MenuRow() {
                 <HiPencil />
               </EditSection>
             </StyledButton>
-            <StyledButton onClick={() => deleteMenu(menuItem._id)}>
+            <StyledButton
+              onClick={() => setRestaurantDelete(!restaurantDelete)}
+            >
               <EditSection>
                 <HiTrash />
               </EditSection>
             </StyledButton>
           </StyledIcon>
+          <div>
+            {restaurantDelete && (
+              <ModalConfirm
+                handleClose={() => setRestaurantDelete(!restaurantDelete)}
+              >
+                <ConfirmMenuDelete
+                  name={menuItem.name}
+                  menuItem={menuItem._id}
+                  onClose={() => setRestaurantDelete(!restaurantDelete)}
+                />
+              </ModalConfirm>
+            )}
+          </div>
         </TableRow>
       ))}
     </>

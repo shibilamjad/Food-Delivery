@@ -1,5 +1,6 @@
 import { CreateRestaurants } from "../features/Restaurant/CreateRestaurants";
 
-export function NewRestaurants() {
+function NewRestaurants() {
   return <CreateRestaurants />;
 }
+export default NewRestaurants;

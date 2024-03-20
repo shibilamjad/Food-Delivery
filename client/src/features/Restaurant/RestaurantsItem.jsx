@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { WiTime8 } from 'react-icons/wi';
-import { HiMiniStar } from 'react-icons/hi2';
+import haversine from 'haversine-distance';
 import styled from 'styled-components';
 import { forwardRef, useEffect, useState } from 'react';
+import { HiMiniStar } from 'react-icons/hi2';
+
 import { getCurrentPosition } from '../../utils/getCurrentPostion';
-import haversine from 'haversine-distance';
 import { useCity } from './useCity';
 
 export const RestaurantsItem = forwardRef(({ items }, ref) => {
@@ -16,8 +17,6 @@ export const RestaurantsItem = forwardRef(({ items }, ref) => {
     address,
     location,
     image,
-    openTime,
-    closeTime,
     restaurant,
     menu,
     lat,
@@ -121,8 +120,6 @@ export const RestaurantsItem = forwardRef(({ items }, ref) => {
                   `30 - 40 (${distance}km)`
                 )}
               </div>
-
-              <p>Open</p>
               <p>&bull;{address}</p>
             </StyledMenu>
           </div>

@@ -80,7 +80,6 @@ export const CreateRestaurants = () => {
   async function onSubmit(data) {
     const formData = { ...data, location: data.location.value };
     if (restaurantDetail) {
-      console.log(formData);
       updateRestaurant({
         restaurantId,
         updateRestaurant: formData,

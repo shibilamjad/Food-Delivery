@@ -7,7 +7,6 @@ export async function getAddress({ latitude, longitude }) {
     );
 
     if (res.status >= 200 && res.status < 300) {
-      // console.log(res.data.);
       return res.data;
     } else {
       throw new Error(

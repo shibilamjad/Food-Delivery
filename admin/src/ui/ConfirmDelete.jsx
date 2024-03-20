@@ -24,12 +24,12 @@ const StlyedButton = styled.button`
   justify-content: flex-end;
   gap: 0.8rem;
 `;
-function ConfirmDelete({ name, restaurantId, onClose, closeOption }) {
+function ConfirmDelete({ name, restaurantId, handleClose }) {
   const { deleteRestaurant } = useRestaurantDelete();
 
   function handleDelete() {
     deleteRestaurant(restaurantId);
-    closeOption((close) => !close);
+    handleClose();
   }
   return (
     <StyledConfirmDelete>
@@ -41,7 +41,7 @@ function ConfirmDelete({ name, restaurantId, onClose, closeOption }) {
         cannot be undone.
       </p>
       <StlyedButton>
-        <Buttons variation="secondary" size="medium" onClick={onClose}>
+        <Buttons variation="secondary" size="medium" onClick={handleClose}>
           Cancel
         </Buttons>
         <Buttons variation="danger" size="medium" onClick={handleDelete}>

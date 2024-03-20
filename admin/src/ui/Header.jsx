@@ -1,5 +1,5 @@
 import { FaAlignJustify, FaBell, FaXmark } from "react-icons/fa6";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { NotificationBar } from "./NotificationBar";
 import { useState } from "react";
 
@@ -11,7 +11,7 @@ export function Header({ handleIsOpen, isOpen }) {
   return (
     <>
       <Headers>
-        <StyledHeader isOpen={isOpen}>
+        <StyledHeader>
           <StledContent>
             <div>
               <button onClick={handleIsOpen}>
@@ -37,7 +37,7 @@ const Headers = styled.header`
   background-color: var(--color-grey-100);
   box-shadow: var(--shadow-lg);
   color: var(--color-grey-800);
-  animation: ${({ isOpen }) => (isOpen ? slideIn : slideIn)} 0.5s ease-in-out;
+  transition: all 0.5;
 `;
 
 const StyledHeader = styled.div`
@@ -49,23 +49,6 @@ const StyledHeader = styled.div`
 
 const Container = styled.div`
   position: relative;
-`;
-const slideIn = keyframes`
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-`;
-
-const slideOut = keyframes`
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
 `;
 const Button = styled.button`
   padding-right: 20px;

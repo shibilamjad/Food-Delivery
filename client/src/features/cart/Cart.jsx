@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useCart } from './useCart';
 import { Loader } from '../../ui/Loader';
@@ -11,11 +11,11 @@ import { useClearCarts } from './useClearCarts';
 export function Cart() {
   const { cart, isLoading } = useCart();
   const { clearCarts } = useClearCarts();
+  const navigate = useNavigate();
   function handleClearCart() {
     clearCarts();
   }
-  const allQuantitiesZero = cart && cart.every((item) => item.quantity === 0);
-  console.log(allQuantitiesZero);
+  const allQuantitiesZero = cart && cart.some((item) => item.quantity === 0);
   if (isLoading) return <Loader />;
   if (cart.length === 0) return <EmptyCart />;
   return (
@@ -40,7 +40,11 @@ export function Cart() {
           ))}
         </ul>
         <div className="mt-6 space-x-4">
-          <Button disabled={allQuantitiesZero} type="primery" to="/order/new">
+          <Button
+            disabled={allQuantitiesZero}
+            type="primery"
+            onClick={() => navigate('/new/order')}
+          >
             Order Now
           </Button>
           <Button type="secondery" onClick={handleClearCart}>

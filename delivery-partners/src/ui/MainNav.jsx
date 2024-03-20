@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { HiHome } from "react-icons/hi2";
 import { BsBoxArrowLeft } from "react-icons/bs";
 
-// import { useLogout } from "../features/Authentication/useLogout";
 import { device } from "./device";
 import { FaBabyCarriage, FaIdCard } from "react-icons/fa6";
 import { BiHistory } from "react-icons/bi";
@@ -25,7 +24,7 @@ function MainNav() {
   };
   return (
     <NavList>
-      <Logo>🍔Go..To Order</Logo>
+      <Logo>DOOR DASH DINE</Logo>
       <HiddenText>🍔</HiddenText>
       <NavItem to="/dashboard">
         <HiHome />

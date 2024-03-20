@@ -5,7 +5,7 @@ import { Row } from "../ui/Row";
 import OrderFilter from "../features/order/OrderFilter";
 import { device } from "../ui/device";
 
-export function Order() {
+function Order() {
   return (
     <Row type="vertical">
       <StyledContainer>
@@ -16,7 +16,7 @@ export function Order() {
     </Row>
   );
 }
-
+export default Order;
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;

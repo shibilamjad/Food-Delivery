@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { WiTime8 } from 'react-icons/wi';
+
 import { Loader } from '../../ui/Loader';
 import { MenuItem } from './MenuItem';
 import { useRestaurantsMenu } from '../Restaurant/useRestaurantsMenu';
-import { useParams } from 'react-router-dom';
-import { WiTime8 } from 'react-icons/wi';
-import { useState } from 'react';
 import ReviewsContent from './ReviewsContent';
 import { device } from '../../ui/device';
 
@@ -12,7 +13,6 @@ export function Menu() {
   const { restaurantId } = useParams();
   const { isLoading, restaurantMenu } = useRestaurantsMenu(restaurantId);
   const [isOpen, setIsOpen] = useState(false);
-
   const handleMenu = () => {
     setIsOpen(false);
   };
@@ -38,57 +38,61 @@ export function Menu() {
       estimatedTimeRange = '60+';
     }
 
+    const { reviews } = restaurantMenu;
     if (isLoading) return <Loader />;
     return (
-      <>
-        <StyledContainer>
-          <StyledConent>
-            <li>
-              <h1>{restaurantMenu.restaurant}</h1>
-              <h2>{restaurantMenu.location}</h2>
-              <p>{restaurantMenu.address}</p>
-              <p>open</p>
-              {distance > 30 ? (
-                <h3 style={{ color: 'red' }}>
-                  Your distance is very long ({Math.round(distance)} km), only
-                  available within 30km
-                </h3>
-              ) : (
-                <h3 style={{ color: 'green' }}>
-                  <WiTime8 />: {estimatedTimeRange} ({Math.round(distance)}
-                  km)
-                </h3>
-              )}
-            </li>
-            <StyledNav>
-              <Button $active={!isOpen} onClick={handleMenu}>
-                Menus
-              </Button>
-              <Button $active={isOpen} onClick={handleReview}>
-                Reviews
-              </Button>
-            </StyledNav>
-          </StyledConent>
-          {!isOpen ? (
-            <ul className="divide-y divide-stone-200 px-2">
-              {restaurantMenu.menu.map((items) => (
-                <MenuItem
-                  items={items}
-                  restaurantId={restaurantId}
-                  distance={distance}
-                  key={items._id}
-                />
-              ))}
-            </ul>
-          ) : (
-            <ul className="divide-y divide-stone-200 px-2">
-              {restaurantMenu.reviews.map((items) => (
-                <ReviewsContent review={items} key={items._id} />
-              ))}
-            </ul>
-          )}
-        </StyledContainer>
-      </>
+      <StyledContainer>
+        <StyledConent>
+          <li>
+            <h1>{restaurantMenu.restaurant}</h1>
+            <h2>{restaurantMenu.location}</h2>
+            <p>{restaurantMenu.address}</p>
+            {distance > 30 ? (
+              <h3 style={{ color: 'red' }}>
+                Your distance is very long ({Math.round(distance)} km), only
+                available within 30km
+              </h3>
+            ) : (
+              <h3 style={{ color: 'green' }}>
+                <WiTime8 />: {estimatedTimeRange} ({Math.round(distance)}
+                km)
+              </h3>
+            )}
+          </li>
+          <StyledNav>
+            <Button $active={!isOpen} onClick={handleMenu}>
+              Menus
+            </Button>
+            <Button $active={isOpen} onClick={handleReview}>
+              Reviews
+            </Button>
+          </StyledNav>
+        </StyledConent>
+        {!isOpen ? (
+          <ul className="divide-y divide-stone-200 px-2">
+            {restaurantMenu.menu.map((items) => (
+              <MenuItem
+                items={items}
+                restaurantId={restaurantId}
+                distance={distance}
+                key={items._id}
+              />
+            ))}
+          </ul>
+        ) : (
+          <ul className="divide-y divide-stone-200 px-2">
+            {reviews.length === 0 ? (
+              <img src="/not-item-available.png" alt="empty" />
+            ) : (
+              <>
+                {restaurantMenu.reviews.map((items) => (
+                  <ReviewsContent review={items} key={items._id} />
+                ))}
+              </>
+            )}
+          </ul>
+        )}
+      </StyledContainer>
     );
   }
 }

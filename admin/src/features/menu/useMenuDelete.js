@@ -11,7 +11,7 @@ export function useMenuDelete() {
       toast.success("Menu succesfully deleted");
       queryClient.invalidateQueries({ queryKey: ["menu"] });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error("Test account cannot delete restaurants"),
   });
   return { deleteMenu };
 }

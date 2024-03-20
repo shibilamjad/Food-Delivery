@@ -12,7 +12,7 @@ export function useLogout() {
     onSuccess: () => {
       queryClient.removeQueries();
       toast.success("Succesfully Logout");
-      navigate("/login", { replace: true });
+      navigate("/sign-in", { replace: true });
     },
   });
 

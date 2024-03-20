@@ -4,12 +4,13 @@ import {
   HiOutlineCalendarDays,
   HiOutlineChartBar,
 } from "react-icons/hi2";
-import styled from "styled-components";
+import Stat from "./Stat";
+import { subDays } from "date-fns";
 
-import Stat from "../features/dashboard/Stat";
-
-function Stats({ orderStats }) {
+function Stats({ orderStats, currentFilter }) {
+  const startDate = subDays(new Date(), currentFilter);
   // 1 today orders
+
   const today = new Date();
   const todayDate = today.toISOString().slice(0, 10);
   // filter orders for today
@@ -18,13 +19,20 @@ function Stats({ orderStats }) {
     return orderDate === todayDate;
   });
   // 2 total order
-  const numOrder = orderStats.length;
+  const ordersDays = orderStats.filter(
+    (item) => new Date(item.createdAt) >= startDate
+  );
+  const numOrder = ordersDays.length;
   // 3. all pending items
   const totalPending = orderStats.filter(
     (order) => order.delivery === "pending"
   ).length;
   // 4 get total price
-  const totalPrices = orderStats.map((order) =>
+  const ordersWithinRange = orderStats.filter(
+    (order) => new Date(order.createdAt) >= startDate
+  );
+
+  const totalPrices = ordersWithinRange.map((order) =>
     order.cart.reduce((acc, cartItem) => acc + cartItem.totalPrice, 0)
   );
   const totalPrice = totalPrices.reduce((acc, price) => acc + price, 0);
@@ -66,9 +74,3 @@ function Stats({ orderStats }) {
 }
 
 export default Stats;
-
-const StyledContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-`;

@@ -8,7 +8,6 @@ export function useClearCarts() {
     mutationFn: clearCartApi,
     onSuccess: (data) => {
       queryClient.invalidateQueries(['cart'], data.user);
-      toast.success('All items removed from the cart');
     },
     onError: () => toast.error('CartList is already removed'),
   });

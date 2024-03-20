@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import { device } from "../../ui/device";
+import { subDays } from "date-fns";
 
 const ChartBox = styled.div`
   /* Box */
@@ -32,15 +33,20 @@ function generateRandomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
 
-function DurationChart({ orderStats }) {
-  const name = orderStats.map((item) =>
+function DurationChart({ orderStats, currentFilter }) {
+  const startDate = subDays(new Date(), currentFilter);
+
+  const ordersInDays = orderStats.filter(
+    (item) => new Date(item.createdAt) >= startDate
+  );
+
+  const itemNames = ordersInDays.flatMap((item) =>
     item.cart.map((cartItem) => cartItem.menuItem.name)
   );
+
   let itemCounts = {};
-  name.forEach((names) => {
-    names.forEach((name) => {
-      itemCounts[name] = (itemCounts[name] || 0) + 1;
-    });
+  itemNames.forEach((name) => {
+    itemCounts[name] = (itemCounts[name] || 0) + 1;
   });
 
   const data = Object.entries(itemCounts).map(([name, value]) => ({
@@ -48,7 +54,6 @@ function DurationChart({ orderStats }) {
     value,
     color: generateRandomColor(),
   }));
-
   return (
     <ChartBox>
       <Heading as="h2">Most Selling Items</Heading>

@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 
-import { device } from '../../ui/device';
 import { useCreateOrder } from './useCreateOrder';
 import { Loader } from '../../ui/Loader';
 import { useCart } from '../cart/useCart';
@@ -11,12 +10,7 @@ import { EmptyCart } from '../cart/EmptyCart';
 import Map from '../../ui/Map';
 import { getDistance } from '../../utils/getDistance';
 import { useUserDetails } from './useUserDetails';
-
-// https://uibakery.io/regex-library/phone-number
-const isValidPhone = (str) =>
-  /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-    str,
-  );
+import LinkButton from '../../ui/LinkButton';
 
 export function CreateOrder() {
   const { createOrder } = useCreateOrder();
@@ -36,11 +30,7 @@ export function CreateOrder() {
   const [distance, setDistance] = useState(null);
 
   // hook-form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit } = useForm();
 
   // total amount calculate
   useEffect(() => {
@@ -159,6 +149,9 @@ export function CreateOrder() {
   if (cart.length === 0) return <EmptyCart />;
   return (
     <StyledContainer>
+      <LinkButton className="p-10" to="/cart">
+        &larr; Back to Cart
+      </LinkButton>
       <div className="h-screen px-4 py-6">
         <h2 className="mb-8 text-xl font-semibold">Ready to order? Lets go!</h2>
 
@@ -293,6 +286,6 @@ const Button = styled.button`
   margin-bottom: 100px;
   transition: background-color 0.3s ease;
   &:hover {
-    background-color: #ffee36; /* Adjusting hover color */
+    background-color: #ffee36;
   }
 `;

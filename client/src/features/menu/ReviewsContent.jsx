@@ -1,26 +1,32 @@
 import styled from 'styled-components';
-import { getTimeDifference } from '../../utils/getTimeDifference';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
+import { getTimeDifference } from '../../utils/getTimeDifference';
 
 function ReviewsContent({ review }) {
   const { content, createdAt, ratings, userId, imageUrl } = review;
   return (
     <StyledConatainer>
-      <UserDetails>
-        <h1>{userId.userName}</h1>
-        <p>({getTimeDifference(createdAt)})</p>
-      </UserDetails>
-      <p>Content:{content}</p>
-      <Stack spacing={2}>
-        <Rating
-          name="half-rating-read"
-          defaultValue={parseFloat(ratings)}
-          precision={0.5}
-          readOnly
-        />
-      </Stack>
-      {imageUrl && <Img src={imageUrl} alt="image" />}
+      {content ? (
+        <>
+          <UserDetails>
+            <h1>{userId.userName}</h1>
+            <p>({getTimeDifference(createdAt)})</p>
+          </UserDetails>
+          <p>Content:{content}</p>
+          <Stack spacing={2}>
+            <Rating
+              name="half-rating-read"
+              defaultValue={parseFloat(ratings)}
+              precision={0.5}
+              readOnly
+            />
+          </Stack>
+          {imageUrl && <Img src={imageUrl} alt="image" />}
+        </>
+      ) : (
+        <p className=" text-red-400">sasdasd</p>
+      )}
     </StyledConatainer>
   );
 }

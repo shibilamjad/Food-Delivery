@@ -8,7 +8,7 @@ import { useMoveBack } from "../hooks/useMoveBack";
 import styled from "styled-components";
 import { device } from "../ui/device";
 
-export function Menus() {
+function Menus() {
   const moveBack = useMoveBack();
   const navigate = useNavigate();
   const { restaurantId } = useParams();
@@ -27,6 +27,7 @@ export function Menus() {
     </>
   );
 }
+export default Menus;
 
 const Button = styled.button`
   padding: 10px 15px;

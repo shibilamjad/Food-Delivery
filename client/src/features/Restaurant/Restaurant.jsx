@@ -12,7 +12,7 @@ import { device } from '../../ui/device';
 import { Loader } from '../../ui/Loader';
 import { useAvailable } from './useAvailable';
 import { useCity } from './useCity';
-import UserLocation from '../../ui/UserLocation';
+import UserLocation from './UserLocation';
 import { SpinnerMini } from '../../ui/SpinnerMini';
 
 export function Restaurant() {
@@ -150,7 +150,7 @@ export function Restaurant() {
           </StyledSpinn>
         )}
         <Header className="mt-[50px]">
-          <h1>Our Popular Restaurants</h1>
+          <h1>Our Restaurants</h1>
         </Header>
         <StyledRestaurant>
           {restaurants &&

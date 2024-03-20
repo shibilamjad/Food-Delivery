@@ -34,6 +34,8 @@ export function RestaurantList({ restaurants, curOpen, onOpen }) {
   function handleEdit(restaurantId) {
     navigate(`/new-restaurants/${restaurantId}`);
   }
+  const handleOpen = () => setRestaurantDelete(true);
+  const handleClose = () => setRestaurantDelete(false);
   return (
     <>
       <TableRowRestaurant>
@@ -64,9 +66,7 @@ export function RestaurantList({ restaurants, curOpen, onOpen }) {
                 <h1>Edit</h1>
               </EditSection>
             </StyledButton>
-            <StyledButton
-              onClick={() => setRestaurantDelete(!restaurantDelete)}
-            >
+            <StyledButton onClick={handleOpen}>
               <EditSection>
                 <HiTrash />
                 <h1>Delete</h1>
@@ -74,14 +74,12 @@ export function RestaurantList({ restaurants, curOpen, onOpen }) {
             </StyledButton>
             <div>
               {restaurantDelete && (
-                <ModalConfirm
-                  onClose={() => setRestaurantDelete(!restaurantDelete)}
-                >
+                <ModalConfirm handleClose={handleClose}>
                   <ConfirmDelete
                     closeOption={onOpen}
                     name={name}
                     restaurantId={_id}
-                    onClose={() => setRestaurantDelete(!restaurantDelete)}
+                    handleClose={handleClose}
                   />
                 </ModalConfirm>
               )}

@@ -22,10 +22,9 @@ const StyledSalesChart = styled(DashboardBox)`
   }
 `;
 
-function SalesChart({ orderStats }) {
-  const numDays = 7;
+function SalesChart({ orderStats, currentFilter }) {
   const allDates = eachDayOfInterval({
-    start: subDays(new Date(), numDays - 1),
+    start: subDays(new Date(), currentFilter - 1),
     end: new Date(),
   });
   // total sale per day
@@ -52,7 +51,7 @@ function SalesChart({ orderStats }) {
     <StyledSalesChart>
       <Heading as="h2">
         Sales from {format(allDates[0], "MMM dd yyyy")} &mdash;{" "}
-        {format(allDates[numDays - 1], "MMM dd yyyy")}
+        {format(allDates[currentFilter - 1], "MMM dd yyyy")}
       </Heading>
 
       <ResponsiveContainer height={300} width="100%">

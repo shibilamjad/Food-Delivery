@@ -35,10 +35,6 @@ const Checkmark = styled.span`
   }
 `;
 
-// Input:checked + ${Checkmark}::after {
-//   display: block;
-// }
-
 export function Radio() {
   return (
     <StyledRadio>

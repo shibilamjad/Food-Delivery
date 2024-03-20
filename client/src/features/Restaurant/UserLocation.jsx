@@ -4,19 +4,15 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
-import { useCity } from '../features/Restaurant/useCity';
+import { useCity } from './useCity';
 import styled from 'styled-components';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
-import { useAvailable } from '../features/Restaurant/useAvailable';
+import { useAvailable } from './useAvailable';
 
 function UserLocation() {
   const [Location, setLocation] = useState('');
   const { getCity, isLoading } = useCity();
-  const {
-    availableRestaurants,
-    isLoading: isAvailable,
-    refetch,
-  } = useAvailable();
+  const { isLoading: isAvailable, refetch } = useAvailable();
   useEffect(() => {
     const storedLocation = localStorage.getItem('location');
     if (storedLocation) {

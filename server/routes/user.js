@@ -2,20 +2,22 @@ const express = require("express");
 const router = express.Router();
 const {
   userList,
-  userCartList,
   register,
-  addUserCart,
-  deleateCart,
   login,
-  clearCart,
   logout,
   refreshToken,
   adminRegister,
   adminLogin,
-  cartQuantity,
   userDetailsInOrder,
+  forgetPassword,
 } = require("../controller/userController");
-
+const {
+  clearCart,
+  userCartList,
+  addUserCart,
+  cartQuantity,
+  deleateCart,
+} = require("../controller/cartController");
 const { checkAuth } = require("../middleware/checkAuth ");
 
 // users list
@@ -25,14 +27,10 @@ router.get("/orderUser", checkAuth, userDetailsInOrder);
 // User create
 router.post("/signup", register);
 
+router.put("/forget", forgetPassword);
+
 // user login
 router.post("/login", login);
-
-// User create
-router.post("/adminSignup", adminRegister);
-
-// user admin login
-router.post("/adminLogin", adminLogin);
 
 // user logout
 router.post("/logout", logout);
@@ -54,5 +52,9 @@ router.delete("/clearCart", checkAuth, clearCart);
 
 // user refreshToken
 router.get("/refreshToken", refreshToken);
+
+// user admin login
+router.post("/adminSignup", adminRegister);
+router.post("/adminLogin", adminLogin);
 
 module.exports = router;

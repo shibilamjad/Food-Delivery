@@ -2,9 +2,9 @@ import styled, { keyframes } from "styled-components";
 import MainNav from "./MainNav";
 import { device } from "./device";
 
-export function SideBar({ isopen }) {
+export function SideBar({ isOpens }) {
   return (
-    <StyledSideBar isopen={isopen}>
+    <StyledSideBar isOpens={isOpens}>
       <MainNav />
     </StyledSideBar>
   );
@@ -30,13 +30,14 @@ const slideOut = keyframes`
 const StyledSideBar = styled.div`
   background-color: var(--color-grey-100);
   padding: 3.2rem 2.4rem;
+  min-height: 1200px;
   border-right: 1px solid var(--color-grey-200);
   grid-row: 1 / -1;
   display: flex;
   flex-direction: column;
   gap: 3.4rem;
   color: var(--color-grey-500);
-  animation: ${({ isopen }) => (isopen ? slideOut : slideIn)} 0.5s ease-in-out;
+  animation: ${({ isOpen }) => (isOpen ? slideOut : slideIn)} 0.3s ease;
   @media ${device.laptopL} {
     display: flex;
   }

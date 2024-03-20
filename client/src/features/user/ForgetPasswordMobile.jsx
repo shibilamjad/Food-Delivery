@@ -1,9 +1,5 @@
 import { useForm } from 'react-hook-form';
-import {
-  RecaptchaVerifier,
-  sendPasswordResetEmail,
-  signInWithPhoneNumber,
-} from 'firebase/auth';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { useState } from 'react';
 import OtpInput from 'react-otp-input';
 import 'react-phone-input-2/lib/style.css';
@@ -17,7 +13,7 @@ import { toast } from 'react-hot-toast';
 import { ModelAuth } from '../../ui/ModelAuth';
 import { device } from '../../ui/device';
 import { useForgetPassword } from './useForgetPassword';
-import { auth } from './firebase';
+import { auth } from '../../services/firebaseConfig';
 
 function ForgetPasswordMobile() {
   const [ph, setPh] = useState('');

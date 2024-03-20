@@ -1,9 +1,47 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+import { device } from '../../ui/device';
+import { IoFastFoodOutline } from 'react-icons/io5';
 
 export function OrderOverview() {
   return (
-    <div className=" flex items-center justify-between rounded-md bg-stone-800 p-[4px]  text-sm uppercase text-stone-200  ">
-      <Link to="/order">OrderList&rarr;</Link>
-    </div>
+    <StyledNavLink to="/order">
+      <span>
+        <IoFastFoodOutline />
+      </span>
+      OrderList
+    </StyledNavLink>
   );
 }
+
+const StyledNavLink = styled(NavLink)`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.44rem 0.8rem;
+  transition: all 0.5s;
+  &:hover:not(:disabled) {
+    color: ${(props) => (props.$active ? '#4a4a4a' : '#272727')};
+  }
+  &.active {
+    color: #121212;
+    border-bottom: 1px solid #262626;
+  }
+  @media ${device.mobileL} {
+    border-bottom: 2px solid transparent;
+    color: #e3e3e3;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.44rem 0.8rem;
+    transition: all 0.5s;
+    &:hover:not(:disabled) {
+      color: ${(props) => (props.$active ? '#ffce3a' : '#ffce3a')};
+    }
+    &.active {
+      color: #ffce3a;
+      border-bottom-color: #ffce3a;
+    }
+  }
+`;

@@ -1,28 +1,31 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
-import GlobalStyles from "./style/GlobelCol";
-
-import { Menu } from "./pages/Menu";
-import { Login } from "./pages/Login";
-import { AppLayout } from "./ui/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import GlobalStyles from "./style/GlobelCol";
+import { lazy, Suspense } from "react";
+
+import { AppLayout } from "./ui/AppLayout";
 import { ProtectedRoutesHomePage } from "./features/ProtectedRoutes ";
 import ProtectedRouterAfterLogIn from "./features/ProtectedRouterAfterLogIn ";
-import { Menus } from "./pages/Menus";
-import { Order } from "./pages/Order";
-import { Orders } from "./pages/Orders";
-import Dashboard from "./pages/Dashboard";
-import { Restaurant } from "./pages/Restaurant";
-import { NewRestaurants } from "./pages/NewRestaurants";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import DeliveryBoy from "./pages/DeliveryBoy";
-import PageNotFound from "./pages/PageNotFound";
-import City from "./pages/City";
+import { Loader } from "./ui/Loader";
+
+const Menu = lazy(() => import("./pages/Menu"));
+const Login = lazy(() => import("./pages/Login"));
+const Menus = lazy(() => import("./pages/Menus"));
+const Order = lazy(() => import("./pages/Order"));
+const Orders = lazy(() => import("./pages/Orders"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Restaurant = lazy(() => import("./pages/Restaurant"));
+const NewRestaurants = lazy(() => import("./pages/NewRestaurants"));
+const DeliveryBoy = lazy(() => import("./pages/DeliveryBoy"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const City = lazy(() => import("./pages/City"));
 
 const queryCLient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 40 * 1000,
+      staleTime: 0,
     },
   },
 });
@@ -34,40 +37,42 @@ function App() {
       <GlobalStyles />
 
       <BrowserRouter>
-        <Routes>
-          <Route
-            element={
-              // <ProtectedRoutesHomePage>
-              <AppLayout />
-              // </ProtectedRoutesHomePage>
-            }
-          >
-            <Route index element={<Navigate replace to="dashboard" />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="order" element={<Order />} />
-            <Route path="order/:orderId" element={<Orders />} />
-            <Route path="menu" element={<Menu />} />
-            <Route path="menu/:menuId" element={<Menu />} />
-            <Route path="restaurants" element={<Restaurant />} />
-            <Route path="restaurants/:restaurantId" element={<Menus />} />
-            <Route path="deliveryBoys" element={<DeliveryBoy />} />
-            <Route path="city" element={<City />} />
-            <Route path="new-restaurants" element={<NewRestaurants />} />
+        <Suspense fallback={<Loader />}>
+          <Routes>
             <Route
-              path="new-restaurants/:restaurantId"
-              element={<NewRestaurants />}
+              element={
+                <ProtectedRoutesHomePage>
+                  <AppLayout />
+                </ProtectedRoutesHomePage>
+              }
+            >
+              <Route index element={<Navigate replace to="dashboard" />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="order" element={<Order />} />
+              <Route path="order/:orderId" element={<Orders />} />
+              <Route path="menu" element={<Menu />} />
+              <Route path="menu/:menuId" element={<Menu />} />
+              <Route path="restaurants" element={<Restaurant />} />
+              <Route path="restaurants/:restaurantId" element={<Menus />} />
+              <Route path="deliveryBoys" element={<DeliveryBoy />} />
+              <Route path="city" element={<City />} />
+              <Route path="new-restaurants" element={<NewRestaurants />} />
+              <Route
+                path="new-restaurants/:restaurantId"
+                element={<NewRestaurants />}
+              />
+            </Route>
+            <Route
+              path="sign-in"
+              element={
+                <ProtectedRouterAfterLogIn>
+                  <Login />
+                </ProtectedRouterAfterLogIn>
+              }
             />
-          </Route>
-          <Route
-            path="sign-in"
-            element={
-              // <ProtectedRouterAfterLogIn>
-              <Login />
-              // </ProtectedRouterAfterLogIn>
-            }
-          />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>{" "}
+        </Suspense>
       </BrowserRouter>
       <Toaster
         position="top-center"

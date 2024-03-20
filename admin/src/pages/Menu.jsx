@@ -1,5 +1,5 @@
 import { CreateMenu } from "../features/menuCreation/CreateMenu";
-
-export function Menu() {
+function Menu() {
   return <CreateMenu />;
 }
+export default Menu;

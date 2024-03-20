@@ -80,13 +80,10 @@ io.on("connection", async (socket) => {
       try {
         const { latitude, longitude, token } = data;
         const deliveryBoyId = extractDeliveryBoyId(token);
-
-        console.log(`Delivery boy connected: ${deliveryBoyId}`);
         // Update delivery boy's location in the database
         await updateDeliveryBoyLocation(deliveryBoyId, latitude, longitude);
         io.emit("deliveryBoyLocationUpdate", data);
       } catch (error) {
-        console.error("Error updating delivery boy location:", error);
         socket.emit(
           "error",
           "An error occurred while updating the delivery boy's location"
@@ -98,8 +95,6 @@ io.on("connection", async (socket) => {
         try {
           const { latitude, longitude, token } = data;
           const userId = extractDeliveryBoyId(token);
-
-          console.log(`user connected: ${userId}`);
           // Update delivery boy's location in the database
           await updateUserLocation(userId, latitude, longitude);
           io.emit("userLocationUpdate", data);
@@ -116,7 +111,6 @@ io.on("connection", async (socket) => {
       console.log("A user disconnect");
     });
   } catch (error) {
-    console.error("Error handling connection:", error);
     socket.emit("error", "An error occurred while handling the connection");
   }
 });

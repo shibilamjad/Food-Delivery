@@ -32,6 +32,7 @@ export function SignIn() {
               <Input
                 type="email"
                 placeholder="Email"
+                defaultValue={"test@gmail.com"}
                 id="email"
                 {...register("email", {
                   required: "This field is required",
@@ -47,6 +48,7 @@ export function SignIn() {
               <Input
                 type="password"
                 placeholder="Password"
+                defaultValue={"123456"}
                 id="password"
                 {...register("password", {
                   required: "This field is required",

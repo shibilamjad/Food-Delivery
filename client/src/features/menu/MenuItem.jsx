@@ -4,8 +4,12 @@ import Button from '../../ui/Button';
 import { Loader } from '../../ui/Loader';
 import { useAddCart } from '../cart/useAddCart';
 import { useCart } from '../cart/useCart';
+import { useState } from 'react';
+import ModalConfirm from '../../ui/ModalConfirm';
+import ReplaceMenuItem from './ReplaceMenuItem';
 
 export function MenuItem({ items, distance, restaurantId }) {
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const { _id, discount, name, imageUrl, ingredients, isAvailable, unitPrice } =
@@ -15,16 +19,25 @@ export function MenuItem({ items, distance, restaurantId }) {
   const handleCartAction = (menuId, restaurantId) => {
     try {
       const alreadySelected = cart.some((item) => item.menuItem._id === menuId);
+      const differentRestaurantSelected = cart.some(
+        (item) => item.restaurant._id !== restaurantId,
+      );
       if (alreadySelected) {
         navigate('/cart');
+      } else if (differentRestaurantSelected) {
+        setModalOpen(true);
       } else {
-        console.log(restaurantId, menuId);
         addCart({ menuId, restaurantId });
       }
     } catch (error) {
       console.error(error);
     }
   };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   if (isLoading) return <Loader />;
   return (
     <li className="flex gap-5 py-2 sm:gap-4">
@@ -78,6 +91,17 @@ export function MenuItem({ items, distance, restaurantId }) {
               )
             ) : null}
           </div>
+          {modalOpen && (
+            <ModalConfirm onClose={closeModal}>
+              <ReplaceMenuItem
+                cart={cart}
+                onClose={closeModal}
+                menuId={_id}
+                restaurantId={restaurantId}
+                setModalOpen={setModalOpen}
+              />
+            </ModalConfirm>
+          )}
         </div>
       </div>
     </li>

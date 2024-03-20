@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
-import { auth } from './firebase';
+import { auth } from '../../services/firebaseConfig';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { useState } from 'react';
 import OtpInput from 'react-otp-input';
@@ -32,8 +32,6 @@ export function Register() {
       {
         size: 'invisible',
         callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          // ...
         },
       },
       auth,

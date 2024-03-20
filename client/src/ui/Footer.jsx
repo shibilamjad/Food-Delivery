@@ -1,16 +1,57 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import styled from 'styled-components';
+
+import { device } from './device';
+import { RestaurantOverview } from '../features/Restaurant/RestaurantOverview';
+import CartOverview from '../features/cart/CartOverview';
+import { OrderOverview } from '../features/order/orderOverview';
+import { LogoutOverView } from '../features/user/LogoutOverView';
+import ModalConfirm from './ModalConfirm';
+import Logout from '../features/user/Logout';
 
 export function Footer() {
-  return (
-    <div className="flex items-center justify-between bg-stone-800 px-4 py-2 text-base text-sm uppercase text-stone-200 sm:md:mt-1">
-      {/* Render cart information */}
-      <p className="space-x-4 text-stone-300 sm:space-x-6">
-        {/* <span>{cartTotoalPizzas} pizzas</span> */}
-        {/* <span>${cartTotoalPrice}</span> */}
-      </p>
+  const [modalOpen, setModalOpen] = useState(false);
 
-      {/* Link to open cart */}
-      <Link to="/cart">Open cart &rarr;</Link>
-    </div>
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  return (
+    <StledFooter>
+      <StyledContainer>
+        <>
+          <RestaurantOverview />
+          <CartOverview />
+          <OrderOverview />
+          <LogoutOverView openModal={openModal} />
+          {modalOpen && (
+            <ModalConfirm onClose={closeModal}>
+              <Logout onClose={closeModal} />
+            </ModalConfirm>
+          )}
+        </>
+      </StyledContainer>
+    </StledFooter>
   );
 }
+
+const StledFooter = styled.footer`
+  background-color: #212121;
+  padding: 10px 10px;
+  border-radius: 20px 20px 0 0;
+  @media ${device.mobileL} {
+    padding: 5px 10px;
+  }
+`;
+
+const StyledContainer = styled.div`
+  display: none;
+  margin: 5px;
+  @media ${device.mobileL} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+`;
