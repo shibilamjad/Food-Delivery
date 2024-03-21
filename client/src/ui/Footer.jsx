@@ -42,6 +42,7 @@ const StledFooter = styled.footer`
   left: 0;
   bottom: 0;
   width: 100%;
+  z-index: 1000;
   overflow-x: scroll;
   background-color: #212121;
   padding: 10px 10px;

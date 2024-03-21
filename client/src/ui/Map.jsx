@@ -9,11 +9,15 @@ import {
   useMapEvents,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 import axios from 'axios';
+import MarkerImage from '/location.png';
 
 function Map({ setLattitude, setLongitude, setAddress, setCountry, setError }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [mapPosition, setMapPosition] = useState([51.505, -0.09]); // Default map position
+  const [mapPosition, setMapPosition] = useState([
+    10.289354289052408, 76.2828020019091,
+  ]); // Default map position
   const [markers, setMarkers] = useState([]);
   const [cityName, setCityName] = useState('');
   const [disrictName, setDistrictName] = useState('');
@@ -26,9 +30,9 @@ function Map({ setLattitude, setLongitude, setAddress, setCountry, setError }) {
         const response = await axios.get(
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`,
         );
-        setCityName(response.data.localityInfo.administrative[3].name);
+        setCityName(response.data.localityInfo.administrative[4].name);
         setDistrictName(response.data.localityInfo.administrative[2].name);
-        setVillagetName(response.data.localityInfo.administrative[4].name);
+        setVillagetName(response.data.localityInfo.administrative[5].name);
         setStateName(response.data.localityInfo.administrative[1].name);
         setCountry(response.data.countryCode);
         setAddress({
@@ -104,9 +108,13 @@ function Map({ setLattitude, setLongitude, setAddress, setCountry, setError }) {
         <AddMarkerToClickLocation />
         {markers.map((marker) => (
           <React.Fragment key={marker.id}>
-            <Marker position={[marker.lat, marker.lng]}>
+            <Marker
+              position={[marker.lat, marker.lng]}
+              icon={L.icon({ iconUrl: MarkerImage, iconSize: [25, 41] })}
+            >
               <Popup>
                 Marker at ({marker.lat}, {marker.lng})
+                <img src="/location.png" alt="Custom Marker" />
               </Popup>
             </Marker>
             <ChangeCenter position={[marker.lat, marker.lng]} />
@@ -127,7 +135,6 @@ function Map({ setLattitude, setLongitude, setAddress, setCountry, setError }) {
     </StyledContainer>
   );
 }
-
 function ChangeCenter({ position }) {
   const map = useMap();
   map.setView(position);

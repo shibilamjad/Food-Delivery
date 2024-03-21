@@ -31,8 +31,7 @@ export function Register() {
       'recaptcha',
       {
         size: 'invisible',
-        callback: (response) => {
-        },
+        callback: (response) => {},
       },
       auth,
     );

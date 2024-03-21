@@ -19,26 +19,26 @@ export const Input = styled.input`
   }
   @media ${device.laptopL} {
     font-size: 16px;
-    padding: 10px 15px;
+    padding: 15px 15px;
   }
   @media ${device.laptop} {
     font-size: 16px;
-    padding: 10px 15px;
+    padding: 15px 15px;
   }
   @media ${device.tablet} {
     font-size: 14px;
-    padding: 8px 12px;
+    padding: 14px 10px;
     margin-bottom: 8px;
   }
   @media ${device.mobileL} {
     font-size: 12px;
-    padding: 6px 10px;
+    padding: 10px 10px;
     margin-bottom: 4px;
     width: 90%;
   }
   @media ${device.mobileS} {
     font-size: 12px;
-    padding: 6px 10px;
+    padding: 10px 10px;
     margin-bottom: 4px;
   }
 `;
