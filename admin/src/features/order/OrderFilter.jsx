@@ -6,6 +6,7 @@ function OrderFilter() {
   return (
     <TableOperations>
       <Filter
+        filterField="delivery"
         options={[
           { value: "all", label: "All" },
           { value: "pending", label: "Pending" },

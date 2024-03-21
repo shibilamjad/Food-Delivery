@@ -27,9 +27,10 @@ const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
     origin: [
+      "http://localhost:5173",
       "https://door-dash-dine.netlify.app",
       "https://admin-door-dash-dine.netlify.app",
-      "http://localhost:5175",
+      "https://door-dash-dine-deliveryboy.netlify.app",
     ],
     methods: ["GET", "POST"],
   },
@@ -39,9 +40,10 @@ const io = require("socket.io")(server, {
 app.use(
   cors({
     origin: [
+      "http://localhost:5173",
       "https://door-dash-dine.netlify.app",
       "https://admin-door-dash-dine.netlify.app",
-      "http://localhost:5175",
+      "https://door-dash-dine-deliveryboy.netlify.app",
     ],
     credentials: true,
     cookie: {
