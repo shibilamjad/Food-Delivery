@@ -7,5 +7,5 @@
 }
 
 .react-tel-input .form-control {
-  @apply !w-full border-[#4b5563]  py-6 !text-base text-[#e5e7eb] bg-[#111827];
+  @apply !w-full border-[#4b5563]  py-6 !text-base text-[#444444];
 }

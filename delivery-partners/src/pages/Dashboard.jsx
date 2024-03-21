@@ -18,11 +18,13 @@ function Dashboard() {
 
   return (
     <StledDashboard>
-      <StyledContainer>
+      <StyledFilter>
         <Heading as="h1">Dashboard Delivery Boy</Heading>
         <DashboardFilter filterField={filterField} options={options} />
+      </StyledFilter>
+      <StyledContainer>
+        <DashboardLayout currentFilter={currentFilter} />
       </StyledContainer>
-      <DashboardLayout currentFilter={currentFilter} />
     </StledDashboard>
   );
 }
@@ -35,10 +37,22 @@ const StledDashboard = styled.div`
   align-items: center;
   gap: 20px;
 `;
+
 const StyledContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding-left: 140px;
+`;
+
+const StyledFilter = styled.div`
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   width: 100%;
-  /* height: 100%; */
 `;
