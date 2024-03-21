@@ -51,7 +51,9 @@ export async function createUserApi({ mobile, password, userName }) {
 
 export async function logoutApi() {
   try {
-    const res = await axios.post(`http://localhost:3006/api/users/logout`);
+    const res = await axios.post(
+      `https://food-delivery-4.onrender.com/api/users/logout`,
+    );
 
     localStorage.clear();
 
@@ -67,7 +69,10 @@ export async function forgetPasswordApi({ mobile, password }) {
       mobile,
       password,
     };
-    const res = await axios.put(`http://localhost:3006/api/users/forget`, data);
+    const res = await axios.put(
+      `https://food-delivery-4.onrender.com/api/users/forget`,
+      data,
+    );
     return res.data;
   } catch (error) {
     throw new Error(`Error fetching logout: ${error.message}`);

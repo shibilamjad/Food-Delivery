@@ -10,7 +10,7 @@ import { OrderRow } from "./OrderRow";
 export function OrderTable() {
   const { order, isLoading } = useDeliveryBoyOrder();
   useEffect(() => {
-    const socket = io("http://localhost:3006");
+    const socket = io("https://food-delivery-4.onrender.com");
     const token = localStorage.getItem("token");
 
     if (navigator.geolocation) {

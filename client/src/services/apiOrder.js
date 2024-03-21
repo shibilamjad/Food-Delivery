@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3006/api/order';
+const API_URL = 'https://food-delivery-4.onrender.com/api/order';
 
 export const createOrderApi = async (data) => {
   try {
@@ -72,11 +72,14 @@ export async function orderDetailsReviewApi(orderId) {
 export async function orderUserDetails() {
   const userId = localStorage.getItem('token');
   try {
-    const res = await axios.get(`http://localhost:3006/api/users/orderUser`, {
-      headers: {
-        accesstoken: userId,
+    const res = await axios.get(
+      `https://food-delivery-4.onrender.com/api/users/orderUser`,
+      {
+        headers: {
+          accesstoken: userId,
+        },
       },
-    });
+    );
 
     const { data } = res;
     return data;

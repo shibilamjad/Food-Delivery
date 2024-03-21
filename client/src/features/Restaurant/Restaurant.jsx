@@ -46,7 +46,7 @@ export function Restaurant() {
     }, {});
   // socket io and the current location change
   useEffect(() => {
-    const socket = io('http://localhost:3006');
+    const socket = io('https://food-delivery-4.onrender.com');
     const token = localStorage.getItem('token');
 
     const handleLocationUpdate = (position) => {

@@ -1,6 +1,6 @@
 import axios from "axios";
-const API_URL = "http://localhost:3006/api/users";
-
+const API_URL = "https://food-delivery-4.onrender.com/api/users";
+// https://food-delivery-4.onrender.com/
 export async function adminLoginApi({ email, password }) {
   try {
     const res = await axios(`${API_URL}/adminLogin`, {

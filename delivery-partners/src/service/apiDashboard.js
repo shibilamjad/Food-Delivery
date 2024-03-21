@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:3006/api/dashboard";
+const API_URL = "https://food-delivery-4.onrender.com/api/dashboard";
 
 export async function getTotalOrderDeliveryBoy() {
   try {

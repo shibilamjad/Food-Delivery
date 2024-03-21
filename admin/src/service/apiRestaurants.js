@@ -1,7 +1,7 @@
 import axios from "axios";
 import { PAGE_SIZE } from "../utils/PAGE_SIZE";
 
-const API_URL = "http://localhost:3006/api/restaurants";
+const API_URL = "https://food-delivery-4.onrender.com/api/restaurants";
 
 export async function getRestaurants({ search, limit = PAGE_SIZE, page = 1 }) {
   try {

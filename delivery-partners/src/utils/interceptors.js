@@ -2,7 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:3006/api/delivery",
+  baseURL: "https://food-delivery-4.onrender.com/api/delivery",
 });
 
 // 401 UnAuthorised
