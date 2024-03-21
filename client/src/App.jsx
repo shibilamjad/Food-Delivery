@@ -16,6 +16,7 @@ const Orders = lazy(() => import('./pages/Orders'));
 const Carts = lazy(() => import('./pages/Carts'));
 const StatusOrder = lazy(() => import('./pages/StatusOrder'));
 const Reviews = lazy(() => import('./pages/Reviews'));
+const Search = lazy(() => import('./pages/Search'));
 const SignUp = lazy(() => import('./pages/SignUp'));
 const SignIn = lazy(() => import('./pages/SignIn'));
 const Error = lazy(() => import('./pages/Error'));
@@ -51,6 +52,7 @@ function App() {
               <Route path="/order" element={<Orders />} />
               <Route path="/status/:orderId" element={<StatusOrder />} />
               <Route path="/review/:orderId" element={<Reviews />} />
+              <Route path="/search" element={<Search />} />
             </Route>
             <Route
               path="/sign-up"

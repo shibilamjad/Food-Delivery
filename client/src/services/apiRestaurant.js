@@ -19,6 +19,21 @@ export async function getRestaurants({ limit = PAGE_SIZE, page = 1 }) {
   }
 }
 
+export async function getSearchRestaurants({ search }) {
+  try {
+    const res = await axios(`${API_URL}/restaurants`, {
+      params: {
+        search,
+      },
+    });
+    const { data } = res;
+    return data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error('restaurants could not be retrieved');
+  }
+}
+
 export async function getAvailableRestaurnat({ limit = PAGE_SIZE, page = 1 }) {
   try {
     const token = localStorage.getItem('token');

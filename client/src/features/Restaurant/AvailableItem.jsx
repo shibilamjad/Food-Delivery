@@ -14,6 +14,7 @@ export const AvailableItem = forwardRef(({ items }, ref) => {
     restaurant,
     distance,
     estimatedTime,
+    reviews,
   } = items;
   let estimatedTimeRange = '';
 
@@ -31,6 +32,11 @@ export const AvailableItem = forwardRef(({ items }, ref) => {
   const handleMenuItems = (restaurantId) => {
     navigate(`/restaurant/${restaurantId}`);
   };
+
+  const ratings = reviews.map((review) => parseFloat(review.ratings));
+  const sum = ratings.reduce((total, rating) => total + rating, 0);
+  const average = sum / ratings.length;
+
   if (!items) return null;
   return (
     <>
@@ -54,9 +60,16 @@ export const AvailableItem = forwardRef(({ items }, ref) => {
               {restaurant}({location})
             </h1>
 
-            <div className="flex items-center">
-              <HiMiniStar />: 3.4
-            </div>
+            {isNaN(parseFloat(average)) ? (
+              <div className="flex items-center">
+                <HiMiniStar />: 0
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <HiMiniStar />: {average}
+              </div>
+            )}
+
             <div className="flex items-center">
               <WiTime8 /> :{estimatedTimeRange} mins ({Math.round(distance)}
               km)

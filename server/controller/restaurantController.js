@@ -18,7 +18,11 @@ const getRestaurantList = async (req, res) => {
 
     const restaurant = await Restaurant.find({ restaurant: regexPattern })
       .skip(skip)
-      .limit(+limit);
+      .limit(+limit)
+      .populate({
+        path: "reviews",
+        select: "ratings",
+      });
     res.status(200).json(restaurant);
   } catch (error) {
     res.status(400).json({
@@ -56,7 +60,13 @@ const getRestaurantAvailable = async (req, res) => {
     const userLatitude = userCoordinates[1];
     const userLongitude = userCoordinates[0];
 
-    const restaurants = await Restaurant.find().skip(skip).limit(+limit);
+    const restaurants = await Restaurant.find()
+      .populate({
+        path: "reviews",
+        select: "ratings",
+      })
+      .skip(skip)
+      .limit(+limit);
     // Map each restaurant to include distance and estimated time
     const restaurantsWithDistanceAndTime = restaurants.map((restaurant) => {
       const restaurantLatitude = restaurant.lat;

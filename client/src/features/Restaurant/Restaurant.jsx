@@ -14,7 +14,6 @@ import { useAvailable } from './useAvailable';
 import { useCity } from './useCity';
 import UserLocation from './UserLocation';
 import { SpinnerMini } from '../../ui/SpinnerMini';
-
 export function Restaurant() {
   const location = localStorage.getItem('location');
   const {

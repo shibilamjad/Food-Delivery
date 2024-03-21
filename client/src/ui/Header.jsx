@@ -10,6 +10,7 @@ import ModalConfirm from './ModalConfirm';
 import { LogoutOverView } from '../features/user/LogoutOverView';
 import UserLocation from '../features/Restaurant/UserLocation';
 import { device } from './device';
+import { SearchOverView } from '../features/Search.jsx/SearchOverView';
 
 function Header() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -32,9 +33,20 @@ function Header() {
           <span>Door Dash Dine</span>
           <img src="/logo.png" alt="imge" className="w-10" />
         </h1>
-        {isHomePage && <UserLocation />}
+        {isHomePage && (
+          <StyledLocation>
+            <UserLocation />
+          </StyledLocation>
+        )}
+        {isHomePage && (
+          <StyledResponsive>
+            <UserLocation />
+            <SearchOverView />
+          </StyledResponsive>
+        )}
       </Div>
       <StyledNav>
+        <SearchOverView />
         <RestaurantOverview />
         <CartOverview />
         <OrderOverview />
@@ -85,6 +97,22 @@ const Div = styled.div`
 `;
 
 const StyledNav = styled.div`
+  display: flex;
+  gap: 8px;
+  @media ${device.mobileL} {
+    display: none;
+  }
+`;
+
+const StyledResponsive = styled.div`
+  display: none;
+  gap: 8px;
+  @media ${device.mobileL} {
+    display: flex;
+  }
+`;
+
+const StyledLocation = styled.div`
   display: flex;
   gap: 8px;
   @media ${device.mobileL} {

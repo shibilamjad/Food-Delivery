@@ -38,9 +38,13 @@ export function Footer() {
 }
 
 const StledFooter = styled.footer`
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  overflow-x: scroll;
   background-color: #212121;
   padding: 10px 10px;
-  border-radius: 20px 20px 0 0;
   @media ${device.mobileL} {
     padding: 5px 10px;
   }

@@ -21,6 +21,7 @@ export const RestaurantsItem = forwardRef(({ items }, ref) => {
     menu,
     lat,
     long,
+    reviews,
   } = items;
   const { distance } = distnaces && distnaces;
   const { getCity } = useCity();
@@ -81,9 +82,15 @@ export const RestaurantsItem = forwardRef(({ items }, ref) => {
     fetchData();
   }, []);
 
+  // Calculate average rating
+
   const handleMenuItems = (restaurantId) => {
     navigate(`/restaurant/${restaurantId}`);
   };
+  const ratings = reviews.map((review) => parseFloat(review.ratings));
+  const sum = ratings.reduce((total, rating) => total + rating, 0);
+  const average = sum / ratings.length;
+
   return (
     <>
       {menu.length > 0 && (
@@ -107,9 +114,16 @@ export const RestaurantsItem = forwardRef(({ items }, ref) => {
                 {restaurant}({location})
               </h1>
 
-              <div className="flex items-center">
-                <HiMiniStar />: 3.4
-              </div>
+              {isNaN(parseFloat(average)) ? (
+                <div className="flex items-center">
+                  <HiMiniStar />: 0
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <HiMiniStar />: {average}
+                </div>
+              )}
+
               <div className="flex items-center">
                 <WiTime8 /> :
                 {distance > 30 ? (

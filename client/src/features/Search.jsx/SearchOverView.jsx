@@ -1,15 +1,15 @@
+import { FaSearch } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { device } from '../../ui/device';
-import { IoFastFoodOutline } from 'react-icons/io5';
 
-export function OrderOverview() {
+export function SearchOverView() {
   return (
-    <StyledNavLink to="/order">
+    <StyledNavLink to="/search">
       <span>
-        <IoFastFoodOutline />
+        <FaSearch />
       </span>
-      Orders
+      Search
     </StyledNavLink>
   );
 }
@@ -31,17 +31,10 @@ const StyledNavLink = styled(NavLink)`
   }
   @media ${device.mobileL} {
     border-bottom: 2px solid transparent;
-    color: #e3e3e3;
+    color: #272727;
     font-weight: 600;
     font-size: 1rem;
     padding: 0.44rem 0.8rem;
     transition: all 0.5s;
-    &:hover:not(:disabled) {
-      color: ${(props) => (props.$active ? '#ffce3a' : '#ffce3a')};
-    }
-    &.active {
-      color: #ffce3a;
-      border-bottom-color: #ffce3a;
-    }
   }
 `;
