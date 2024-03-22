@@ -11,6 +11,7 @@ import { useAvailable } from './useAvailable';
 
 function UserLocation() {
   const [Location, setLocation] = useState('');
+
   const { getCity, isLoading } = useCity();
   const { isLoading: isAvailable, refetch } = useAvailable();
   useEffect(() => {
@@ -27,15 +28,16 @@ function UserLocation() {
     setLocation(selectedLocation);
     localStorage.setItem('location', selectedLocation);
     window.location.reload();
+    window.location.reload();
   };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       refetch();
-    }, 400);
+    }, 2000);
 
     return () => clearTimeout(timeoutId);
-  }, [location, refetch]);
+  }, [refetch]);
 
   if (isLoading) return <P>Loading...</P>;
   return (

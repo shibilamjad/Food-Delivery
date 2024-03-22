@@ -80,7 +80,7 @@ export const RestaurantsItem = forwardRef(({ items }, ref) => {
     };
 
     fetchData();
-  }, []);
+  }, [cityCurrent, items, lat, long, locations]);
 
   // Calculate average rating
 

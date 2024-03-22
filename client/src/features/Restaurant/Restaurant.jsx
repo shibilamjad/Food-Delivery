@@ -44,6 +44,7 @@ export function Restaurant() {
       };
       return acc;
     }, {});
+
   // socket io and the current location change
   useEffect(() => {
     const socket = io('https://food-delivery-4.onrender.com');
@@ -82,7 +83,7 @@ export function Restaurant() {
     return () => {
       socket.disconnect();
     };
-  }, [getCity, location]);
+  }, [getCity, location, cityCurrent]);
 
   useEffect(() => {
     if (inView && hasNextPage) {
