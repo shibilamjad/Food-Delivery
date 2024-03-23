@@ -138,5 +138,8 @@ Door Dash Dine is a full-stack food order and delivery app built with the MERN s
 
 ```bash
   npm install
+  client add env
+  client add firebase env
+  deliveryboy add firebase env
 
 ```
