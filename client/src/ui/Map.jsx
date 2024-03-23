@@ -34,6 +34,7 @@ function Map({ setLattitude, setLongitude, setAddress, setCountry, setError }) {
         setDistrictName(response.data.localityInfo.administrative[2].name);
         setVillagetName(response.data.localityInfo.administrative[5].name);
         setStateName(response.data.localityInfo.administrative[1].name);
+        console.log(response);
         setCountry(response.data.countryCode);
         setAddress({
           cityName: response.data.localityInfo.administrative[3].name,
@@ -51,7 +52,7 @@ function Map({ setLattitude, setLongitude, setAddress, setCountry, setError }) {
       const { latitude, longitude } = selectedLocation;
       fetchCityName(latitude, longitude);
     }
-  }, [selectedLocation, setAddress]);
+  }, [setAddress, setCountry, selectedLocation, setError]);
   // map postion in current and address
   const updateMapPosition = (e) => {
     e.preventDefault();

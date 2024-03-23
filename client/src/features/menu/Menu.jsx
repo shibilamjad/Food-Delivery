@@ -102,11 +102,13 @@ const StyledContainer = styled.div`
   max-width: 940px;
   margin: 0 auto;
   padding: 70px;
+
   @media ${device.tablet} {
     padding: 50px;
   }
   @media ${device.mobileL} {
-    padding: 30px;
+    padding: 20px;
+    margin-bottom: 100px;
   }
 `;
 const StyledConent = styled.ul`

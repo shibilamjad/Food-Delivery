@@ -80,14 +80,16 @@ export function MenuItem({ items, distance, restaurantId }) {
                   Go to Cart
                 </Button>
               ) : (
-                <Button
-                  key={_id}
-                  type="small"
-                  disabled={distance > 30}
-                  onClick={() => handleCartAction(_id, restaurantId)}
-                >
-                  Add to cart
-                </Button>
+                distance < 30 && (
+                  <Button
+                    key={_id}
+                    type="small"
+                    disabled={distance > 30}
+                    onClick={() => handleCartAction(_id, restaurantId)}
+                  >
+                    Add to cart
+                  </Button>
+                )
               )
             ) : null}
           </div>

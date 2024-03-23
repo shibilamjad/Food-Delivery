@@ -59,15 +59,6 @@ const addMenu = async (req, res) => {
         message: `Restaurant '${restaurant}' not found`,
       });
     }
-
-    const isExistingMenu = await Menu.findOne({ name });
-
-    if (isExistingMenu) {
-      return res.status(400).json({
-        message: `${name} already created`,
-      });
-    }
-
     const newMenu = await Menu.create({
       name,
       unitPrice,

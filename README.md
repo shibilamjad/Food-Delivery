@@ -2,6 +2,12 @@
 
 Door Dash Dine is a full-stack food order and delivery app built with the MERN stack. It provides a comprehensive platform for users to order food from nearby restaurants, administrators to manage the system, and delivery boys to fulfill orders efficiently.
 
+### preview
+
+- user-(https://door-dash-dine.netlify.app/)
+- admin-(https://admin-door-dash-dine.netlify.app/dashboard)
+- deliveryBoys-(https://door-dash-dine-deliveryboy.netlify.app/)
+
 ## Technologies used
 
 - React

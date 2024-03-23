@@ -110,9 +110,7 @@ export function Restaurant() {
       <StyledContainer>
         <Header>
           {location === 'current' ? (
-            <h1>
-              Restaurants Available in your Location <span>{city}</span>
-            </h1>
+            <h1>Restaurants Available In Your Nearest Area</h1>
           ) : (
             <h1>
               Restaurants Available in <span>{location}</span>
@@ -195,7 +193,7 @@ const StyledRestaurant = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  margin-top: auto;
 `;
 
 const StyledSpinn = styled.div`
