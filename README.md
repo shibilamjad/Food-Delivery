@@ -58,11 +58,6 @@ https://github.com/shibilamjad/Food-Delivery/assets/144805618/d4cae7c7-8ee0-48ce
 - Users can view nearby restaurants based on their current location.
   -They can also change their location to find restaurants in different areas.
 
-### View Nearby Restaurants
-
-- Users can view nearby restaurants based on their current location.
-  -They can also change their location to find restaurants in different areas.
-
 ### Place Orders
 
 - Users can place orders with precise delivery location selection on a map, using Leaflet integration.
